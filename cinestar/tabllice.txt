@@ -1,0 +1,37 @@
+
+
+
+
+Fizicke_dvorane.xml ?
+	• u ovom fajlu su rasporedi i informacije bas o prostorijama,dimenzije ,br sjedala i slicno
+
+BAZA
+Dvorana
+	• dvorana_id
+	• fizicka_id
+	• name
+	• capacity
+
+Seat
+	• user_id
+	• film
+	• film_counter
+	• dvorana_id
+	• koordinate
+
+Film
+	• name
+	• ...
+	• active_dvorane
+	• film_counter
+
+User
+	• user_id
+	• password
+	• list[ rezervacije ]
+	• list[ kupljene ]
+
+Rezervacija
+	• id
+	• kupljena Da/Ne
+	• list[ seats ] 
