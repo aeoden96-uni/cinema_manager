@@ -1,11 +1,9 @@
 <?php
 
+// Datoteku treba preimenovati u db.class.php
 
-
-
-class DB2
+class DB
 {
-
 	private static $db = null;
 
 	private function __construct() { }
@@ -13,26 +11,18 @@ class DB2
 
 	public static function getConnection() 
 	{
-		if( DB2::$db === null ){
-			try{
-				//DB2::$db = new MongoDB\Driver\Manager("mongodb://localhost:27017");
-
-				//MONGO ATLAS
-				DB2::$db = new MongoDB\Driver\Manager("mongodb+srv://mongo_nbp:Lozinka1#@cluster0.03xeq.mongodb.net/myFirstDatabase?retryWrites=true&w=majority");
-				
-							
-				
-			}
-			catch(MongoConnectionException $e){
-				return $e;
-			}
-
-
-		}
-		return DB2::$db;
-
+		if( DB::$db === null )
+	    {
+	    	try
+	    	{
+	    		// Unesi ispravni HOSTNAME, DATABASE, USERNAME i PASSWORD
+		    	DB::$db = new PDO( "mysql:host=rp2.studenti.math.hr;dbname=marcius;charset=utf8", 'student', 'pass.mysql' );
+		    	DB::$db-> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		    }
+		    catch( PDOException $e ) { exit( 'PDO Error: ' . $e->getMessage() ); }
+	    }
+		return DB::$db;
 	}
-	   
 }
 
 ?>
