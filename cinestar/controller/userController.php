@@ -4,6 +4,8 @@
 
 //require_once __DIR__ . '/../model/mongoservice.class.php';
 
+require_once __DIR__ . '/../model/cinemaservice.class.php';
+
 
 
 
@@ -145,39 +147,72 @@ class userController
     }
 
 
-    public function myList() {  //LISTA user -> FAKULTETI
+    public function browseMovies() {  //popis filmova
 		session_start();
         $this->checkPrivilege();
-       
-       
-
-
+        
         $ime=$_SESSION["user_name"];
         $naziv=$ime;
         $activeInd=2;
+        $cs = new CinemaService();
 
         $USERTYPE=$this->USERTYPE;
+
+        $movieList = $cs -> getAllMovies();
 
         require_once __DIR__ . '/../view/'.$USERTYPE.'/myList.php';    
 
 	}
 
-    public function browser() { //LISTA FAKULTETA
+    public function myReservations() { //rezervacije
 		session_start();
         $this->checkPrivilege();
-        
-       
 
-       
-        ////////
         $ime=$_SESSION["user_name"];
         $naziv=$ime;
         $activeInd=3;
+        $cs = new CinemaService();
         
         $USERTYPE=$this->USERTYPE;
+
+        $reservationList = $cs -> getMoviesByUserName($ime);
+
         require_once __DIR__ . '/../view/'.$USERTYPE.'/browser.php';    
 
 	}
+
+    public function movie()
+    {
+        session_start();
+        $this->checkPrivilege();
+
+        $ime=$_SESSION["user_name"];
+
+        $naziv=$ime;
+
+        $id = $_GET['movie_id']; //ovo ne radi, treba drugi način za dobiti movie id
+
+        $cs = new CinemaService();
+        
+        $USERTYPE=$this->USERTYPE;
+        echo $id;
+        $movie = $cs -> getMovieById( $id );
+        $projections = $cs -> getProjectionsByMovieId( $id );
+
+        require_once __DIR__ . '/../view/'.$USERTYPE.'/movie.php';  
+    }
+
+    public function reservation()
+    {
+        session_start();
+        $this->checkPrivilege();
+
+        $ime=$_SESSION["user_name"];
+
+        $naziv=$ime;
+
+
+    }
 
   
     public function otherSettings() {
