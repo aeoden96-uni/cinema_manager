@@ -160,7 +160,7 @@ class userController
 
         $movieList = $cs -> getAllMovies();
 
-        require_once __DIR__ . '/../view/'.$USERTYPE.'/myList.php';    
+        require_once __DIR__ . '/../view/'.$USERTYPE.'/browseMovies.php';    
 
 	}
 
@@ -177,11 +177,11 @@ class userController
 
         $reservationList = $cs -> getMoviesByUserName($ime);
 
-        require_once __DIR__ . '/../view/'.$USERTYPE.'/browser.php';    
+        require_once __DIR__ . '/../view/'.$USERTYPE.'/myReservations.php';    
 
 	}
 
-    public function movie()
+    public function movie( $id )
     {
         session_start();
         $this->checkPrivilege();
@@ -189,8 +189,6 @@ class userController
         $ime=$_SESSION["user_name"];
 
         $naziv=$ime;
-
-        $id = $_GET['movie_id']; //ovo ne radi, treba drugi način za dobiti movie id
 
         $cs = new CinemaService();
         
