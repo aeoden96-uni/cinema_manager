@@ -36,7 +36,7 @@
                     foreach( $movieList as $movie){
                         $img = $movie['movie']-> name . '.jpg';
                         echo '<tr>';
-                        $str = '<h4><a href="index.php?rt=user/movie&movie_id="'. $movie['movie']-> id .'">' . $movie['movie']-> name. '</a></h4> ';
+                        $str = '<h4><a href="index.php?rt=user/movie/'. $movie['movie']-> id .'">' . $movie['movie']-> name. '</a></h4> ';
                         echo '<td>' .$str . '<img src="img/'. $img .'"></td>';
                        // echo '<td>' . $str . '</td>';
                         echo '</tr>';

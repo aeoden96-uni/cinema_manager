@@ -2,7 +2,7 @@
 
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="index.php?rt=user">Dashboard</a></li>
+        <li class="breadcrumb-item"><a href="index.php?rt=user/browseMovies">Movie browser</a></li>
         <li class="breadcrumb-item active"><?php echo $movie -> name; ?></li>
     </ol>
 </nav>
@@ -26,7 +26,7 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td><img src="img/ <?php echo $movie -> name . 'jpg' ?>"></td>
+                        <td><img src="img/<?php echo $movie -> name . '.jpg' ?>"></td>
                         <td>Description: <?php echo $movie -> description; ?></td>
                         <td>Year:<?php echo $movie -> year; ?>  </td>
                         <td>Duration:<?php echo $movie -> duration; ?>  </td>
