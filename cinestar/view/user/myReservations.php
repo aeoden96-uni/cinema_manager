@@ -46,7 +46,7 @@ function datum ($date)
                         echo '<td>'. $date .', ' . substr($time, 0, -3) . 'h </td>';
                         $num_of_tics = $reservation['tics'];
                         echo '<td>' . $num_of_tics . '</td>';
-                        echo '<td><button class="cancel"><a class="cancel" href="index.php?rt=user/cancel/'.$reservation['id']. '">Cancel reservation</a></button></td>';
+                        echo '<td><button class="btn btn-warning"><a class="cancel" href="index.php?rt=user/cancel/'.$reservation['id']. '">Cancel reservation</a></button></td>';
                         echo '</tr>';
                     }
                    ?>

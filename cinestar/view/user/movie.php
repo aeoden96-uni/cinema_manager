@@ -40,7 +40,7 @@
                                 echo '<td>';
                                 foreach( $projections as $projection ){
                                     if( $projection-> date === $date){
-                                        echo '<button class="time"><a class="time" href="index.php?rt=user/projection/'.$projection->id.'">'. substr($projection-> time, 0, -3) . '</a></button><br>';
+                                        echo '<button class="btn btn-warning"><a class="time" href="index.php?rt=user/projection/'.$projection->id.'">'. substr($projection-> time, 0, -3) . '</a></button><br class="button">';
                                     }
                                 }
                                 echo '</td>';
@@ -86,6 +86,16 @@ button.time:hover{
 table.projections{
     border-collapse: separate;
     text-align: center;
+}
+
+th{
+    text-align: center;
+}
+
+br.button{
+    display: block;
+    content: ""; 
+    margin-top: 0.5em; 
 }
 </style>
 
