@@ -28,7 +28,7 @@ var ctx = null;
 
 
 
-function draw_seat2(i, j, mar = 5, color = "gray") { // i ide od gore, j od lijevo
+function draw_seat2(i, j, mar = 5, color = '#0D736280') { // i ide od gore, j od lijevo
 	/* crta poligon
 	
 		y,x	  *-----* y2,x
@@ -284,8 +284,8 @@ function drawMarked() { //crta SVE elemente tablice
 				ctx.fillStyle = "red";
 				draw_seat2(i, j, 5, "red");
 			}
-			else if (tablica[i][j] == 4) {
-				draw_seat2(i, j, 5, "blue");
+			else if (tablica[i][j] == 2) {
+				draw_seat2(i, j, 5, "gray");
 			}
 
 		}
@@ -307,7 +307,7 @@ function drawHover() {
 	// i == STUPCI    j== REDOVI
 	if (block.i > tablica[0].length - 1 || block.j > tablica.length - 1) return;
 
-	if (tablica[block.j][block.i] > 2) return;
+	if (tablica[block.j][block.i] >= 2) return;
 	var marg = 8;
 
 	ctx.fillStyle = "yellow";
@@ -341,6 +341,36 @@ function refreshActiveBlock(x, y) {
 
 }
 
+
+function oznaciKupljena(prikaz_id) {
+	$.ajax(
+		{
+			url: "index.php?rt=user/vratiZauzetaMjesta/" + prikaz_id,
+			data:
+			{
+			},
+			type: "POST",
+			dataType: "json",
+			success: function (json) {
+				console.log(json);
+				json.forEach(element => {
+					tablica[element.x][element.y] = 2;
+				});
+
+
+			},
+			error: function (xhr, status, errorThrown) {
+
+			},
+			complete: function (xhr, status) {
+				console.log(status);
+
+			}
+		});
+
+
+}
+
 function main() {
 
 
@@ -359,9 +389,10 @@ function main() {
 		tablica[i] = new Array(size_y).fill(0);
 	}
 
-	console.log(size_x);
-	console.log(size_y);
-	console.log(tablica.length);
+
+	oznaciKupljena(1);
+
+
 	//getInitData();
 
 

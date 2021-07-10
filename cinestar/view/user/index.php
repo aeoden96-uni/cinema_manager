@@ -10,7 +10,7 @@
 <h1 class="h2">Dashboard</h1>
 <p>This is your student dashboard.</p>
 
-<a href="index.php?rt=user/seatSelection">Seat selection test</a>
+<a href="index.php?rt=user/seatSelection/1">Seat selection test</a>
 
 
 
