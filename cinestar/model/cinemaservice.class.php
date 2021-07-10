@@ -144,7 +144,7 @@ class CinemaService
 
         $arr = array();
 		while( $row = $st->fetch() ){
-            $arr[] = new Projection( $row['id'], $row['dvorana_id'], $row['film_id'], $row['vrijeme_prikaza']);
+            $arr[] = new Projection( $row['id'], $row['dvorana_id'], $row['film_id'], $row['datum'], $row['vrijeme'] );
         }
         return $arr;
 
@@ -162,12 +162,52 @@ class CinemaService
 		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
 
         $row =$st->fetch();
-        return new Projection( $row['id'], $row['dvorana_id'], $row['film_id'], $row['vrijeme_prikaza'] );
+        return new Projection( $row['id'], $row['dvorana_id'], $row['film_id'], $row['datum'], $row['vrijeme']);
     }
 
 	function makeReservation( $user_name, $projectionId)
 	{
 
+	}
+
+	function getDatesByMovieId( $id )
+	{
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare( 'SELECT DISTINCT datum FROM prikaz WHERE film_id=:id ' );
+			$st->execute( array( 'id' => $id ) );
+			
+		}
+		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
+
+		$arr = array();
+		while( $row = $st->fetch() ){
+            $arr[] = $row['datum'];
+        }
+        return $arr;
+	}
+
+	function getMovieByProjectionId( $id )
+	{
+		$movie_id = $this->getMovieIdByProjectionId( $id );
+		$movie = $this -> getMovieById( $movie_id );
+		return $movie;
+	}
+
+	function getHallIdByProjectionId( $id )
+	{
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare( 'SELECT dvorana_id FROM prikaz WHERE id=:id ' );
+			$st->execute( array( 'id' => $id ) );
+			
+		}
+		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
+
+		$row = $st->fetch();
+		return $row['dvorana_id'];
 	}
 }
 
