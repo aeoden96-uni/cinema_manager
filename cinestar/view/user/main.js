@@ -351,7 +351,7 @@ function main() {
 	var size_x = parseInt(canvas.getAttribute('br_redova'));
 	var size_y = parseInt(canvas.getAttribute('velicina_reda'));
 
-
+	console.log(size_x + "," + size_y);
 	MARGIN = canvas.width * 0.25;
 
 	tablica = new Array(size_x);

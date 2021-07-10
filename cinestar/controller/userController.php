@@ -88,13 +88,17 @@ class userController
    
     }
 
-    public function seatSelection() {
+    public function seatSelection() {//DOBIJE POMOCU POSTa: PRIKAZ_id 
 		session_start();
 
         $ime=$_SESSION["user_name"];
         $naziv=$ime;
         $activeInd=0;
 
+        
+        
+        $br_redova=5;
+        $velicina_reda=6;
 
         $USERTYPE=$this->USERTYPE;
         require_once __DIR__ . '/../view/'.$USERTYPE.'/seatSelection.php';    

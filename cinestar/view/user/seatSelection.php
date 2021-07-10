@@ -14,7 +14,13 @@
         <div style="margin-bottom: 10px;" class="card">
             <h5 class="card-header">Dvorana</h5>
             <div class="card-body">
-                <canvas id="myBoard" width="600" height="500" br_redova=5 velicina_reda=6 ></canvas>
+                <canvas 
+                    id="myBoard" 
+                    width="600" 
+                    height="500" 
+                    br_redova=<?php echo $br_redova; ?> 
+                    velicina_reda=<?php echo $velicina_reda; ?> >
+                </canvas>
             </div>
         </div>    
     </div>
