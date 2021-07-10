@@ -60,6 +60,46 @@ class userController
 
 	}
 
+    public function seatSelectionConfirm() {
+		session_start();
+
+        //POSTAVI $_POST["seats"] za $_POST["prikaz"] U BAZU,VRATI BROJ REZERVACIJE
+       
+        $message = [];
+        $message[ 'uspjeh' ] = True;
+        $message[ 'rezervacija' ] = 1234;
+        header( 'Content-type:application/json;charset=utf-8' );
+        echo json_encode( $message );
+        flush();
+   
+    }
+    public function reservationSuccess() {
+		session_start();
+
+        
+
+        $ime=$_SESSION["user_name"];
+        $naziv=$ime;
+        $activeInd=0;
+
+
+        $USERTYPE=$this->USERTYPE;
+        require_once __DIR__ . '/../view/'.$USERTYPE.'/reservationSuccess.php';    
+   
+    }
+
+    public function seatSelection() {
+		session_start();
+
+        $ime=$_SESSION["user_name"];
+        $naziv=$ime;
+        $activeInd=0;
+
+
+        $USERTYPE=$this->USERTYPE;
+        require_once __DIR__ . '/../view/'.$USERTYPE.'/seatSelection.php';    
+
+    }
     
 	public function myInfo() {
 		session_start();

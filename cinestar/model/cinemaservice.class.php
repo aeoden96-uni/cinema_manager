@@ -144,7 +144,7 @@ class CinemaService
 
         $arr = array();
 		while( $row = $st->fetch() ){
-            $arr[] = new Projection( $row['id'], $row['dvorana_id'], $row['film_id'], $row['vrijeme_prikaza']);
+            $arr[] = new Projection( $row['id'], $row['dvorana_id'], $row['film_id'], $row['vrijeme']);
         }
         return $arr;
 
