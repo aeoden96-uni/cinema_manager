@@ -29,8 +29,9 @@
                             <tr>
                              <?php 
                              foreach ( $dates as $date){
-                                 $new_date = date_create($date);
-                                 echo '<th>' . date_format($new_date, 'd.m.') . '</th>';
+                                 //$new_date = date_create($date);
+                                 //echo '<th>' . date_format($new_date, 'd.m.') . '</th>';
+                                 echo '<th>' . datum($date) . '</th>';
                              }
                              ?>
                             </tr>
@@ -40,7 +41,7 @@
                                 echo '<td>';
                                 foreach( $projections as $projection ){
                                     if( $projection-> date === $date){
-                                        echo '<button class="btn btn-warning"><a class="time" href="index.php?rt=user/projection/'.$projection->id.'">'. substr($projection-> time, 0, -3) . '</a></button><br class="button">';
+                                        echo '<button class="btn btn-warning"><a class="time" href="index.php?rt=user/seatSelection/'.$projection->id.'">'. substr($projection-> time, 0, -3) . '</a></button><br class="button">';
                                     }
                                 }
                                 echo '</td>';

@@ -1,12 +1,5 @@
 
-<?php include __DIR__ . '/../_header.php';
-
-function datum ($date)
-{
-    return date_format(date_create($date), 'd.m.');
-}
-
-?>
+<?php include __DIR__ . '/../_header.php'; ?>
 
 
 <nav aria-label="breadcrumb">

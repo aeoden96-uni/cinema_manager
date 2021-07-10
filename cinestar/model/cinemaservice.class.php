@@ -230,23 +230,68 @@ class CinemaService
 		try
 		{
 			$db = DB::getConnection();
-			$st = $db->prepare( 'DELETE * FROM prikaz WHERE  ' );
-			$st->execute( array(  ) );
+			$st = $db->prepare( 'SELECT id, datum, vrijeme FROM prikaz' );
+			$st->execute( );
+			
+		}
+		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
+
+		while( $row = $st->fetch()){
+			$date = explode('-',$row['datum']);
+			$time = explode(':', $row['vrijeme']);
+			$new_date = mktime($time[0], $time[1], $time[2], $date[1], $date[2], $date[0]);
+			if( $new_date < time()){
+				$this->erasePastReservationsByProjectionId( $row['id'] );
+				$stt = $db->prepare( 'DELETE FROM prikaz WHERE id=:id');
+				$stt->execute( array('id' => $row['id'] ) );
+			}
+		}
+	}
+
+	function erasePastReservationsByProjectionId( $id )
+	{
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare( 'DELETE FROM rezervacija WHERE prikaz_id=:id' );
+			$st->execute( array('id' => $id ) );
 			
 		}
 		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
 	}
 
-	function erasePastReservations()
+	function getSizeOfHallByProjectionId( $id ) //vraca array
 	{
 		try
 		{
 			$db = DB::getConnection();
-			$st = $db->prepare( 'DELETE * FROM rezervacija WHERE  ' );
-			$st->execute( array(  ) );
+			$st = $db->prepare( 'SELECT dvorana_id FROM prikaz WHERE id=:id' );
+			$st->execute( array( 'id' => $id) );
 			
 		}
 		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
+
+		$row = $st->fetch();
+		return $this -> getSizeOfHallById( $row['dvorana_id']);
+
+	}
+
+	function getSizeOfHallById( $id )
+	{
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare( 'SELECT broj_redova, broj_sjedala_po_redu FROM _dvorane WHERE id=:id' );
+			$st->execute( array( 'id' => $id) );
+			
+		}
+		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
+
+		$row = $st->fetch();
+		$size = [];
+		$size[] = $row['broj_redova'];
+		$size[] = $row['broj_sjedala_po_redu'];
+		return $size;
 	}
 }
 

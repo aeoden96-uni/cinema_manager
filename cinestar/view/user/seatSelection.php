@@ -5,14 +5,19 @@
 <script src="view/user/main.js"></script>
 
 
-
-
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="index.php?rt=user/movie/<?php echo $movie->id;?>"><?php echo $movie->name ?></a></li>
+        <li class="breadcrumb-item active">Make reservation</li>
+    </ol>
+</nav>
+<h1 class="h2"><?php echo $movie -> name; ?></h1>
 
 
 <div class="row">
     <div class="col-12 col-xl-8 mb-4 mb-lg-0">
         <div style="margin-bottom: 10px;" class="card">
-            <h5 class="card-header"><?php echo "Prikaz_id:".$prikaz_id;?></h5>
+            <h5 class="card-header"><?php echo $date . ', ' . substr($projection -> time, 0, -3) . 'h';?></h5> 
             <div class="card-body">
                 <canvas 
                     id="myBoard" 
