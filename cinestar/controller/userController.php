@@ -6,7 +6,18 @@
 
 require_once __DIR__ . '/../model/cinemaservice.class.php';
 
+class MySeat {
+    public $x;
+    public $y;
+  
+    public function  __construct($x,$y) {
+      $this->x = $x;
+      $this->y = $y;
 
+    }
+
+    
+}
 
 
 class userController
@@ -88,17 +99,34 @@ class userController
    
     }
 
-    public function seatSelection() {//DOBIJE POMOCU POSTa: PRIKAZ_id 
+    public function vratiZauzetaMjesta($prikazId){
+        
+        $zauzeta=[];
+
+        $zauzeta[]= new MySeat(1,1);
+        $zauzeta[]= new MySeat(2,3);
+        $zauzeta[]= new MySeat(2,4);
+
+        header( 'Content-type:application/json;charset=utf-8' );
+        echo json_encode( $zauzeta );
+        flush();
+
+    }
+
+    public function seatSelection($prikaz_id) {//DOBIJE POMOCU GETa: PRIKAZ_id 
 		session_start();
 
         $ime=$_SESSION["user_name"];
         $naziv=$ime;
         $activeInd=0;
 
-        
-        
+
+        //U BAZU prikaz_id ------> VELICINA DVORANE I ZAUZETA MJESTA
         $br_redova=5;
         $velicina_reda=6;
+
+        
+
 
         $USERTYPE=$this->USERTYPE;
         require_once __DIR__ . '/../view/'.$USERTYPE.'/seatSelection.php';    
