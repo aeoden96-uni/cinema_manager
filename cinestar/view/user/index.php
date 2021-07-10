@@ -1,4 +1,3 @@
-
 <?php include __DIR__ . '/../_header.php'; ?>
 
 
@@ -11,7 +10,8 @@
 <h1 class="h2">Dashboard</h1>
 <p>This is your student dashboard.</p>
 
-<canvas id="myBoard" width="900" height="500"></canvas>
+<a href="index.php?rt=user/seatSelection">Seat selection test</a>
+
 
 
 
