@@ -25,19 +25,19 @@
         <div class="table-responsive">
             <table class="table">
                 <thead>
-                    <tr>
+                   <!--- <tr>
                     <th scope="col">Movies</th>
-                    <!--<th scope="col">Faculty name</th>-->
+                    <th scope="col">Faculty name</th>
 
-                    </tr>
+                    </tr>-->
                 </thead>
                 <tbody>
                 <?php
                     foreach( $movieList as $movie){
                         $img = $movie['movie']-> name . '.jpg';
                         echo '<tr>';
-                        $str = '<h4><a href="index.php?rt=user/movie/'. $movie['movie']-> id .'">' . $movie['movie']-> name. '</a></h4> ';
-                        echo '<td>' .$str . '<img src="img/'. $img .'"></td>';
+                        $str = '<h4><a class="title" href="index.php?rt=user/movie/'. $movie['movie']-> id .'">' . $movie['movie']-> name. '</a></h4> ';
+                        echo '<td>' .$str . '<div class="img"><img src="img/'. $img .'"></div></td>';
                        // echo '<td>' . $str . '</td>';
                         echo '</tr>';
                     }
@@ -52,7 +52,23 @@
     </div>
 </div>
 
-
+<style>
+a.title{
+    text-decoration: none;
+    color:black;
+}
+a.title:hover{
+    background-color:lightgray;
+}
+div.img{
+    /*height:25%;*/
+    width:25%;
+}
+img{
+    width:100%;
+    height:100%;
+}
+</style>
 
 
 

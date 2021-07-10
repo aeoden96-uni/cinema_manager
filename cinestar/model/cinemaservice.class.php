@@ -79,7 +79,8 @@ class CinemaService
             $projection = $this->getProjectionById( $row['prikaz_id']);
 			$arr[] = ['movie' => $movie,
                         'projection' => $projection,
-						'tics' => $row['broj_karata']];
+						'tics' => $row['broj_karata'],
+						'id' => $row['id']];
                        // 'price' => $row['price']];
 		}
 
@@ -208,6 +209,44 @@ class CinemaService
 
 		$row = $st->fetch();
 		return $row['dvorana_id'];
+	}
+
+	function cancelReservationById( $id )
+	{
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare( 'DELETE FROM rezervacija WHERE id=:id' );
+			$st->execute( array( 'id' => $id ) );
+			
+		}
+		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
+		
+		//updejtaj slobodna sjedala
+	}
+
+	function erasePastProjections()
+	{
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare( 'DELETE * FROM prikaz WHERE  ' );
+			$st->execute( array(  ) );
+			
+		}
+		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
+	}
+
+	function erasePastReservations()
+	{
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare( 'DELETE * FROM rezervacija WHERE  ' );
+			$st->execute( array(  ) );
+			
+		}
+		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
 	}
 }
 

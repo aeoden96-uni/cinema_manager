@@ -136,7 +136,7 @@ class userController
         $this->checkPrivilege();
         $m= new MongoService();
 
-        $student=$m->returnuserWithId($_SESSION["user_id"]);
+        $student=$m->returnserWithId($_SESSION["user_id"]);
 
         $lista= $student->lista_fakulteta;
 
@@ -155,6 +155,8 @@ class userController
         $naziv=$ime;
         $activeInd=2;
         $cs = new CinemaService();
+
+        //$cs -> erasePastProjections();
 
         $USERTYPE=$this->USERTYPE;
 
@@ -175,6 +177,8 @@ class userController
         
         $USERTYPE=$this->USERTYPE;
 
+        //$cs -> erasePastReservations();
+
         $reservationList = $cs -> getMoviesByUserName($ime);
 
         require_once __DIR__ . '/../view/'.$USERTYPE.'/myReservations.php';    
@@ -193,11 +197,49 @@ class userController
         $cs = new CinemaService();
         
         $USERTYPE=$this->USERTYPE;
-        echo $id;
         $movie = $cs -> getMovieById( $id );
         $projections = $cs -> getProjectionsByMovieId( $id );
+        $dates = $cs -> getDatesByMovieId( $id );
 
         require_once __DIR__ . '/../view/'.$USERTYPE.'/movie.php';  
+    }
+
+    public function projection( $id ) //tu se odabiru sjedala
+    {
+        session_start();
+        $this->checkPrivilege();
+
+        $ime=$_SESSION["user_name"];
+
+        $naziv=$ime;
+
+        $cs = new CinemaService();
+        
+        $USERTYPE=$this->USERTYPE;
+
+        $movie = $cs -> getMovieByProjectionId( $id );
+
+        $hall_id = $cs -> getHallIdByProjectionId( $id );
+        
+
+        require_once __DIR__ . '/../view/'.$USERTYPE.'/projection.php';
+    }
+
+    public function cancel( $id ) //otkaži rezervaciju
+    {
+        session_start();
+        $this->checkPrivilege();
+
+        $ime=$_SESSION["user_name"];
+
+        $naziv=$ime;
+
+        $cs = new CinemaService();
+        
+        $USERTYPE=$this->USERTYPE;
+
+        $cs -> cancelReservationById( $id );
+        header('Location: index.php?rt=user/myReservations');
     }
 
     public function reservation()
