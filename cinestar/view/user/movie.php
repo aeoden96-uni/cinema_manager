@@ -25,7 +25,7 @@
                         <b>Year:</b> <?php echo $movie -> year; ?> <br><br>
                         <b>Duration:</b> <?php echo substr($movie -> duration, 0, -3); ?> <br><br>
                         <h4><b>Projections:</b></h4>
-                        <table>
+                        <table class="projections">
                             <tr>
                              <?php 
                              foreach ( $dates as $date){
@@ -40,7 +40,7 @@
                                 echo '<td>';
                                 foreach( $projections as $projection ){
                                     if( $projection-> date === $date){
-                                        echo '<button class="time"><a class="time" href="index.php?rt=user/projection/'.$projection->id.'">'. substr($projection-> time, 0, -3) . '</a></button><br><br>';
+                                        echo '<button class="time"><a class="time" href="index.php?rt=user/projection/'.$projection->id.'">'. substr($projection-> time, 0, -3) . '</a></button><br>';
                                     }
                                 }
                                 echo '</td>';
@@ -81,6 +81,11 @@ button.time{
 
 button.time:hover{
     background-color:lightgray;
+}
+
+table.projections{
+    border-collapse: separate;
+    text-align: center;
 }
 </style>
 
