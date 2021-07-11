@@ -1,7 +1,7 @@
 <?php
 
-require_once __DIR__ . '/../model/globalservice.class.php';
-require_once __DIR__ . '/../model/mongoservice.class.php';
+//require_once __DIR__ . '/../model/globalservice.class.php';
+//require_once __DIR__ . '/../model/mongoservice.class.php';
 
 
 
@@ -35,17 +35,17 @@ class AdminController
         $activeInd=0;
 
 
-        $g= new GlobalService();
+        //$g= new GlobalService();
     
-        $lockDate= $g->getLockDate();
-        $lockDateString=$lockDate->toDateTime()->format('d.m.Y');
+        //$lockDate= $g->getLockDate();
+        //$lockDateString=$lockDate->toDateTime()->format('d.m.Y');
 
-        $resultDate= $g->getResultsDate();
-        $resultDateString=$resultDate->toDateTime()->format('d.m.Y');
+        //$resultDate= $g->getResultsDate();
+        //$resultDateString=$resultDate->toDateTime()->format('d.m.Y');
 
-        $resultBool= $g->getResultsBool();
-        $lockBool= $g->getLockBool();
-        $agregBool=$g->getAgregBool();
+        //$resultBool= $g->getResultsBool();
+        //$lockBool= $g->getLockBool();
+        //$agregBool=$g->getAgregBool();
 
         
         $ime=$_SESSION["username"];
@@ -119,20 +119,8 @@ class AdminController
         session_start();
         $this->checkPrivilege();
         
-        $m= new MongoService();
+
         $activeInd=1;
-        $list=$m->returnAllFaks();
-
-        $user=$m->returnAdminWithUsername($_SESSION["username"]);
-        
-
-
-        //GLOBAL
-        $g= new GlobalService();
-        $lockBool= $g->getLockBool();
-        $resultBool= $g->getResultsBool();
-        ////////
-        
         $ime=$_SESSION["username"];
         $naziv=$ime;
 

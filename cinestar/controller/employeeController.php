@@ -1,8 +1,8 @@
 <?php
 
-require_once __DIR__ . '/../model/globalservice.class.php';
+//require_once __DIR__ . '/../model/globalservice.class.php';
 
-require_once __DIR__ . '/../model/mongoservice.class.php';
+//require_once __DIR__ . '/../model/mongoservice.class.php';
 
 require_once __DIR__ . '/../model/cinemaservice.class.php';
 
@@ -38,19 +38,6 @@ class employeeController
 
 
 
-        ////////////////GLOBAL SETTINGS
-        $g= new GlobalService();
-    
-        $lockDate= $g->getLockDate();
-        $lockDateString=$lockDate->toDateTime()->format('d.m.Y');
-
-        $resultDate= $g->getResultsDate();
-        $resultDateString=$resultDate->toDateTime()->format('d.m.Y');
-
-        $resultBool= $g->getResultsBool();
-        $lockBool= $g->getLockBool();
-        
-        ////////////////GLOBAL SETTINGS
        
         $USERTYPE=$this->USERTYPE;
         require_once __DIR__ . '/../view/'.$USERTYPE.'/index.php';   
@@ -61,25 +48,13 @@ class employeeController
 		session_start();
         $this->checkPrivilege();
 
-        $m= new MongoService();
+        //$m= new MongoService();
         $naziv=$_SESSION["naziv"];
         $ime=$_SESSION["username"];
         //$list=$m->returnUcenikWithId("60b6d0a2b000b1fc8a909a6f");
-        $employee=$m->returnemployeeWithUsername($ime);
+        //$employee=$m->returnemployeeWithUsername($ime);
 
-        ////////////////GLOBAL SETTINGS
-        $g= new GlobalService();
-    
-        $lockDate= $g->getLockDate();
-        $lockDateString=$lockDate->toDateTime()->format('d.m.Y');
-
-        $resultDate= $g->getResultsDate();
-        $resultDateString=$resultDate->toDateTime()->format('d.m.Y');
-
-        $resultBool= $g->getResultsBool();
-        $lockBool= $g->getLockBool();
-        
-        ////////////////GLOBAL SETTINGS
+       
 
 
         $ucenikName=$_SESSION["username"];
@@ -153,9 +128,9 @@ class employeeController
 		session_start();
         $this->checkPrivilege();
         
-        $ime=$_SESSION["user_name"];
+        $ime=$_SESSION["username"];
         $naziv=$ime;
-        $activeInd=2;
+        $activeInd=3;
         $cs = new CinemaService();
 
         $cs -> erasePastProjections();
@@ -174,7 +149,7 @@ class employeeController
         $this->checkPrivilege();
         $naziv=$_SESSION["naziv"];
         $ime=$_SESSION["username"];
-
+        $activeInd=2;
         $USERTYPE=$this->USERTYPE;
         $error = $_SESSION['error'];
         $_SESSION['error'] = '';

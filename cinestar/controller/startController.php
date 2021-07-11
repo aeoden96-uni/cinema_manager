@@ -202,14 +202,24 @@ class StartController
 
 	public function loginCheckEmployee(){
 		session_start();
-		$ms= new MongoService();
+		//$ms= new MongoService();
 		
 
-		$db=$ms->returnemployeeWithUsername($_POST["username"]);
-		$check=true;
-		
+		//$db=$ms->returnemployeeWithUsername($_POST["username"]);
+		//$check=true;
+		$succesVar="successful.";
+			$_SESSION["account_type"] = "employee";
+			$_SESSION["employee_id"]= "1234";
+			$_SESSION["employee_oib"]= 123456789;
 
-		if($db == null){
+			$_SESSION["naziv"]= "empoloyee_ime";
+
+			$_SESSION["username"]= (string)"employee_username";
+			
+
+			header("Refresh:2; url=index.php?rt=start");
+
+		/*if($db == null){
 			echo $_POST["username"];
 			echo " tog usera nema";
 			$succesVar="unsuccessful. :(";
@@ -236,7 +246,7 @@ class StartController
 			session_destroy();
 			header("Refresh:2; url=index.php?rt=start");
 		}
-
+		*/
 
 		
 		require_once __DIR__ . '/../view/start_login.php';
@@ -244,14 +254,23 @@ class StartController
 
 	public function loginCheckAdmin(){
 		session_start();
-		$ms= new MongoService();
 		
-
-		$db=$ms->returnAdminWithUsername($_POST["username"]);
-		$check=true;
 		
+		//$ms= new MongoService();
+		//$db=$ms->returnAdminWithUsername($_POST["username"]);
+		$db=null;
+		$succesVar="successful.";
+		$_SESSION["account_type"] = "admin";
+		$_SESSION["employee_id"]="admin_id1234";
 
-		if($db == null){
+		$_SESSION["naziv"]= "naziv_admin";
+
+		$_SESSION["username"]= "username_admin";
+			
+
+			header("Refresh:2; url=index.php?rt=start");
+
+		/*if($db == null){
 			echo $_POST["username"];
 			echo " tog usera nema";
 			$succesVar="unsuccessful. :(";
@@ -276,7 +295,7 @@ class StartController
 			$succesVar="unsuccessful. :(";
 			session_destroy();
 			header("Refresh:2; url=index.php?rt=start");
-		}
+		}*/
 
 
 		

@@ -9,7 +9,7 @@
     </ol>
 </nav>
 <h1 class="h2">Dashboard</h1>
-<p>This is the main dashboard for admin. Here you can start or reset aggregation procedure for all students.</p>
+<p>This is the main dashboard for admin.</p>
 
 <!--HORIZ CONTAINER
 my-4 = MARGIN top bottom
@@ -22,10 +22,10 @@ my-4 = MARGIN top bottom
             <h5 class="card-header">Planned lock date</h5>
             <div class="card-body">
               <h5 class="card-title">
-                Lock date is scheduled: <?php echo $lockDateString; ?>
+                Lock date is scheduled:
               </h5>
-              <p class="card-text">Status <a class="btn btn-sm btn-<?php echo $lockBool? "info":"success"; ?> ml-3 mt-2" href="index.php?rt=admin/lockSwitch">
-              <?php echo $lockBool? "LOCKED":"UNLOCKED"; ?>
+              <p class="card-text">Status <a class="btn btn-sm ml-3 mt-2" href="index.php?rt=admin/lockSwitch">
+            
                 </a></p>
 
               <p class="card-text">Lock student's ability to edit their faculty list.</p>
@@ -38,10 +38,10 @@ my-4 = MARGIN top bottom
             <h5 class="card-header">Planned results date</h5>
             <div class="card-body">
               <h5 class="card-title">
-                <span class="text-danger"><?php echo $agregBool? "":"Aggregate before showing results<br>"; ?></span>
-                Results date is scheduled: <?php echo $resultDateString; ?>
+                <span class="text-danger"></span>
+                Results date is scheduled: 
               </h5>
-              <p class="card-text">Status <a class="btn btn-sm btn-<?php echo $resultBool? "info":"success"; ?> ml-3 mt-2" href="index.php?rt=admin/resultsSwitch">
+              <p class="card-text">Status <a class="btn btn-sm  ml-3 mt-2" href="index.php?rt=admin/resultsSwitch">
               <?php echo $resultBool? "SHOWN":"NOT SHOWN"; ?>
                 </a></p>
 
@@ -55,8 +55,8 @@ my-4 = MARGIN top bottom
             <h5 class="card-header">Start aggregation</h5>
             <div class="card-body">
               <h5 class="card-title">
-              <span class="text-danger"><?php echo $agregBool? "Aggregation already done<br>":""; ?></span>
-              <span class="text-danger"><?php echo $lockBool? "":"Lock before starting"; ?></span>
+              <span class="text-danger"></span>
+              <span class="text-danger"></span>
               </h5>
               <p class="card-text"> <a class="btn btn-sm btn-info ml-3 mt-2" href="index.php?rt=admin/start">
                     ⚡︎ START
@@ -71,7 +71,7 @@ my-4 = MARGIN top bottom
             <h5 class="card-header">Reset aggregation</h5>
             <div class="card-body">
               <h5 class="card-title">
-                <span class="text-danger"><?php echo $agregBool? "":"Aggregation not started yet"; ?></span>
+                <span class="text-danger"></span>
                 
               </h5>
               <p class="card-text">
