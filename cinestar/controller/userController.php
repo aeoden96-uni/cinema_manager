@@ -69,20 +69,49 @@ class userController
 
 	}
 
-    public function seatSelectionConfirm() {
+    public function seatSelectionConfirm() { //ovdje server daje fail/pass ovisno o tom jesu li sjedala uspjesno rezervirana
 		session_start();
-
+        $cs = new CinemaService();
         //POSTAVI $_POST["seats"] za $_POST["prikaz"] U BAZU,VRATI BROJ REZERVACIJE
-       
-        $message = [];
-        $message[ 'uspjeh' ] = True;
-        $message[ 'rezervacija' ] = 1234;
         header( 'Content-type:application/json;charset=utf-8' );
-        echo json_encode( $message );
+        
+        if(!isset($_POST["seats"])) return;
+        if(!isset($_POST["prikaz"])) return;
+        $korisnik_id=1;
+        
+        $seats=[];
+
+        //PRERADITI,PROBLEM S POSTom
+        foreach($_POST["seats"] as $s){
+            $t=true;
+            foreach($s as $attr){
+                if($t){
+                    $i=$attr;
+                    $t=false;
+                } 
+                else
+                   $j=$attr;  
+            }
+
+            $seats[]= new Seat($i,$j,null);
+        }
+
+
+        //echo $_POST["seats"] ; 
+        $m=$cs -> insertNewReservations($seats, $_POST["prikaz"] ,$korisnik_id);
+        
+        $message=[];
+        $message[ 'uspjeh' ] = $m['uspjeh'];
+        $message[ 'rezervacija' ] = $m['rezervacija'];
+        
+
+
+        header( 'Content-type:application/json;charset=utf-8' );
+        echo json_encode($message);
         flush();
    
     }
-    public function reservationSuccess() {
+    public function reservationSuccess($reservation_id) {
 		session_start();
 
         

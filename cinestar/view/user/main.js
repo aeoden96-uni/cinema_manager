@@ -132,7 +132,7 @@ function sendMyChoice() { //button ....poziva obradi kad dobije odgovor
 		}
 
 	if (oznaceni.length == 0) return;
-	console.log(oznaceni);
+	//console.log(oznaceni);
 
 
 
@@ -147,7 +147,7 @@ function sendMyChoice() { //button ....poziva obradi kad dobije odgovor
 			type: "POST",
 			dataType: "json", // očekivani povratni tip podatka
 			success: function (json) {
-				console.log(json);
+				//console.log(json);
 				vraceno = json;
 				obradi();
 
@@ -177,16 +177,44 @@ function getInitData() { //dobiva pocetnu tablicu s servera,i sprema ju u
 var numOfSeatsSelected = 0;
 var MAXSeats = 4;
 var seatsSelected = [];
+function removeAllMarked() {
+	while (numOfSeatsSelected > 0) {
+		numOfSeatsSelected--;
+		var index = 0;
+		var x = seatsSelected[index].i;
+		var y = seatsSelected[index].j;
+		if (index !== -1) {
+			seatsSelected.splice(index, 1);
+		}
+		var lis = document.querySelectorAll('#myList li');
+		for (var i = 0; li = lis[i]; i++) {
+			if (li.innerHTML == "Mjesto " + y + "," + x)
+				li.parentNode.removeChild(li);
+		}
+
+		tablica[y - 1][x - 1] = (tablica[y - 1][x - 1] + 1) % 2;
+
+	}
+	console.log("sad:" + numOfSeatsSelected);
+	updateButtonOdaberi();
+
+}
+
 function markIt() {//oznacava jednu celiju
 
+	//ako je block rezerviran od nekog drugog,ne diraj ga
 	if (tablica[block.j][block.i] > 2) return;
 
+	//ako je odabrano previse blockova
 	if (numOfSeatsSelected >= MAXSeats && tablica[block.j][block.i] == 0) {
 		alert("Možeš odabrati maksimalno " + MAXSeats + " mjesta.");
 		return;
 	}
+
+	//oznaci block kao rezerviran=1 ili slobodan=0
 	tablica[block.j][block.i] = (tablica[block.j][block.i] + 1) % 2;
 
+	//vrati listu trenutno rezerviranih sjedala.
 	var list = document.getElementById('myList');
 	var lis = document.querySelectorAll('#myList li');
 
@@ -209,40 +237,49 @@ function markIt() {//oznacava jednu celiju
 			if (li.innerHTML == "Mjesto " + (block.j + 1) + "," + (block.i + 1))
 				li.parentNode.removeChild(li);
 		}
-
-
 	}
+
+
+	updateButtonOdaberi();
+
+}
+function updateButtonOdaberi() {
 	var button = document.getElementById('odaberi');
 
 	if (numOfSeatsSelected > 0) {
 
-		console.log(numOfSeatsSelected);
+		//console.log(numOfSeatsSelected);
 		button.disabled = false;
 	}
 	else {
-		console.log(numOfSeatsSelected);
+		//console.log(numOfSeatsSelected);
 		button.disabled = true;
 	}
 
-	//tablica[block.j][block.i]=4;// za zauzeta mjesta
 }
 
 function odaberiMjesta() { //on click event
 	var button = document.getElementById('odaberi');
 	button.disabled = true;
 	showHide('spiner', false);
-
+	console.log("Posalji:");
+	console.log(seatsSelected);
+	console.log("Rezultat:");
 	$.ajax(
 		{
 			url: "index.php?rt=user/seatSelectionConfirm",
 			data:
 			{
-				seats: seatsSelected
+				seats: seatsSelected,
+				prikaz: parseInt(canvas.getAttribute('prikaz_id'))
 			},
 			type: "POST",
-			dataType: "json", // očekivani povratni tip podatka
+			dataType: "json",
 			success: function (json) {
+				console.log(json.uspjeh);
+				console.log(json.rezervacija);
 				if (json.uspjeh) {
+					removeAllMarked();
 					setTimeout(function () {
 
 						window.location.href = "index.php?rt=user/reservationSuccess/" + json.rezervacija;
@@ -251,15 +288,23 @@ function odaberiMjesta() { //on click event
 				}
 				else {
 
+					removeAllMarked();
+
+					setTimeout(function () {
+						showHide('spiner', true);
+						oznaciKupljena(parseInt(canvas.getAttribute('prikaz_id'))); //id
+						alert("Molimo pokušajte ponovno, netko je već rezervirao ta mjesta.")
+
+					}, 2000);
 				}
 
 
 			},
 			error: function (xhr, status, errorThrown) {
-
+				//console.log(status); console.log(errorThrown);
 			},
 			complete: function (xhr, status) {
-				console.log(status);
+				//console.log(status);
 
 			}
 		});
@@ -343,7 +388,7 @@ function refreshActiveBlock(x, y) {
 
 
 function oznaciKupljena(prikaz_id) {
-	console.log(prikaz_id);
+	//console.log(prikaz_id);
 	$.ajax(
 		{
 			url: "index.php?rt=user/vratiZauzetaMjesta/" + prikaz_id,
@@ -354,7 +399,7 @@ function oznaciKupljena(prikaz_id) {
 			dataType: "json",
 			success: function (json) {
 
-				console.log(json);
+				//console.log(json);
 
 				json.forEach(element => {
 					tablica[element.red - 1][element.broj_u_redu - 1] = 2;

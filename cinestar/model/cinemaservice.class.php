@@ -353,6 +353,63 @@ class CinemaService
 		}
 		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
 	}
+
+	function insertNewReservations($seats, $prikaz_id ,$korisnik_id){
+
+		//PROVJERI JESU LI SJEDALA ZAUZETA -- nije gotovo
+		foreach ($seats as $key => $seat) {
+			try
+			{
+				$db = DB::getConnection();
+				$st = $db->prepare('SELECT INTO prikaz (id, film_id, dvorana_id, datum, vrijeme) VALUES(:id, :film_id, :dvorana_id :datum, :vrijeme)');
+	
+				$stt = $db->prepare('SELECT id FROM prikaz');
+	
+				$stt -> execute();
+	
+				//pronađi id - ili max(id) +1 ili prvi broj koji se ne pojavljuje
+	
+				$st->execute( array( 'id' => $id, 'film_id' => $movie_id, 'dvorana_id' => $hall_id, 'datum' => $date, 'vrijeme' => $time) );
+			}
+			catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
+		}
+
+
+
+		//AKO TA NISU ZAUZETA NASTAVI
+		$randNum= rand(1000,9999);
+		$zaVratiti=[];
+		try {
+			$db = DB::getConnection();
+			$db->beginTransaction();
+			
+			$db->query('INSERT INTO rezervacija (id,user_id,prikaz_id) 
+						VALUES (' .$randNum.',' .$korisnik_id.',' .$prikaz_id.')');
+			
+			foreach($seats as $seat){
+				
+				$x=$seat->broj_u_redu;
+				$y=$seat->red;
+				$db->query('INSERT INTO sjedalo (red,broj_u_redu,rezervacija_id) VALUES
+							(' .$x.',' .$y.',' .$randNum.')');
+			}
+
+			$db->commit();
+		} catch (\Throwable $e) {
+			
+			$db->rollback();
+
+			$zaVratiti['uspjeh']= False;
+			$zaVratiti['rezervacija']= strval($e);
+			//echo $e; 
+			return $zaVratiti;
+			
+			
+		}
+		$zaVratiti['uspjeh']= True;
+		$zaVratiti['rezervacija']= $randNum;
+		return $zaVratiti;
+	}
 }
 
 
