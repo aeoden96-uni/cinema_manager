@@ -4,6 +4,8 @@ require_once __DIR__ . '/../model/globalservice.class.php';
 
 require_once __DIR__ . '/../model/mongoservice.class.php';
 
+require_once __DIR__ . '/../model/cinemaservice.class.php';
+
 
 
 class employeeController
@@ -92,7 +94,7 @@ class employeeController
 
 
 
-    public function results() {
+    /*public function results() {
 		session_start();
         $this->checkPrivilege();
         $naziv=$_SESSION["naziv"];
@@ -126,7 +128,120 @@ class employeeController
         $USERTYPE=$this->USERTYPE;
         require_once __DIR__ . '/../view/'.$USERTYPE.'/results.php';    
 
+	}*/
+
+    public function movie( $id )
+    {
+        session_start();
+        $this->checkPrivilege();
+
+        $ime=$_SESSION["user_name"];
+
+        $naziv=$ime;
+
+        $cs = new CinemaService();
+        
+        $USERTYPE=$this->USERTYPE;
+        $movie = $cs -> getMovieById( $id );
+        $projections = $cs -> getProjectionsByMovieId( $id );
+        $dates = $cs -> getDatesByMovieId( $id );
+
+        require_once __DIR__ . '/../view/'.$USERTYPE.'/movie.php';  
+    }
+
+    public function browseMovies() {  //popis filmova
+		session_start();
+        $this->checkPrivilege();
+        
+        $ime=$_SESSION["user_name"];
+        $naziv=$ime;
+        $activeInd=2;
+        $cs = new CinemaService();
+
+        $cs -> erasePastProjections();
+
+        $USERTYPE=$this->USERTYPE;
+
+        $movieList = $cs -> getAllMovies();
+
+        require_once __DIR__ . '/../view/'.$USERTYPE.'/browseMovies.php';    
+
 	}
+
+    public function addMovie()
+    {
+        session_start();
+        $this->checkPrivilege();
+        $naziv=$_SESSION["naziv"];
+        $ime=$_SESSION["username"];
+
+        $USERTYPE=$this->USERTYPE;
+        $error = $_SESSION['error'];
+        $_SESSION['error'] = '';
+        require_once __DIR__ . '/../view/'.$USERTYPE.'/addMovie.php'; 
+
+
+    }
+
+    public function newMovie() //dobiva preko POST
+    {
+        session_start();
+        $this->checkPrivilege();
+        $naziv=$_SESSION["naziv"];
+        $ime=$_SESSION["username"];
+        $USERTYPE=$this->USERTYPE;
+        $cs = new CinemaService();
+        if( isset($_POST['name']) && isset($_POST['desc']) && isset($_POST['year']) && isset($_POST['dur']) && isset($_POST['img']) ){
+            //provjera je li dobar oblik
+            $cs -> addNewMovie( $_POST['name'], $_POST['desc'], $_POST['year'], $_POST['dur']);
+            header('Location: index.php?rt=employee/browseMovies');
+        }
+        else{ 
+            $_SESSION['error'] = 'Wrong input! Try again';
+            header('Location: index.php?rt=employee/addMovie');
+        }
+        
+    }
+
+    public function addProjection( $movie_id )
+    {
+        session_start();
+        $this->checkPrivilege();
+        $naziv=$_SESSION["naziv"];
+        $ime=$_SESSION["username"];
+
+        $USERTYPE=$this->USERTYPE;
+
+        $cs = new CinemaService();
+
+        $movie = $cs->getMovieById( $movie_id);
+
+        require_once __DIR__ . '/../view/'.$USERTYPE.'/addProjection.php'; 
+    }
+
+    public function newProjection( $movie_id ) //dobiva preko POST
+    {
+        session_start();
+        $this->checkPrivilege();
+        $naziv=$_SESSION["naziv"];
+        $ime=$_SESSION["username"];
+
+        $USERTYPE=$this->USERTYPE;
+
+        $cs = new CinemaService();
+
+        if( isset($_POST['hall']) && isset($_POST['date']) && isset($_POST['time']) ){
+            //provjera je li dobar oblik
+            $cs -> addNewProjection( $movie_id, (int)$_POST['hall'], $_POST['date'], $_POST['time'] );
+            header('Location: index.php?rt=employee/movie/' . $movie_id);
+        }
+        else{ 
+            $_SESSION['error'] = 'Wrong input! Try again';
+            header('Location: index.php?rt=employee/addProjection/' . $movie_id);
+        }
+
+        
+    }
 }
 
 

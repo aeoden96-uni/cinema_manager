@@ -115,7 +115,7 @@ class userController
         $reserved = $cs -> getReservedSeatsByProjectionId( $prikazId );
         foreach ( $reserved as $seat)
         {
-            $zauzeta[] = new MySeat( (int)$seat[1], (int)$seat[0]); //seat[0] je sjedalo, seat[1] je red
+            $zauzeta[] = new MySeat( (int)$seat[1], (int)$seat[0] ); //seat[0] je sjedalo, seat[1] je red
         }
         /*$zauzeta[]= new MySeat(1,1);
         $zauzeta[]= new MySeat(2,3);
@@ -170,7 +170,7 @@ class userController
 
 
 
-    public function myListPushUp($index){
+   /* public function myListPushUp($index){
         session_start();
         $this->checkPrivilege();
         $m= new MongoService();
@@ -199,40 +199,8 @@ class userController
 
         header( 'Location: index.php?rt=user/myList');
 		exit();
-    }
+    }*/
 
-    public function myListInsert($faksOib){
-        session_start();
-        $this->checkPrivilege();
-        $m= new MongoService();
-
-        $student=$m->returnuserWithId($_SESSION["user_id"]);
-
-        $lista= $student->lista_fakulteta;
-
-        echo ($faksOib);
-        echo gettype($faksOib);
-
-        $m->pushNewListToStudentWithId($_SESSION["user_id"],$lista,-1,"INS",(string)$faksOib);
-
-        header( 'Location: index.php?rt=user/browser');
-		exit();
-    }
-
-    public function myListDelete($index){
-        session_start();
-        $this->checkPrivilege();
-        $m= new MongoService();
-
-        $student=$m->returnserWithId($_SESSION["user_id"]);
-
-        $lista= $student->lista_fakulteta;
-
-        $m->pushNewListToStudentWithId($_SESSION["user_id"],$lista,$index,"DEL");
-
-        header( 'Location: index.php?rt=user/myList');
-		exit();
-    }
 
 
     public function browseMovies() {  //popis filmova

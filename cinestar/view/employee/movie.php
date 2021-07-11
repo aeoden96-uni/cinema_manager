@@ -50,6 +50,7 @@
                         </table>
                     </td>
                     </tr>
+                    <button><a href="index.php?rt=employee/addProjection/<?php echo $movie->id;?>">'Add new projection</a></button>
                 </tbody>
                 </table>
         </div>

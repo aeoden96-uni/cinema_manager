@@ -315,6 +315,41 @@ class CinemaService
 		return $arr;
 
 	}
+
+	function addNewMovie( $name, $description, $year, $duration)
+	{
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare('INSERT INTO film (id, ime, opis, godina, trajanje) VALUES(:id, :ime, :opis :godina, :trajanje)');
+
+			$stt = $db->prepare('SELECT id FROM film');
+			$stt->execute();
+			$id = $stt -> rowCount() + 1;
+
+			$st->execute( array( 'id' => $id, 'ime' => $name, 'opis' => $description, 'godina' => $year, 'trajanje' => $duration) );
+			
+		}
+		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
+	}
+
+	function addNewProjection( $movie_id, $hall_id, $date, $time )
+	{
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare('INSERT INTO prikaz (id, film_id, dvorana_id, datum, vrijeme) VALUES(:id, :film_id, :dvorana_id :datum, :vrijeme)');
+
+			$stt = $db->prepare('SELECT id FROM prikaz');
+
+			$stt -> execute();
+
+			//pronađi id - ili max(id) +1 ili prvi broj koji se ne pojavljuje
+
+			$st->execute( array( 'id' => $id, 'film_id' => $movie_id, 'dvorana_id' => $hall_id, 'datum' => $date, 'vrijeme' => $time) );
+		}
+		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
+	}
 }
 
 
