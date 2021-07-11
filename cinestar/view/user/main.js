@@ -38,14 +38,15 @@ function draw_seat2(i, j, mar = 5, color = '#0D736280') { // i ide od gore, j od
 	*/
 	ctx.fillStyle = color;
 
-	//
+	var unit = ((canvas.width - 2 * MARGIN) / tablica[0].length)
+
 	var x0 = MARGIN;
 	var xn = MARGIN + tablica.length * UNIT_SIZE;
 
-	var y0 = MARGIN + j * UNIT_SIZE;
+	var y0 = MARGIN + j * unit;
 	var yn = j * (canvas.width / (tablica[0].length));
 
-	var y0_desno = y0 + UNIT_SIZE;
+	var y0_desno = y0 + unit;
 	var yn_desno = yn + (canvas.width / (tablica[0].length));
 
 
@@ -88,13 +89,12 @@ function drawTable(podaci = null) {
 	ctx.fillRect(
 		MARGIN,
 		0,
-		tablica[0].length * UNIT_SIZE,
+		canvas.width - 2 * MARGIN,
 		MARGIN);
 
 
 	draw_seat();
 }
-
 
 
 function obradi() {//asinkrono se poziva kada server posalje podatke o brodovima
@@ -353,18 +353,20 @@ function oznaciKupljena(prikaz_id) {
 			type: "POST",
 			dataType: "json",
 			success: function (json) {
+
 				console.log(json);
+
 				json.forEach(element => {
-					tablica[element.x-1][element.y-1] = 2;
+					tablica[element.red - 1][element.broj_u_redu - 1] = 2;
 				});
 
 
 			},
 			error: function (xhr, status, errorThrown) {
-
+				console.log(errorThrown);
 			},
 			complete: function (xhr, status) {
-				console.log(status);
+				//console.log(xhr);
 
 			}
 		});
@@ -415,7 +417,7 @@ function main() {
 
 	canvas.addEventListener('click', function () {
 		if (block.i >= 0 && block.i < tablica[0].length && block.j >= 0 && block.j < tablica.length) {
-			if (tablica[block.j][block.i] <= 2) {
+			if (tablica[block.j][block.i] < 2) {
 				markIt();
 				drawStatic();
 				drawHover();

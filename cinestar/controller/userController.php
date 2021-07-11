@@ -5,7 +5,7 @@
 //require_once __DIR__ . '/../model/mongoservice.class.php';
 
 require_once __DIR__ . '/../model/cinemaservice.class.php';
-
+require_once __DIR__ . '/../model/seat.class.php';
 
 function datum ($date)
 {
@@ -13,18 +13,7 @@ function datum ($date)
 }
 
 
-class MySeat {
-    public $x;
-    public $y;
-  
-    public function  __construct($x,$y) {
-      $this->x = $x;
-      $this->y = $y;
 
-    }
-
-    
-}
 
 
 class userController
@@ -113,16 +102,14 @@ class userController
         $zauzeta=[];
         $cs = new CinemaService();
         $reserved = $cs -> getReservedSeatsByProjectionId( $prikazId );
-        foreach ( $reserved as $seat)
-        {
-            $zauzeta[] = new MySeat( (int)$seat[1], (int)$seat[0] ); //seat[0] je sjedalo, seat[1] je red
-        }
+        
+        
         /*$zauzeta[]= new MySeat(1,1);
         $zauzeta[]= new MySeat(2,3);
         $zauzeta[]= new MySeat(2,4);*/
 
         header( 'Content-type:application/json;charset=utf-8' );
-        echo json_encode( $zauzeta );
+        echo json_encode( $reserved );
         flush();
 
     }

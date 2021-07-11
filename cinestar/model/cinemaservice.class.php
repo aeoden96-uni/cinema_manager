@@ -2,6 +2,7 @@
 require_once __DIR__ . '/../app/database/db.class.php';
 require_once __DIR__ . '/user.class.php';
 require_once __DIR__ . '/movie.class.php';
+require_once __DIR__ . '/seat.class.php';
 require_once __DIR__ . '/projection.class.php';
 
 
@@ -298,19 +299,21 @@ class CinemaService
 		try
 		{
 			$db = DB::getConnection();
-			$st = $db->prepare( 'SELECT sjedala FROM rezervacija WHERE prikaz_id=:id' );
+			$st = $db->prepare( 'SELECT sjedalo.red,sjedalo.broj_u_redu ,sjedalo.rezervacija_id
+									FROM sjedalo,rezervacija,prikaz 
+									WHERE sjedalo.rezervacija_id=rezervacija.id 
+									AND prikaz.id=rezervacija.prikaz_id 
+									AND prikaz.id=:id;');
 			$st->execute( array( 'id' => $id) );
 			
 		}
 		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
 		$arr = [];
 		while( $row = $st->fetch()){
-			echo $row['sjedala'];
-			$seats = explode('#', $row['sjedala']);
-			foreach ( $seats as $seat ){
-				
-				$arr[] = [$seat[1], $seat[3]];
-			}
+			
+			$arr[] = new Seat((int)$row['red'],(int)$row["broj_u_redu"], (int)$row["rezervacija_id"]);
+			
+		
 		}
 		return $arr;
 
