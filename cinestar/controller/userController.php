@@ -6,6 +6,13 @@
 
 require_once __DIR__ . '/../model/cinemaservice.class.php';
 
+
+function datum ($date)
+{
+    return date_format(date_create($date), 'd.m.');
+}
+
+
 class MySeat {
     public $x;
     public $y;
@@ -44,6 +51,8 @@ class userController
         //$m= new MongoService();
         $activeInd=0;
 
+        $cs = new CinemaService();
+        $cs -> erasePastProjections();
 
         $ime=$_SESSION["user_name"];
         $naziv=$ime;
@@ -102,10 +111,15 @@ class userController
     public function vratiZauzetaMjesta($prikazId){
         
         $zauzeta=[];
-
-        $zauzeta[]= new MySeat(1,1);
+        $cs = new CinemaService();
+        $reserved = $cs -> getReservedSeatsByProjectionId( $prikazId );
+        foreach ( $reserved as $seat)
+        {
+            $zauzeta[] = new MySeat( (int)$seat[1], (int)$seat[0]); //seat[0] je sjedalo, seat[1] je red
+        }
+        /*$zauzeta[]= new MySeat(1,1);
         $zauzeta[]= new MySeat(2,3);
-        $zauzeta[]= new MySeat(2,4);
+        $zauzeta[]= new MySeat(2,4);*/
 
         header( 'Content-type:application/json;charset=utf-8' );
         echo json_encode( $zauzeta );
@@ -122,11 +136,13 @@ class userController
 
 
         //U BAZU prikaz_id ------> VELICINA DVORANE I ZAUZETA MJESTA
-        $br_redova=5;
-        $velicina_reda=6;
-
-        
-
+        $cs = new CinemaService();
+        $size = $cs -> getSizeOfHallByProjectionId( $prikaz_id );
+        $br_redova = $size[0];
+        $velicina_reda = $size[1];
+        $movie = $cs -> getMovieByProjectionId( $prikaz_id );
+        $projection = $cs -> getProjectionById( $prikaz_id);
+        $date = datum( $projection->date);
 
         $USERTYPE=$this->USERTYPE;
         require_once __DIR__ . '/../view/'.$USERTYPE.'/seatSelection.php';    
@@ -228,7 +244,7 @@ class userController
         $activeInd=2;
         $cs = new CinemaService();
 
-        //$cs -> erasePastProjections();
+        $cs -> erasePastProjections();
 
         $USERTYPE=$this->USERTYPE;
 
@@ -249,7 +265,7 @@ class userController
         
         $USERTYPE=$this->USERTYPE;
 
-        //$cs -> erasePastReservations();
+        $cs -> erasePastProjections();
 
         $reservationList = $cs -> getMoviesByUserName($ime);
 

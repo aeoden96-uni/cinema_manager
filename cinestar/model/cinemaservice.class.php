@@ -222,7 +222,6 @@ class CinemaService
 		}
 		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
 		
-		//updejtaj slobodna sjedala
 	}
 
 	function erasePastProjections()
@@ -292,6 +291,29 @@ class CinemaService
 		$size[] = $row['broj_redova'];
 		$size[] = $row['broj_sjedala_po_redu'];
 		return $size;
+	}
+
+	function getReservedSeatsByProjectionId ( $id )
+	{
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare( 'SELECT sjedala FROM rezervacija WHERE prikaz_id=:id' );
+			$st->execute( array( 'id' => $id) );
+			
+		}
+		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
+		$arr = [];
+		while( $row = $st->fetch()){
+			echo $row['sjedala'];
+			$seats = explode('#', $row['sjedala']);
+			foreach ( $seats as $seat ){
+				
+				$arr[] = [$seat[1], $seat[3]];
+			}
+		}
+		return $arr;
+
 	}
 }
 

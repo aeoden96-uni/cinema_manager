@@ -38,7 +38,6 @@
                         echo '<tr>';
                         $str = '<h4><a class="title" href="index.php?rt=user/movie/'. $movie['movie']-> id .'">' . $movie['movie']-> name. '</a></h4> ';
                         echo '<td>' .$str . '<div class="img"><img src="img/'. $img .'"></div></td>';
-                       // echo '<td>' . $str . '</td>';
                         echo '</tr>';
                     }
                 ?>

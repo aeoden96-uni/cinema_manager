@@ -343,6 +343,7 @@ function refreshActiveBlock(x, y) {
 
 
 function oznaciKupljena(prikaz_id) {
+	console.log(prikaz_id);
 	$.ajax(
 		{
 			url: "index.php?rt=user/vratiZauzetaMjesta/" + prikaz_id,
@@ -354,7 +355,7 @@ function oznaciKupljena(prikaz_id) {
 			success: function (json) {
 				console.log(json);
 				json.forEach(element => {
-					tablica[element.x][element.y] = 2;
+					tablica[element.x-1][element.y-1] = 2;
 				});
 
 
@@ -389,8 +390,7 @@ function main() {
 		tablica[i] = new Array(size_y).fill(0);
 	}
 
-
-	oznaciKupljena(1);
+	oznaciKupljena(parseInt(canvas.getAttribute('prikaz_id'))); //id
 
 
 	//getInitData();

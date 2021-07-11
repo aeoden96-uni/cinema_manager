@@ -28,9 +28,7 @@
                         <table class="projections">
                             <tr>
                              <?php 
-                             foreach ( $dates as $date){
-                                 //$new_date = date_create($date);
-                                 //echo '<th>' . date_format($new_date, 'd.m.') . '</th>';
+                             foreach ( $dates as $date){                             
                                  echo '<th>' . datum($date) . '</th>';
                              }
                              ?>

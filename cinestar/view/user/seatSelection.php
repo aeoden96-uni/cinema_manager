@@ -24,7 +24,8 @@
                     width="600" 
                     height="500" 
                     br_redova=<?php echo $br_redova; ?> 
-                    velicina_reda=<?php echo $velicina_reda; ?> >
+                    velicina_reda=<?php echo $velicina_reda; ?> 
+                    prikaz_id = <?php echo $prikaz_id?>>
                 </canvas>
             </div>
         </div>    
