@@ -26,14 +26,31 @@ class employeeController
 	}
 
 
-	public function index() {
-		session_start();
+	public function index($danOdDanas = -1) {
+		$status = session_status();
+        if($status == PHP_SESSION_NONE){
+            //There is no active session
+            session_start();
+        }
         $this->checkPrivilege();
        
         $activeInd=0;
 
         $naziv=$_SESSION["naziv"];
         $ime=$_SESSION["username"];
+        $movieList=null;
+        
+        $cs = new CinemaService();
+
+        $date='';
+        if($danOdDanas == -1)
+            $date= date("Y-m-d");
+        else
+            $date= date("Y-m-").$danOdDanas ;
+        
+        
+        $movieList = $cs -> getAllProjectionsForDate($date);
+        
         
 
 

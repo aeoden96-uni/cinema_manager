@@ -34,7 +34,7 @@ class userController
 	}
 
 
-	public function index() {
+	public function index($danOdDanas =-1) {
 		session_start();
         $this->checkPrivilege();
         //$m= new MongoService();
@@ -49,20 +49,16 @@ class userController
         $student="";
         $new_list="";
 
-        ////////////////GLOBAL SETTINGS
-        //$g= new GlobalService();
-    
-        $lockDate= "";
-        $lockDateString="";
+       
 
-        $resultDate= "";
-        $resultDateString="";
-
-        $resultBool= "";
-        $lockBool= "";
+        $date='';
+        if($danOdDanas == -1)
+            $date= date("Y-m-d");
+        else
+            $date= date("Y-m-").$danOdDanas ;
         
-        ////////////////GLOBAL SETTINGS
-
+        
+        $movieList = $cs -> getAllProjectionsForDate($date);
 
         $USERTYPE=$this->USERTYPE;
         require_once __DIR__ . '/../view/'.$USERTYPE.'/index.php';    
