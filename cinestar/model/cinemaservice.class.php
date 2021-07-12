@@ -172,6 +172,23 @@ class CinemaService
 
 	}
 
+	function getAllProjectionsForDate($date){
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare( 'SELECT prikaz.id, dvorana_id,film.ime,vrijeme FROM prikaz,film WHERE prikaz.datum = :datum AND prikaz.film_id=film.id' );
+			$st->execute( array( 'datum' => $date ) );
+			
+		}
+		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
+
+        $arr = array();
+		while( $row = $st->fetch() ){
+            $arr[] = new Projection( $row['id'], $row['dvorana_id'], $row['ime'], null, $row['vrijeme']);
+        }
+        return $arr;
+	}
+
 	function getDatesByMovieId( $id )
 	{
 		try
