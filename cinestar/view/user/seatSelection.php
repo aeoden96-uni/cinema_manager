@@ -2,7 +2,7 @@
 
 
 <!--USED FOR SEAT SELECTION -->
-<script src="view/user/main.js"></script>
+<script src="js/seat_selection/main.js"></script>
 
 
 <nav aria-label="breadcrumb">

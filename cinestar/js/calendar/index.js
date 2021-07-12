@@ -107,10 +107,12 @@ Cal.prototype.showMonth = function (y, m) {
     var chk = new Date();
     var chkY = chk.getFullYear();
     var chkM = chk.getMonth();
+    var userType = document.getElementById("myCalendar").getAttribute("for");
+
     if (chkY == this.currYear && chkM == this.currMonth && i == this.currDay) {
-      html += '<td class="today"><a href="index.php?rt=employee/' + i + '">' + i + '</td>';
+      html += '<td class="today"><a href="index.php?rt=' + userType + '/' + i + '">' + i + '</td>';
     } else {
-      html += '<td class="normal"><a href="index.php?rt=employee/' + i + '">' + i + '</td>';
+      html += '<td class="normal"><a href="index.php?rt=' + userType + '/' + i + '">' + i + '</td>';
     }
     // If Saturday, closes the row
     if (dow == 6) {

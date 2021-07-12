@@ -21,41 +21,32 @@ if( $danOdDanas == -1){
         <div class="card">
             <h5 class="card-header"><?php echo $naslov_predstave; ?></h5>
             <div class="card-body">
-            <ul class="list-group">
+                <ul class="list-group">
 
-            <?php
-            if(count($movieList)<=0){
-                echo '<li class="list-group-item">Danas nema zakazanih predstava.</li>';
-            }   
-            else{
-                foreach ($movieList as $key => $movie) {
-                    echo '<li class="list-group-item">'. $movie-> movie_id.  ' u ' .$movie-> time .'</li>';
-                }
-            } 
-            
-
-                
-                
-            ?>
-                 
-            </ul>
-
+                    <?php
+                    if(count($movieList)<=0){
+                        echo '<li class="list-group-item">Danas nema zakazanih predstava.</li>';
+                    }   
+                    else{
+                        foreach ($movieList as $key => $movie) {
+                            echo '<li class="list-group-item">'. $movie-> movie_id.  ' u ' .$movie-> time .'</li>';
+                        }
+                    }      
+                    ?>   
+                </ul>
             </div>
-               
-
         </div>
     </div>
     <div class="col-12 col-xl-6">
-        <div class="card">
-        <h5 class="card-header">Kalendar predstava</h5>
+        <div class="card"  id="myCalendar" for="<?php echo $USERTYPE; ?>">
+            <h5 class="card-header">Kalendar predstava</h5>
             <div class="calendar-wrapper">
                     <button id="btnPrev" type="button">Prošli</button>
                     <button id="btnNext" type="button">Idući</button>
                     <div id="divCal"></div>
-                </div>
-    
-                <script src="js/calendar/index.js"></script>
-                <link rel="stylesheet" type="text/css" href="css/calendar/style.css"/>
+            </div>
+            <script src="js/calendar/index.js"></script>
+            <link rel="stylesheet" type="text/css" href="css/calendar/style.css"/>
         </div>
     </div>
 </div>
