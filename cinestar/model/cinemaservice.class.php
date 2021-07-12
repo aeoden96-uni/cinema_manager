@@ -400,7 +400,8 @@ class CinemaService
 				$st = $db->prepare('SELECT sjedalo.red ,sjedalo.broj_u_redu
 									FROM  sjedalo,prikaz,rezervacija 
 									WHERE sjedalo.red = :red 
-									AND sjedalo.broj_u_redu=:stupac 
+									AND sjedalo.broj_u_redu=:stupac
+									AND sjedalo.rezervacija_id=rezervacija.id 
 									AND prikaz.id=rezervacija.prikaz_id 
 									AND prikaz.id=:prikaz');
 	
@@ -436,17 +437,27 @@ class CinemaService
 			$st->execute();
 			$row = $st -> fetch();
 			$new_id = (int) $row['id'] +1 ;
+
+
+
+			/*
+
+			PREPARED STATEMENTS NEMOGU IC UNUTAR TRANSAKCIJE
+
+			*/
 			$db->beginTransaction();
+
+			$st = $db->query('INSERT INTO rezervacija (id, user_id, prikaz_id, broj_karata) 
+							VALUES('. $new_id.', '. $korisnik_id.', '. $prikaz_id.', '. $br_karata.')');
 			
-			$st = $db->prepare('INSERT INTO rezervacija (id, user_id, prikaz_id, broj_karata) VALUES(:id, :user_id, :prikaz_id, :broj_karata');
-			$st->excute( array( 'id' => $new_id, 'user_id' =>$korisnik_id, 'prikaz_id' =>$prikaz_id, 'broj_karata' => $br_karata ) );
 			
+
 			foreach($seats as $seat){
 				
 				$x=$seat->red;
 				$y=$seat->broj_u_redu;
-				$st = $db->prepare( ' INSERT INTO sjedalo (red, broj_u_redu, rezervacija_id) VALUES(:red, :broj_u_redu, :rezervacija_id');
-				$st->execute( array( 'red' => $y, 'broj_u_redu' => $x, 'rezervacija_id' => $new_id) );
+				$st = $db->query( ' INSERT INTO sjedalo (red, broj_u_redu, rezervacija_id) VALUES ('. $x.', '. $y.', '. $new_id.')');
+				
 			}
 
 			$db->commit();
