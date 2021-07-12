@@ -37,6 +37,25 @@ if( $danOdDanas == -1){
                 </ul>
             </div>
         </div>
+        <br>
+        <div class="card">
+            <h5 class="card-header">Filmovi -- moze bilosta tu biti?</h5>
+            <div class="card-body">
+                <ul class="list-group">
+
+                    <?php
+                    if(count($movieList)<=0){
+                        echo '<li class="list-group-item">Danas nema zakazanih predstava.</li>';
+                    }   
+                    else{
+                        foreach ($movieList as $key => $movie) {
+                            echo '<li class="list-group-item">'. $movie-> movie_id.  ' u ' .$movie-> time .'</li>';
+                        }
+                    }      
+                    ?>   
+                </ul>
+            </div>
+        </div>
     </div>
     <div class="col-12 col-xl-6">
         <div class="card" id="myCalendar" for="<?php echo $USERTYPE; ?>" >
