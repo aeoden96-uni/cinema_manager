@@ -168,7 +168,9 @@ class employeeController
         $ime=$_SESSION["username"];
         $activeInd=2;
         $USERTYPE=$this->USERTYPE;
-        $error = $_SESSION['error'];
+        if( isset( $_SESSION['error']))
+            $error = $_SESSION['error'];
+        else $error = '';
         $_SESSION['error'] = '';
         require_once __DIR__ . '/../view/'.$USERTYPE.'/addMovie.php'; 
 
@@ -224,8 +226,15 @@ class employeeController
 
         if( isset($_POST['hall']) && isset($_POST['date']) && isset($_POST['time']) ){
             //provjera je li dobar oblik
-            $cs -> addNewProjection( $movie_id, (int)$_POST['hall'], $_POST['date'], $_POST['time'] );
-            header('Location: index.php?rt=employee/movie/' . $movie_id);
+            if( $cs -> checkIfTheNewProjectionIsOk($movie_id, (int)$_POST['hall'], $_POST['date'], $_POST['time']) ){
+                $cs -> addNewProjection( $movie_id, (int)$_POST['hall'], $_POST['date'], $_POST['time'] );
+                header('Location: index.php?rt=employee/movie/' . $movie_id);
+            }
+            else{
+                $_SESSION['error'] = 'There already is another projection at this time!';
+                header('Location: index.php?rt=employee/addProjection/' . $movie_id);
+            }
+            
         }
         else{ 
             $_SESSION['error'] = 'Wrong input! Try again';

@@ -25,23 +25,7 @@
         <b>Time: </b> <input type="text" name="time"><br>
         <button type="submit">Add</button>
         </form>
-            <!--<table class="table">
-                <thead>
-                    <tr>
-                    <th scope="col">OIB</th>
-                   
-                    <th scope="col">Last Name</th>
-                    <th scope="col">First name</th>
-                   
-                    
-                    
-                    </tr>
-                </thead>
-                <tbody>
-                    
-                   
-                </tbody>
-                </table>-->
+
         </div>
         
     </div>
