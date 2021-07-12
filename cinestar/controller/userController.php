@@ -73,8 +73,10 @@ class userController
         
         if(!isset($_POST["seats"])) return;
         if(!isset($_POST["prikaz"])) return;
-        $korisnik_id=1;
         
+        
+        
+        $korisnik_id=1;
         $seats=[];
 
         //PRERADITI,PROBLEM S POSTom
@@ -97,8 +99,8 @@ class userController
         $m=$cs -> insertNewReservations($seats, $_POST["prikaz"] ,$korisnik_id);
         
         $message=[];
-        $message[ 'uspjeh' ] = $m['uspjeh'];
-        $message[ 'rezervacija' ] = $m['rezervacija'];
+        $message[ 'uspjeh' ] =$m[ 'uspjeh' ];
+        $message[ 'rezervacija' ] = $m[ 'rezervacija' ];
         
 
 
@@ -182,36 +184,7 @@ class userController
 
 
 
-   /* public function myListPushUp($index){
-        session_start();
-        $this->checkPrivilege();
-        $m= new MongoService();
 
-        $student=$m->returnuserWithId($_SESSION["user_id"]);
-
-        $lista= $student->lista_fakulteta;
-
-
-        $m->pushNewListToStudentWithId($_SESSION["user_id"],$lista,$index,"UP");
-
-        //echo "<script>console.log(".$lista.");</script>";
-        header( 'Location: index.php?rt=user/myList');
-		exit();
-    }
-    public function myListPushDown($index){
-        session_start();
-        $this->checkPrivilege();
-        $m= new MongoService();
-
-        $student=$m->returnuserWithId($_SESSION["user_id"]);
-
-        $lista= $student->lista_fakulteta;
-
-        $m->pushNewListToStudentWithId($_SESSION["user_id"],$lista,$index,"DOWN");
-
-        header( 'Location: index.php?rt=user/myList');
-		exit();
-    }*/
 
 
 

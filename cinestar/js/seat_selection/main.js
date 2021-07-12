@@ -4,18 +4,11 @@ $(document).ready(function () {
 });
 
 
-MARGIN = 200;
+MARGIN = null;
 UNIT_SIZE = 50;
-IKONE = [1, 2, 3, 4, 5]
 
-var podaci = null;
-var vraceno = null;
+
 var tablica = null;
-var marked = [];
-var block = {
-	x: null,
-	y: null
-};
 
 var x_mouse = 0;
 var y_mouse = 0;
@@ -28,7 +21,7 @@ var ctx = null;
 
 
 
-function draw_seat2(i, j, mar = 5, color = '#0D736280') { // i ide od gore, j od lijevo
+function draw_seat2(j, i, mar = 5, color = '#0D736280') { // i ide od gore, j od lijevo
 	/* crta poligon
 	
 		y,x	  *-----* y2,x
@@ -36,44 +29,74 @@ function draw_seat2(i, j, mar = 5, color = '#0D736280') { // i ide od gore, j od
 	y_d,x_d *-----*  y_d2,x_d
 	
 	*/
+
+
+
+	var mjesto = {
+		gd: { x: 0, y: 0 },
+		gl: { x: 0, y: 0 },
+		dd: { x: 0, y: 0 },
+		dl: { x: 0, y: 0 }
+
+	};
+
 	ctx.fillStyle = color;
-
-	var unit = ((canvas.width - 2 * MARGIN) / tablica[0].length)
-
-	var x0 = MARGIN;
-	var xn = MARGIN + tablica.length * UNIT_SIZE;
-
-	var y0 = MARGIN + j * unit;
-	var yn = j * (canvas.width / (tablica[0].length));
-
-	var y0_desno = y0 + unit;
-	var yn_desno = yn + (canvas.width / (tablica[0].length));
+	var br_redova = tablica.length;
+	var br_sjedala = tablica[0].length;
 
 
-	var x = MARGIN + i * UNIT_SIZE + mar;
-	var x_d = x + UNIT_SIZE - 2 * mar;
-
-	var y = (yn - y0) / (xn - x0) * (x - xn) + yn + mar;
-	var y_d = (yn - y0) / (xn - x0) * (x_d - xn) + yn + mar;
-
-	//
+	var sjedalo_h = (canvas.height - MARGIN) / br_redova;
+	var sjedalo_w_gore = ((canvas.width - 2 * MARGIN) / br_sjedala);
+	var sjedalo_w_dolje = (canvas.width / (br_sjedala));
 
 
-	var y2 = (yn_desno - y0_desno) / (xn - x0) * (x - xn) + yn_desno - mar;
-	var y_d2 = (yn_desno - y0_desno) / (xn - x0) * (x_d - xn) + yn_desno - mar;
+
+
+
+	var x0 = MARGIN + i * sjedalo_w_gore;
+	var xn = i * sjedalo_w_dolje;
+
+	var y0 = MARGIN;
+	var yn = MARGIN + br_redova * sjedalo_h;
+
+	var y0_desno = y0;
+	var yn_desno = yn;
+
+	var x0_desno = x0 + sjedalo_w_gore;
+	var xn_desno = xn + sjedalo_w_dolje;
+
+
+
+	//var x; trazi
+
+	mjesto.gl.y = MARGIN + j * sjedalo_h + mar;
+	mjesto.gd.y = MARGIN + j * sjedalo_h + mar;
+	mjesto.dd.y = MARGIN + (j + 1) * sjedalo_h - mar;
+	mjesto.dl.y = MARGIN + (j + 1) * sjedalo_h - mar;
+
+	mjesto.gl.x = tockaKrozPravac(x0, y0, xn, yn, mjesto.gl.y) + mar;
+	mjesto.gd.x = tockaKrozPravac(x0_desno, y0_desno, xn_desno, yn_desno, mjesto.gd.y) - mar;
+	mjesto.dl.x = tockaKrozPravac(x0, y0, xn, yn, mjesto.dl.y) + mar;
+	mjesto.dd.x = tockaKrozPravac(x0_desno, y0_desno, xn_desno, yn_desno, mjesto.dd.y) - mar;
+
 
 
 	ctx.beginPath();
-	ctx.moveTo(y, x);
-	ctx.lineTo(y_d, x_d);
-	ctx.lineTo(y_d2, x_d);
-	ctx.lineTo(y2, x);
+	ctx.moveTo(mjesto.gl.x, mjesto.gl.y);
+	ctx.lineTo(mjesto.dl.x, mjesto.dl.y);
+	ctx.lineTo(mjesto.dd.x, mjesto.dd.y);
+	ctx.lineTo(mjesto.gd.x, mjesto.gd.y);
 
 	ctx.closePath();
 	ctx.fill();
 }
 
-function draw_seat() {
+function tockaKrozPravac(prvaX, prvaY, drugaX, drugaY, Y) {
+	//poznat Y
+	return (drugaX - prvaX) / (drugaY - prvaY) * (Y - prvaY) + prvaX;
+}
+
+function draw_seats() {
 
 	for (i = 0; i < tablica.length; i++) { //i == 1 ... 5
 		for (j = 0; j < tablica[0].length; j++) {//j == 1 ... 10
@@ -82,7 +105,7 @@ function draw_seat() {
 	}
 }
 
-function drawTable(podaci = null) {
+function drawTable() {
 	ctx.fillStyle = 'black';
 
 
@@ -93,86 +116,15 @@ function drawTable(podaci = null) {
 		MARGIN);
 
 
-	draw_seat();
+	draw_seats();
 }
 
 
-function obradi() {//asinkrono se poziva kada server posalje podatke o brodovima
-
-	vraceno.forEach(element => {
-		if (element.answer == "correct") {
-			tablica[element.col - 1][element.row - 1] += 2;  //s 1,2 na 3,4	
-		}
-		else if (element.answer == "wrong") {
-			if (element.type == "ship") {
-				tablica[element.col - 1][element.row - 1] += 3;  //s 1 na 4	
-			}
-			else {
-				tablica[element.col - 1][element.row - 1] += 1;  //s 2 na 3	
-			}
-		}
-
-	});
-
-	drawStatic();
-
-	vraceno = null;
-}
-
-function sendMyChoice() { //button ....poziva obradi kad dobije odgovor
-
-	var oznaceni = [];
-	for (i = 0; i < 10; i++)
-		for (j = 0; j < 10; j++) {
-			if (tablica[i][j] == 1)
-				oznaceni.push({ col: i + 1, row: j + 1, type: "ship" });
-			else if (tablica[i][j] == 2)
-				oznaceni.push({ col: i + 1, row: j + 1, type: "sea" });
-
-		}
-
-	if (oznaceni.length == 0) return;
-	//console.log(oznaceni);
 
 
 
-	$.ajax(
-		{
-			url: "https://rp2.studenti.math.hr/~zbujanov/dz4/check.php",
-			data:
-			{
-				id: podaci.id,
-				list: oznaceni
-			},
-			type: "POST",
-			dataType: "json", // očekivani povratni tip podatka
-			success: function (json) {
-				//console.log(json);
-				vraceno = json;
-				obradi();
-
-			},
-			error: function (xhr, status, errorThrown) { },
-			complete: function (xhr, status) { }
-		});
 
 
-}
-
-function getInitData() { //dobiva pocetnu tablicu s servera,i sprema ju u 
-	$.get(
-		"https://rp2.studenti.math.hr/~zbujanov/dz4/id.php",
-		{},
-		function (data, status) {
-			if (status === "success") {
-				// Ovdje ide kod u slučaju da je server uspješno
-				// vratio odgovor. Odgovor se nalazi u varijabli data.
-				//console.log(data);
-				podaci = JSON.parse(JSON.stringify(data));
-			}
-		}
-	);
-}
 
 var numOfSeatsSelected = 0;
 var MAXSeats = 4;
@@ -192,16 +144,17 @@ function removeAllMarked() {
 				li.parentNode.removeChild(li);
 		}
 
-		tablica[y - 1][x - 1] = (tablica[y - 1][x - 1] + 1) % 2;
+		tablica[x - 1][y - 1] = (tablica[x - 1][y - 1] + 1) % 2;
 
 	}
-	console.log("sad:" + numOfSeatsSelected);
+
 	updateButtonOdaberi();
 
 }
 
 function markIt() {//oznacava jednu celiju
 
+	if (disableButton) return;
 	//ako je block rezerviran od nekog drugog,ne diraj ga
 	if (tablica[block.j][block.i] > 2) return;
 
@@ -214,39 +167,68 @@ function markIt() {//oznacava jednu celiju
 	//oznaci block kao rezerviran=1 ili slobodan=0
 	tablica[block.j][block.i] = (tablica[block.j][block.i] + 1) % 2;
 
-	//vrati listu trenutno rezerviranih sjedala.
-	var list = document.getElementById('myList');
-	var lis = document.querySelectorAll('#myList li');
-
 	if (tablica[block.j][block.i] == 1) {
+		console.log("Oznacio sam celiju " + (block.j + 1) + "," + (block.i + 1));
 		numOfSeatsSelected++;
-		seatsSelected.push({ i: (block.i + 1), j: (block.j + 1) });
-		var entry = document.createElement('li');
-		entry.appendChild(document.createTextNode("Mjesto " + (block.j + 1) + "," + (block.i + 1)));
-		entry.className = "list-group-item";
-		list.appendChild(entry);
+
+		seatsSelected.push({ i: (block.j + 1), j: (block.i + 1) });
+
+		var list = document.getElementById('myList');
+		item = "Mjesto " + (block.j + 1) + "," + (block.i + 1);
+		addItemToHTMLList(list, item);
+
 
 	}
 	else {
 		numOfSeatsSelected--;
-		var index = seatsSelected.indexOf({ i: (block.i + 1), j: (block.j + 1) });
-		if (index !== -1) {
-			seatsSelected.splice(index, 1);
-		}
-		for (var i = 0; li = lis[i]; i++) {
-			if (li.innerHTML == "Mjesto " + (block.j + 1) + "," + (block.i + 1))
-				li.parentNode.removeChild(li);
-		}
-	}
 
+		item = { i: (block.j + 1), j: (block.i + 1) };
+		removeItemFromJSList(item);
+
+		var lis = document.querySelectorAll('#myList li');
+		item = "Mjesto " + (block.j + 1) + "," + (block.i + 1);
+		removeItemFromHTMLList(item, lis);
+
+	}
 
 	updateButtonOdaberi();
 
 }
+
+function removeItemFromJSList(item) { // mice item iz JS liste
+
+	//console.log("micem iz JS liste item = " + JSON.stringify(item));
+
+	var filtered = seatsSelected.filter(
+		function (el) { return el.i != item.i || el.j != item.j });
+
+	seatsSelected = filtered;
+
+}
+function addItemToHTMLList(lis, item) {
+	var entry = document.createElement('li');
+	entry.appendChild(document.createTextNode(item));
+	entry.className = "list-group-item";
+	lis.appendChild(entry);
+}
+
+
+function removeItemFromHTMLList(item, lis) { // mice item iz HTML liste
+
+	for (var i = 0; li = lis[i]; i++) {
+		if (li.innerHTML == item)
+			li.parentNode.removeChild(li);
+	}
+
+}
+
+
+
+var disableButton = false;
 function updateButtonOdaberi() {
 	var button = document.getElementById('odaberi');
 
-	if (numOfSeatsSelected > 0) {
+	if (numOfSeatsSelected > 0 && !disableButton) {
 
 		//console.log(numOfSeatsSelected);
 		button.disabled = false;
@@ -259,8 +241,8 @@ function updateButtonOdaberi() {
 }
 
 function odaberiMjesta() { //on click event
-	var button = document.getElementById('odaberi');
-	button.disabled = true;
+	disableButton = true;
+	updateButtonOdaberi();
 	showHide('spiner', false);
 	console.log("Posalji:");
 	console.log(seatsSelected);
@@ -294,7 +276,7 @@ function odaberiMjesta() { //on click event
 						showHide('spiner', true);
 						oznaciKupljena(parseInt(canvas.getAttribute('prikaz_id'))); //id
 						alert("Molimo pokušajte ponovno, netko je već rezervirao ta mjesta.")
-
+						disableButton = false;
 					}, 2000);
 				}
 
@@ -339,14 +321,14 @@ function drawMarked() { //crta SVE elemente tablice
 
 function drawStatic() { //crta tablicu i njene elemente
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
-	drawTable(podaci);
+	drawTable();
 	drawMarked();
 
 }
 
 function drawHover() {
 
-
+	if (disableButton) return;
 	if (block.i < 0 || block.j < 0) return;
 
 	// i == STUPCI    j== REDOVI
@@ -358,7 +340,7 @@ function drawHover() {
 	ctx.fillStyle = "yellow";
 	//ctx.fillRect(MARGIN+ block.i*UNIT_SIZE+marg, MARGIN+ block.j*UNIT_SIZE+marg, UNIT_SIZE-marg*2, UNIT_SIZE-marg*2);
 	//ctx.fillRect(MARGIN+ x*UNIT_SIZE, MARGIN+ y*UNIT_SIZE, UNIT_SIZE, UNIT_SIZE);
-	draw_seat2(block.j, block.i, mar = 10, color = "yellow")
+	draw_seat2(block.j, block.i, mar = 8, color = "yellow")
 
 
 
@@ -370,13 +352,19 @@ function drawHover() {
 	ctx.globalAlpha = 1.0;
 
 	ctx.fillText("Select seat", mouse.x + 35, mouse.y + 20);
-	ctx.fillText("(" + (block.i + 1) + "," + (block.j + 1) + ")", mouse.x + 45, mouse.y + 40);
+	ctx.fillText("(row " + (block.j + 1) + "," + (block.i + 1) + ". seat)", mouse.x + 45, mouse.y + 40);
 
 }
 
 
 function refreshActiveBlock(x, y) {
-	block.j = parseInt((y - MARGIN) / UNIT_SIZE);
+	//SETS variables block.i,block.j
+
+	var br_redova = tablica.length;
+
+	var sjedalo_h = (canvas.height - MARGIN) / br_redova;
+
+	block.j = parseInt((y - MARGIN) / sjedalo_h);
 
 	var marg = MARGIN * (tablica.length - block.j) / tablica.length;
 
@@ -388,7 +376,7 @@ function refreshActiveBlock(x, y) {
 
 
 function oznaciKupljena(prikaz_id) {
-	//console.log(prikaz_id);
+	console.log("Oznacavam kupljena za proj_id: " + prikaz_id);
 	$.ajax(
 		{
 			url: "index.php?rt=user/vratiZauzetaMjesta/" + prikaz_id,
@@ -399,9 +387,10 @@ function oznaciKupljena(prikaz_id) {
 			dataType: "json",
 			success: function (json) {
 
-				//console.log(json);
+				console.log("Dobio " + json.length + " zauzeta sjedala.");
 
 				json.forEach(element => {
+
 					tablica[element.red - 1][element.broj_u_redu - 1] = 2;
 				});
 
@@ -430,8 +419,11 @@ function main() {
 	var size_y = parseInt(canvas.getAttribute('velicina_reda'));
 
 	console.log(size_x + "," + size_y);
-	MARGIN = canvas.width * 0.25;
 
+	if (size_x > 8)
+		MARGIN = canvas.width * 0.15;
+	else
+		MARGIN = canvas.width * 0.25;
 	tablica = new Array(size_x);
 	for (var i = 0; i < tablica.length; i++) {
 		tablica[i] = new Array(size_y).fill(0);

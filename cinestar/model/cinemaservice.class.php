@@ -396,15 +396,30 @@ class CinemaService
 			try
 			{
 				$db = DB::getConnection();
-				$st = $db->prepare('SELECT INTO prikaz (id, film_id, dvorana_id, datum, vrijeme) VALUES(:id, :film_id, :dvorana_id :datum, :vrijeme)');
+				$st = $db->prepare('SELECT sjedalo.red ,sjedalo.broj_u_redu
+									FROM  sjedalo,prikaz,rezervacija 
+									WHERE sjedalo.red = :red 
+									AND sjedalo.broj_u_redu=:stupac 
+									AND prikaz.id=rezervacija.prikaz_id 
+									AND prikaz.id=:prikaz');
 	
-				$stt = $db->prepare('SELECT id FROM prikaz');
+				
 	
-				$stt -> execute();
+				
 	
 				//pronađi id - ili max(id) +1 ili prvi broj koji se ne pojavljuje
 	
-				$st->execute( array( 'id' => $id, 'film_id' => $movie_id, 'dvorana_id' => $hall_id, 'datum' => $date, 'vrijeme' => $time) );
+				$st->execute( array( 'red' => $seat->red, 'stupac' => $seat->broj_u_redu, 'prikaz' => $prikaz_id) );
+
+				if ($st->rowCount() > 0) {
+					$zaVratiti=[];
+					$zaVratiti['uspjeh']= False;
+					$row = $st->fetch();
+					$zaVratiti['rezervacija']= "vec su zauzeta mjesta " . strval($row["red"]) ."," .strval($row["broj_u_redu"]);
+					return $zaVratiti;
+				}
+
+
 			}
 			catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
 		}
@@ -412,7 +427,7 @@ class CinemaService
 
 
 		//AKO TA NISU ZAUZETA NASTAVI
-		$randNum= rand(1000,9999); //NECEMO RAND NUM
+		$randNum= rand(10000,99999); //NECEMO RAND NUM
 		$zaVratiti=[];
 		try {
 			$db = DB::getConnection();
@@ -423,8 +438,8 @@ class CinemaService
 			
 			foreach($seats as $seat){
 				
-				$x=$seat->broj_u_redu;
-				$y=$seat->red;
+				$x=$seat->red;
+				$y=$seat->broj_u_redu;
 				$db->query('INSERT INTO sjedalo (red,broj_u_redu,rezervacija_id) VALUES
 							(' .$x.',' .$y.',' .$randNum.')');
 			}
