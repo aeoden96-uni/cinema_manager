@@ -23,6 +23,7 @@
                     <th scope="col">Dvorana</th>
                     <th scope="col">Date and Time</th>
                     <th scope="col">Number of Tickets</th>
+                    <th scope="col"></th>
                    
                     </tr>
                 </thead>
