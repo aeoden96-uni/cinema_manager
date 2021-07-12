@@ -68,49 +68,13 @@ class employeeController
 	}
 
 
-
-    /*public function results() {
-		session_start();
-        $this->checkPrivilege();
-        $naziv=$_SESSION["naziv"];
-        $ime=$_SESSION["username"];
-        ////////////////GLOBAL SETTINGS
-        $g= new GlobalService();
-        $m= new MongoService();
-        $lockDate= $g->getLockDate();
-        $lockDateString=$lockDate->toDateTime()->format('d.m.Y');
-
-        $resultDate= $g->getResultsDate();
-        $resultDateString=$resultDate->toDateTime()->format('d.m.Y');
-
-        $resultBool= $g->getResultsBool();
-        $lockBool= $g->getLockBool();
-        
-        ////////////////GLOBAL SETTINGS
-        
-
-        if($resultBool){
-            $list=$m->getEnrolledStudentsForOIB($_SESSION["employee_oib"]);
-        }
-
-        
-
-        
-
-        $ucenikName=$_SESSION["username"];
-        $activeInd=4;
-        
-        $USERTYPE=$this->USERTYPE;
-        require_once __DIR__ . '/../view/'.$USERTYPE.'/results.php';    
-
-	}*/
-
     public function movie( $id )
     {
         session_start();
         $this->checkPrivilege();
 
-        $ime=$_SESSION["user_name"];
+        $ime=$_SESSION["username"];
+        $naziv=$_SESSION["naziv"];
 
         $naziv=$ime;
 
