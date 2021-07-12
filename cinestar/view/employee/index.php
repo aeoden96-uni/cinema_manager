@@ -17,7 +17,7 @@ if( $danOdDanas == -1){
 
 <!-- DEFINES ELEMENTS ON SAME HORIZONTAL LEVEL --->
 <div class="row">
-    <div class="col-12 col-xl-6 mb-4 mb-lg-0">
+    <div class="col-12 col-xl-8 mb-4 mb-lg-0">
         <div class="card">
             <h5 class="card-header"><?php echo $naslov_predstave; ?></h5>
             <div class="card-body">
@@ -37,7 +37,7 @@ if( $danOdDanas == -1){
             </div>
         </div>
     </div>
-    <div class="col-12 col-xl-6">
+    <div class="col-12 col-xl-4">
         <div class="card"  id="myCalendar" for="<?php echo $USERTYPE; ?>">
             <h5 class="card-header">Kalendar predstava</h5>
             <div class="calendar-wrapper">
