@@ -167,10 +167,6 @@ class CinemaService
         return new Projection( $row['id'], $row['dvorana_id'], $row['film_id'], $row['datum'], $row['vrijeme']);
     }
 
-	function makeReservation( $user_name, $projectionId)
-	{
-
-	}
 
 	function getDatesByMovieId( $id )
 	{
@@ -212,7 +208,7 @@ class CinemaService
 		return $row['dvorana_id'];
 	}
 
-	function cancelReservationById( $id )
+	function cancelReservationById( $id ) //izriši sjedala
 	{
 		try
 		{
@@ -222,7 +218,21 @@ class CinemaService
 			
 		}
 		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
+
+		$this->eraseSeatsByReservationId( $id );
 		
+	}
+
+	function eraseSeatsByReservationId( $id )
+	{
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare( 'DELETE FROM sjedalo WHERE rezervacija_id=:id' );
+			$st->execute( array( 'id' => $id ) );
+			
+		}
+		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
 	}
 
 	function erasePastProjections()
@@ -248,16 +258,24 @@ class CinemaService
 		}
 	}
 
-	function erasePastReservationsByProjectionId( $id )
+	function erasePastReservationsByProjectionId( $id ) //izbriši sjedala
 	{
 		try
 		{
 			$db = DB::getConnection();
+			$stt = $db->prepare( 'SELECT id FROM rezervacija WHERE prikaz_id=:id');
+			$stt->execute( array('id' => $id ) );
+			while( $row = $stt->fetch() ){
+				$this->eraseSeatsByReservationId( $row['id']);
+			}
+			
 			$st = $db->prepare( 'DELETE FROM rezervacija WHERE prikaz_id=:id' );
 			$st->execute( array('id' => $id ) );
 			
 		}
 		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
+
+		
 	}
 
 	function getSizeOfHallByProjectionId( $id ) //vraca array
@@ -336,7 +354,7 @@ class CinemaService
 		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
 	}
 
-	function addNewProjection( $movie_id, $hall_id, $date, $time )
+	function addNewProjection( $movie_id, $hall_id, $date, $time ) //dovrsiti
 	{
 		try
 		{
@@ -354,7 +372,7 @@ class CinemaService
 		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
 	}
 
-	function insertNewReservations($seats, $prikaz_id ,$korisnik_id){
+	function insertNewReservations($seats, $prikaz_id ,$korisnik_id){ //dovrsiti
 
 		//PROVJERI JESU LI SJEDALA ZAUZETA -- nije gotovo
 		foreach ($seats as $key => $seat) {
@@ -377,7 +395,7 @@ class CinemaService
 
 
 		//AKO TA NISU ZAUZETA NASTAVI
-		$randNum= rand(1000,9999);
+		$randNum= rand(1000,9999); //NECEMO RAND NUM
 		$zaVratiti=[];
 		try {
 			$db = DB::getConnection();
@@ -410,6 +428,59 @@ class CinemaService
 		$zaVratiti['rezervacija']= $randNum;
 		return $zaVratiti;
 	}
+
+	function checkIfTheNewProjectionIsOk( $hall_id, $date, $time, $duration ) //provjeri preklapa li se nova projekcija sa starima
+	{
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare( 'SELECT vrijeme, film_id FROM projekcija WHERE dvorana_id=:hall_id AND datum:=date' );
+			$st->execute( array('hall_id' => $hall_id, 'date' => $date ) );
+
+		}
+		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
+
+		while( $row = $st->fetch() ){
+			$duration2 = $this-> getDurationByMovieId( $row['film_id']);
+			if( !$this->compareTimes($time, $row['vrijeme'], $duration, $duration2 ) )
+				return false;
+		}
+		return true;
+
+	}
+
+	function compareTimes($time1, $time2, $duration1, $duration2)
+	{
+		$timeArr1 = explode(':', $time1); //nova projekcija
+		$timeArr2 = explode(':', $time2);
+		$durArr1 = explode(':', $duration1); // trajanje novog filma
+		$durArr2 = explode(':', $duration2);
+		//$dateArr = explode('-', $date); // 0=>godina, 1=>mjesec, 2=>dan
+
+		$t1 = mktime((int)$timeArr1[0], (int)$timeArr1[1], (int)$timeArr1[2]);//, (int)$dateArr[1], (int)$dateArr[2], (int)$dateArr[0]);
+		$t2 = mktime((int)$timeArr1[0], (int)$timeArr1[1], (int)$timeArr1[2]);//, (int)$dateArr[1], (int)$dateArr[2], (int)$dateArr[0]);
+		$dur1 = mktime((int)$durArr1[0], (int)$durArr1[1], (int)$durArr1[2]);
+		$dur2 = mktime((int)$durArr2[0], (int)$durArr2[1], (int)$durArr2[2]);
+
+		if( $t1 + $dur1 >= $t2) return false; //valjda su to svi slučajevi
+		else if( $t2 + $dur2 >= $t1 ) return false;
+		else return true;
+	}
+
+	function getDurationByMovieId( $id )
+	{
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare( 'SELECT trajanje FROM film WHERE id=:id' );
+			$st->execute( array('id' => $id ) );
+
+		}
+		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
+
+		$row = $st->fetch();
+		return $row['trajanje'];
+		}
 }
 
 
