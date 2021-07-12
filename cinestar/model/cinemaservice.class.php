@@ -390,7 +390,7 @@ class CinemaService
 	}
 
 	function insertNewReservations($seats, $prikaz_id ,$korisnik_id){ //dovrsiti
-
+		$zaVratiti=[];
 		//PROVJERI JESU LI SJEDALA ZAUZETA -- nije gotovo
 		foreach ($seats as $key => $seat) {
 			try
@@ -412,7 +412,7 @@ class CinemaService
 				$st->execute( array( 'red' => $seat->red, 'stupac' => $seat->broj_u_redu, 'prikaz' => $prikaz_id) );
 
 				if ($st->rowCount() > 0) {
-					$zaVratiti=[];
+					
 					$zaVratiti['uspjeh']= False;
 					$row = $st->fetch();
 					$zaVratiti['rezervacija']= "vec su zauzeta mjesta " . strval($row["red"]) ."," .strval($row["broj_u_redu"]);
@@ -421,7 +421,16 @@ class CinemaService
 
 
 			}
-			catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
+			catch( PDOException $e ) {
+				
+				
+				
+				$zaVratiti['uspjeh']= False;
+				$row = $st->fetch();
+				$zaVratiti['rezervacija']=$e->getMessage();
+				
+			
+			}
 		}
 
 

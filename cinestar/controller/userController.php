@@ -100,7 +100,7 @@ class userController
         
         $message=[];
         $message[ 'uspjeh' ] =$m[ 'uspjeh' ];
-        $message[ 'rezervacija' ] = $m[ 'rezervacija' ];
+        $message[ 'rezervacija' ] =$m[ 'rezervacija' ];
         
 
 

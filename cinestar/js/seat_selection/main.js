@@ -129,28 +129,7 @@ function drawTable() {
 var numOfSeatsSelected = 0;
 var MAXSeats = 4;
 var seatsSelected = [];
-function removeAllMarked() {
-	while (numOfSeatsSelected > 0) {
-		numOfSeatsSelected--;
-		var index = 0;
-		var x = seatsSelected[index].i;
-		var y = seatsSelected[index].j;
-		if (index !== -1) {
-			seatsSelected.splice(index, 1);
-		}
-		var lis = document.querySelectorAll('#myList li');
-		for (var i = 0; li = lis[i]; i++) {
-			if (li.innerHTML == "Mjesto " + y + "," + x)
-				li.parentNode.removeChild(li);
-		}
 
-		tablica[x - 1][y - 1] = (tablica[x - 1][y - 1] + 1) % 2;
-
-	}
-
-	updateButtonOdaberi();
-
-}
 
 function markIt() {//oznacava jednu celiju
 
@@ -195,16 +174,7 @@ function markIt() {//oznacava jednu celiju
 
 }
 
-function removeItemFromJSList(item) { // mice item iz JS liste
 
-	//console.log("micem iz JS liste item = " + JSON.stringify(item));
-
-	var filtered = seatsSelected.filter(
-		function (el) { return el.i != item.i || el.j != item.j });
-
-	seatsSelected = filtered;
-
-}
 function addItemToHTMLList(lis, item) {
 	var entry = document.createElement('li');
 	entry.appendChild(document.createTextNode(item));
@@ -222,7 +192,41 @@ function removeItemFromHTMLList(item, lis) { // mice item iz HTML liste
 
 }
 
+function removeItemFromJSList(item) { // mice item iz JS liste
 
+	//console.log("micem iz JS liste item = " + JSON.stringify(item));
+
+	var filtered = seatsSelected.filter(
+		function (el) { return el.i != item.i || el.j != item.j });
+
+	seatsSelected = filtered;
+
+}
+
+function removeAllMarked() {
+
+
+	while (numOfSeatsSelected > 0) {
+		numOfSeatsSelected--;
+
+
+
+		item = { i: seatsSelected[0].i, j: seatsSelected[0].j };
+
+
+		removeItemFromJSList(item);
+
+		var lis = document.querySelectorAll('#myList li');
+		item2 = "Mjesto " + (item.i) + "," + (item.j);
+		removeItemFromHTMLList(item2, lis);
+
+		tablica[item.i - 1][item.j - 1] = (tablica[item.i - 1][item.j - 1] + 1) % 2;
+
+	}
+
+	updateButtonOdaberi();
+
+}
 
 var disableButton = false;
 function updateButtonOdaberi() {
