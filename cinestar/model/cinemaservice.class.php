@@ -515,6 +515,8 @@ class CinemaService
 			$arr[] = new Employee($row['id'], $row['ime'], $row['email']);
 		}
 
+		return $arr;
+
 	}
 
 	function addEmployee( $name, $password, $email )

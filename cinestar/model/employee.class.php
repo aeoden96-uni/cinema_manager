@@ -1,13 +1,14 @@
 <?php
 
-class User
+class Employee
 {
-    protected $id, $username, $email;
+    protected $id, $name, $email;
 
-    function __construct( $id, $username )
+    function __construct( $id, $name, $email )
 	{
 		$this->id = $id;
-		$this->username = $username;
+		$this->name = $name;
+		$this->email = $email;
 	}
 
 	function __get( $prop ) { return $this->$prop; }
