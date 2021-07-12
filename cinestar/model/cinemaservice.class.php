@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/../app/database/db.class.php';
-require_once __DIR__ . '/user.class.php';
+require_once __DIR__ . '/employee.class.php';
 require_once __DIR__ . '/movie.class.php';
 require_once __DIR__ . '/seat.class.php';
 require_once __DIR__ . '/projection.class.php';
@@ -225,7 +225,7 @@ class CinemaService
 		return $row['dvorana_id'];
 	}
 
-	function cancelReservationById( $id ) //izriši sjedala
+	function cancelReservationById( $id )
 	{
 		try
 		{
@@ -429,27 +429,28 @@ class CinemaService
 		//AKO TA NISU ZAUZETA NASTAVI
 		$randNum= rand(10000,99999); //NECEMO RAND NUM
 		$zaVratiti=[];
+		$br_karata = count($seats);
 		try {
 			$db = DB::getConnection();
 			$db->beginTransaction();
 			
-			$db->query('INSERT INTO rezervacija (id,user_id,prikaz_id) 
-						VALUES (' .$randNum.',' .$korisnik_id.',' .$prikaz_id.')');
+			$st = $db->prepare('INSERT INTO rezervacija (id, user_id, prikaz_id, broj_karata) VALUES(:id, :user_id, :prikaz_id, :broj_karata');
+			$st->excute( array( 'id' => $randNum, 'user_id' =>$korisnik_id, 'prikaz_id' =>$prikaz_id, 'broj_karata' => $br_karata ) );
 			
 			foreach($seats as $seat){
 				
 				$x=$seat->red;
 				$y=$seat->broj_u_redu;
-				$db->query('INSERT INTO sjedalo (red,broj_u_redu,rezervacija_id) VALUES
-							(' .$x.',' .$y.',' .$randNum.')');
+				$st = $db->prepare( ' INSERT INTO sjedalo (red, broj_u_redu, rezervacija_id) VALUES(:red, :broj_u_redu, :rezervacija_id');
+				$st->execute( array( 'red' => $y, 'broj_u_redu' => $x, 'rezervacija_id' => $randNum) );
 			}
 
 			$db->commit();
-		} catch (\Throwable $e) {
+		} catch (PDOException $e) {
 			
 			$db->rollback();
 
-			$zaVratiti['uspjeh']= False;
+			$zaVratiti['uspjeh'] = False;
 			$zaVratiti['rezervacija']= strval($e);
 			//echo $e; 
 			return $zaVratiti;
@@ -487,10 +488,9 @@ class CinemaService
 		$timeArr2 = explode(':', $time2);
 		$durArr1 = explode(':', $duration1); // trajanje novog filma
 		$durArr2 = explode(':', $duration2);
-		//$dateArr = explode('-', $date); // 0=>godina, 1=>mjesec, 2=>dan
 
-		$t1 = mktime((int)$timeArr1[0], (int)$timeArr1[1], (int)$timeArr1[2]);//, (int)$dateArr[1], (int)$dateArr[2], (int)$dateArr[0]);
-		$t2 = mktime((int)$timeArr1[0], (int)$timeArr1[1], (int)$timeArr1[2]);//, (int)$dateArr[1], (int)$dateArr[2], (int)$dateArr[0]);
+		$t1 = mktime((int)$timeArr1[0], (int)$timeArr1[1], (int)$timeArr1[2]);
+		$t2 = mktime((int)$timeArr1[0], (int)$timeArr1[1], (int)$timeArr1[2]);
 		$dur1 = mktime((int)$durArr1[0], (int)$durArr1[1], (int)$durArr1[2]);
 		$dur2 = mktime((int)$durArr2[0], (int)$durArr2[1], (int)$durArr2[2]);
 
@@ -512,7 +512,54 @@ class CinemaService
 
 		$row = $st->fetch();
 		return $row['trajanje'];
+	}
+
+	function getEmployees()
+	{
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare( 'SELECT id, ime, email FROM radnik ');
+			$st->execute(  );
+
 		}
+		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
+		
+		$arr = [];
+		while( $row = $st->fetch() ){
+			$arr[] = new Employee($row['id'], $row['ime'], $row['email']);
+		}
+
+		return $arr;
+
+	}
+
+	function addEmployee( $name, $password, $email )
+	{
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare('INSERT INTO radnik (id, ime, password_hash, email) VALUES(:id, :ime, :password_hash :email )');
+
+			$id = 0; //nešto
+
+			$st->execute( array( 'id' => $id, 'ime' => $name, 'password_hash' => password_hash( $password, PASSWORD_DEFAULT ), 'email' => $email ) );
+			
+		}
+		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
+	}
+
+	function removeEmployeeById( $id )
+	{
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare( 'DELETE FROM radnik WHERE id=:id');
+			$st->execute( array( 'id' => $id) );
+
+		}
+		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
+	}
 }
 
 

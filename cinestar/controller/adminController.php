@@ -2,6 +2,7 @@
 
 //require_once __DIR__ . '/../model/globalservice.class.php';
 //require_once __DIR__ . '/../model/mongoservice.class.php';
+require_once __DIR__ . '/../model/cinemaservice.class.php';
 
 
 
@@ -24,29 +25,12 @@ class AdminController
 
 
 
-
-
-
 	public function index() {
 		session_start();
         $this->checkPrivilege();
 
         $ucenikName=$_SESSION["username"];
         $activeInd=0;
-
-
-        //$g= new GlobalService();
-    
-        //$lockDate= $g->getLockDate();
-        //$lockDateString=$lockDate->toDateTime()->format('d.m.Y');
-
-        //$resultDate= $g->getResultsDate();
-        //$resultDateString=$resultDate->toDateTime()->format('d.m.Y');
-
-        //$resultBool= $g->getResultsBool();
-        //$lockBool= $g->getLockBool();
-        //$agregBool=$g->getAgregBool();
-
         
         $ime=$_SESSION["username"];
         $naziv=$ime;
@@ -116,6 +100,7 @@ class AdminController
 	}
 
     public function browser(){
+
         session_start();
         $this->checkPrivilege();
         
@@ -123,13 +108,48 @@ class AdminController
         $activeInd=1;
         $ime=$_SESSION["username"];
         $naziv=$ime;
-
+        $cs = new CinemaService();
+        $employees = $cs -> getEmployees();
         
         $USERTYPE=$this->USERTYPE;
+
         require_once __DIR__ . '/../view/'.$USERTYPE.'/browser.php';    
+
     }
 
+    public function removeEmpl($id)
+    {
+        session_start();
+        $this->checkPrivilege();
+
+        $ime=$_SESSION["username"];
+        $naziv=$ime;
+        $cs = new CinemaService();
+        $employees = $cs -> removeEmployeeById( $id );
+        
+        $USERTYPE=$this->USERTYPE;
+        header( 'Location: index.php?rt=browser');
+    }
     
+    public function addEmpl() //dobiva preko posta
+    {
+        session_start();
+        $this->checkPrivilege();
+
+        $ime=$_SESSION["username"];
+        $naziv=$ime;
+        $cs = new CinemaService();
+
+        if( isset( $_POST['name']) && isset( $_POST['email']) && isset( $_POST['pass'])){
+
+        }
+        else{
+            $_SESSION['error'] = 'Wrong input! Try again';
+        }
+
+
+    }
+
     public function globalSettings(){
         session_start();
         $this->checkPrivilege();

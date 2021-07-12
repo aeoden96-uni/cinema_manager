@@ -20,7 +20,7 @@
 
 
 <div class="card">
-    <h5 class="card-header">Search <input type="text" id="search"><<span class="text"></span></h5>
+    <h5 class="card-header">Search <input type="text" id="search"><span class="text"></span></h5>
     <div class="card-body">
         <div class="table-responsive">
             <table class="table">
