@@ -126,6 +126,11 @@ class AdminController
         $naziv=$ime;
         $cs = new CinemaService();
         $employees = $cs -> removeEmployeeById( $id );
+        if( isset( $_SESSION['error'])){
+            $error = $_SESSION['error'];
+            $_SESSION['error'] = '';
+        }
+        else $error = '';
         
         $USERTYPE=$this->USERTYPE;
         header( 'Location: index.php?rt=browser');
@@ -141,10 +146,17 @@ class AdminController
         $cs = new CinemaService();
 
         if( isset( $_POST['name']) && isset( $_POST['email']) && isset( $_POST['pass'])){
-
+            if( filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)){
+                $cs->addEmployee( $_POST['name'], $_POST['pass'], $_POST['email']);
+            }
+            else{
+                $_SESSION['error'] = 'Wrong input! Try again';
+                header( 'Location: index.php?rt=browser');
+            }
         }
         else{
             $_SESSION['error'] = 'Wrong input! Try again';
+            header( 'Location: index.php?rt=browser');
         }
 
 

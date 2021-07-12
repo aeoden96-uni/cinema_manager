@@ -378,11 +378,12 @@ class CinemaService
 			$db = DB::getConnection();
 			$st = $db->prepare('INSERT INTO prikaz (id, film_id, dvorana_id, datum, vrijeme) VALUES(:id, :film_id, :dvorana_id :datum, :vrijeme)');
 
-			$stt = $db->prepare('SELECT id FROM prikaz');
+			$stt = $db->prepare('SELECT MAX(id) AS id FROM prikaz');
 
 			$stt -> execute();
 
-			//pronađi id - ili max(id) +1 ili prvi broj koji se ne pojavljuje
+			$row = $stt ->fetch();
+			$id = (int) $row['id'] + 1;
 
 			$st->execute( array( 'id' => $id, 'film_id' => $movie_id, 'dvorana_id' => $hall_id, 'datum' => $date, 'vrijeme' => $time) );
 		}
@@ -402,12 +403,6 @@ class CinemaService
 									AND sjedalo.broj_u_redu=:stupac 
 									AND prikaz.id=rezervacija.prikaz_id 
 									AND prikaz.id=:prikaz');
-	
-				
-	
-				
-	
-				//pronađi id - ili max(id) +1 ili prvi broj koji se ne pojavljuje
 	
 				$st->execute( array( 'red' => $seat->red, 'stupac' => $seat->broj_u_redu, 'prikaz' => $prikaz_id) );
 
@@ -432,26 +427,26 @@ class CinemaService
 			
 			}
 		}
-
-
-
 		//AKO TA NISU ZAUZETA NASTAVI
-		$randNum= rand(10000,99999); //NECEMO RAND NUM
 		$zaVratiti=[];
 		$br_karata = count($seats);
 		try {
 			$db = DB::getConnection();
+			$st = $db -> prepare('SELECT MAX(id) AS id FROM rezervacija');
+			$st->execute();
+			$row = $st -> fetch();
+			$new_id = (int) $row['id'] +1 ;
 			$db->beginTransaction();
 			
 			$st = $db->prepare('INSERT INTO rezervacija (id, user_id, prikaz_id, broj_karata) VALUES(:id, :user_id, :prikaz_id, :broj_karata');
-			$st->excute( array( 'id' => $randNum, 'user_id' =>$korisnik_id, 'prikaz_id' =>$prikaz_id, 'broj_karata' => $br_karata ) );
+			$st->excute( array( 'id' => $new_id, 'user_id' =>$korisnik_id, 'prikaz_id' =>$prikaz_id, 'broj_karata' => $br_karata ) );
 			
 			foreach($seats as $seat){
 				
 				$x=$seat->red;
 				$y=$seat->broj_u_redu;
 				$st = $db->prepare( ' INSERT INTO sjedalo (red, broj_u_redu, rezervacija_id) VALUES(:red, :broj_u_redu, :rezervacija_id');
-				$st->execute( array( 'red' => $y, 'broj_u_redu' => $x, 'rezervacija_id' => $randNum) );
+				$st->execute( array( 'red' => $y, 'broj_u_redu' => $x, 'rezervacija_id' => $new_id) );
 			}
 
 			$db->commit();
@@ -467,8 +462,13 @@ class CinemaService
 			
 		}
 		$zaVratiti['uspjeh']= True;
-		$zaVratiti['rezervacija']= $randNum;
+		$zaVratiti['rezervacija'] = $new_id;
 		return $zaVratiti;
+	}
+
+	function checkIfTheSeatIsTaken( $seat, $prikaz_id )
+	{
+
 	}
 
 	function checkIfTheNewProjectionIsOk( $hall_id, $date, $time, $duration ) //provjeri preklapa li se nova projekcija sa starima
@@ -549,8 +549,10 @@ class CinemaService
 		{
 			$db = DB::getConnection();
 			$st = $db->prepare('INSERT INTO radnik (id, ime, password_hash, email) VALUES(:id, :ime, :password_hash :email )');
-
-			$id = 0; //nešto
+			$stt = $db -> prepare('SELECT MAX(id) AS id FROM radnik');
+			$stt->execute();
+			$row = $stt->fetch();
+			$id = (int) $row['id'] + 1; //nešto
 
 			$st->execute( array( 'id' => $id, 'ime' => $name, 'password_hash' => password_hash( $password, PASSWORD_DEFAULT ), 'email' => $email ) );
 			
