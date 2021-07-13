@@ -16,7 +16,17 @@
 
 <script src="js/search/search.js"></script>
 <div class="card">
-    <h5 class="card-header">Search <input type="text" id="search" onkeyup="search()" placeholder="Search for movies"><span class="text"></span></h5>
+    <h5 class="card-header">
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon3">Search</span>
+            </div>
+            <input type="text" id="search" onkeyup="search()" placeholder="type in movie name" class="form-control" >
+        </div> 
+    
+    </h5>
+   
+   
     <div class="card-body">
         
 
