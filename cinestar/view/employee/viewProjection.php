@@ -24,25 +24,23 @@
                     id="myBoard" 
                     width="600" 
                     height="500" 
+                    prikaz_id =<?php echo $proj_id;?> 
                     br_redova=<?php echo $size[0]; ?> 
                     velicina_reda=<?php echo $size[1]; ?> 
                     rezerv_id=<?php echo $reservation_id; ?> 
-                    prikaz_id = <?php echo $proj_id;?>>
+                       >
                 </canvas>
             </div>
         </div>    
     </div>
     <div class="col-12 col-xl-4">
     <div class="card">
-                <button id="odaberi" class="btn btn-warning" onClick="deleteIt()">
+                <button id="odaberi" class="btn btn-warning" onClick="deleteIt('<?php echo $proj_id;?>')">
                     <span class="sr-only">Remove projection</span>
                 </button>
     </div>
-    </div>
-</div>
-</div>
 <br>
-<div class="card">
+    <div class="card">
     <h5 class="card-header">Reservations</h5>
     <div class="card-body">
         <div class="table-responsive">
@@ -50,7 +48,7 @@
                 <thead>
                     <tr>
                     <th scope="col">User ID</th>
-                    <th scope="col">Number of tickets</th>
+                    <th scope="col">#tickets</th>
                     <th scope="col">Seats</th>
                     </tr>
                 </thead>
@@ -76,6 +74,13 @@
         
     </div>
 </div>
+    </div>
+</div>
+
+
+</div>
+<br>
+
 
 <style>
 a{
@@ -92,6 +97,14 @@ a:hover{
 }
 </style>
 
+
+<script>
+
+function deleteIt(proj_id){
+    window.location.href = "index.php?rt=employee/"+'deleteProjection/' +proj_id ;
+
+}
+</script>
 
 
 <?php include __DIR__ . '/../_footer.php'; ?>

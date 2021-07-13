@@ -250,11 +250,12 @@ class employeeController
 
         $movie_id = $cs ->getMovieIdByProjectionId( $id );
 
-        header('Location: index.php?rt=employee/movie/' . $movie_id);
-
+        
+        header( 'Location: index.php?rt=employee');
+		exit();
     }
 
-    public function viewProjection( $id )
+    public function viewProjection( $id ) // ID PROJEKCIJE
     {
         session_start();
         $this->checkPrivilege();
@@ -267,7 +268,8 @@ class employeeController
 
         $reservations = $cs -> getREservationsByProjectionId( $id );
 
-        $proj_id= $cs->getProjectionIdByReservationId($id);
+        //$proj_id= $cs->getProjectionIdByReservationId($id);
+        $proj_id=$id;
         $projection = $cs -> getProjectionById( $id );
         $movie = $cs -> getMovieByProjectionId( $id );
 
@@ -277,6 +279,7 @@ class employeeController
             header( 'Location: index.php?rt=$USERTYPE');
 			exit();
         }
+        
 
         $size=$cs->getSizeOfHallByProjectionId( $proj_id);
 
@@ -296,7 +299,18 @@ class employeeController
     }
     public function deleteProjection($proj_id)
     {
+        $cs = new CinemaService();
         echo "delete projection " .$proj_id." and all reservations with it...";
+
+
+        $rezervacije=$cs->getReservationsByProjectionId( $proj_id );
+
+
+        foreach ($rezervacije as $key => $rezervacija) {
+            $cs->removeSeatsByReservationId($rezervacija->id);
+        }
+
+        $cs->removeProjectionById($proj_id);
     }
     public function sell()
     {
@@ -308,10 +322,26 @@ class employeeController
         $seats = $_POST['seats'];
         $rez_id = $_POST['rez'];
 
-        
+        if ($action == 'delete'){
+            $cs->removeSeatsByReservationId($rez_id);
+            $cs->removeReservationByReservationId($rez_id);
+        }
+        else if ($action== 'sell')
+        {
+            $cs->sellSeatsByReservationId($rez_id);
+        }
+
+
+
+
+
+
+
+        $vrati=[];
+        $vrati['uspjeh']=True;
 
         header( 'Content-type:application/json;charset=utf-8' );
-        echo json_encode($rez_id);
+        echo json_encode($vrati);
         flush();
     }
 
