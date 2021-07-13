@@ -2,7 +2,7 @@
 
 class Movie
 {
-    protected $id, $name, $description, $year, $duration;
+    public $id, $name, $description, $year, $duration;
 
     function __construct( $id, $name, $description, $year, $duration )
 	{

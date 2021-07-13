@@ -2,7 +2,7 @@
 
 class Employee
 {
-    protected $id, $ime, $email;
+    public $id, $ime, $email;
 
     function __construct( $id, $ime, $email )
 	{

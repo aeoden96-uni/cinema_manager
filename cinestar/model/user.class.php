@@ -2,7 +2,7 @@
 
 class User
 {
-    protected $id, $ime, $username, $password;
+    public $id, $ime, $username, $password;
 
     function __construct( $id, $ime, $username, $password )
 	{

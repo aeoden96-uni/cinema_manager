@@ -57,7 +57,7 @@
                     foreach( $reservations as $reservation ){
                         echo '<tr>';
                         echo '<td>' . $reservation['reservation']->id .'</td>';
-                        echo '<td>' . $reservation['reservation']->num_of_tics .'</td>';
+                        echo '<td>' . count( $reservation['seats']) .'</td>';
                         echo '<td>';
                         foreach( $reservation['seats'] as $seat){
 

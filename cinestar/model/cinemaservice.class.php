@@ -735,13 +735,14 @@ class CinemaService
 			$st->execute( array( 'id' => $id) );
 
 		}
-		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
+		catch( PDOException $e ) { print $e->getMessage() ; }
 
 		$arr = [];
 
 		while( $row = $st->fetch()){
+			
 			$arr[] = ['reservation' => new Reservation( $row['id'], $row['user_id'], $row['prikaz_id'], $row['broj_karata']),
-						'seats' => $this->getReservedSeatsByReservationId($id)];
+						'seats' => $this->getReservedSeatsByReservationId( $row['id'])];
 		}
 
 		return $arr;

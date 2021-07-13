@@ -2,7 +2,7 @@
 
 class Reservation
 {
-    protected $id, $user_id, $projection_id, $num_of_tics;
+    public $id, $user_id, $projection_id, $num_of_tics;
 
     function __construct( $id, $user_id, $projection_id, $num_of_tics)
 	{

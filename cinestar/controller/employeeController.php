@@ -276,8 +276,7 @@ class employeeController
         $cs = new CinemaService();
 
         $reservations = $cs -> getREservationsByProjectionId( $id );
-
-        //$proj_id= $cs->getProjectionIdByReservationId($id);
+    
         $proj_id=$id;
         $projection = $cs -> getProjectionById( $id );
         $movie = $cs -> getMovieByProjectionId( $id );
