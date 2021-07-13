@@ -5,7 +5,7 @@ if( $danOdDanas == -1){
     $naslov_predstave="Today's projections";
 
 }else{
-    $naslov_predstave='Raspored predstava '. $danOdDanas . 'og';
+    $naslov_predstave='Projections on the  '. $danOdDanas . 'th';
 }
 
 ?>
