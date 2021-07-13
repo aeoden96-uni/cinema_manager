@@ -40,11 +40,7 @@ class StartController
 		require_once __DIR__ . '/../view/_footer.php';
 	}
 
-	public function signup(){
-		
-		$title="Register";
-        require_once __DIR__ . '/../view/start_signup.php';
-	}
+	
 
 	public function signupResult(){
 	    session_start();
@@ -54,29 +50,37 @@ class StartController
 		{
 			$title="Error";
 			$succesVar="unsuccessful. :(";
-		    $response ="Nisi unio sve potrebne podatke.";			
+		    $response ="Nisi unio sve potrebne podatke.";	
+			
 		}
 
-		if( !preg_match( '/^[A-Za-z]{3,10}$/', $_POST['username'] ) )
-		{
+		if(! filter_var( $_POST['username'],FILTER_VALIDATE_EMAIL))
+        { 
 			$title="Error";
 			$succesVar="unsuccessful. :(";
-            $response = 'Korisničko ime treba imati između 3 i 10 slova.';           
+            $response = 'Email nije unesen u korektnom formatu.';   
+			     
 		}
 		else {
             if ($us->checkUsername($_POST['username'])) {
+				echo $_POST['username'];
+				echo $us->checkUsername($_POST['username']);
 				$title="Error";
 				$succesVar="unsuccessful. :(";
-                $response = 'Korisnik s tim korisničkim imenom već postoji u bazi.';                
+                $response = 'Korisnik s tim korisničkim imenom već postoji u bazi.';   
+				
+				//header("Refresh:2; url=index.php?rt=user");
+				//exit();      
             }
 			else {
 				$succesVar="successful.";
 				$us->registerUser($_POST['username'], $_POST['name'], $_POST['password']);
-				header("Refresh:2; url=index.php?rt=user");
+				header("Refresh:2; url=index.php?rt=start");
+				exit();   
 			}
 		}
-
-		require_once __DIR__ . '/../view/start_login.php';
+		echo $response ;
+		//require_once __DIR__ . '/../view/start_login.php';
 	}
 
 /******************************************************************** */
@@ -93,27 +97,30 @@ class StartController
 		
 
 		$user = $us->loginUser($_POST["username"], $_POST["password"]);
-		$check = true;
+		
+	
 		
 		if($user == 'notFound'){
 			echo $_POST["username"];
-			echo " tog usera nema";
-			$succesVar="unsuccessful. :(";
+			
+			$succesVar="unsuccessful.User doesn't exist. :(";
 			session_destroy();
 			header("Refresh:2; url=index.php?rt=start");
 		}
 		elseif($user == 'incorrect'){
-			echo $user->ime;
-			$succesVar="unsuccessful. :(";
+			//echo $user->ime;
+			$succesVar="unsuccessful. Password incorrect. :(";
 			session_destroy();
 			header("Refresh:2; url=index.php?rt=start");
 		}
 		else{
+			
 			$succesVar="successful.";
 			$_SESSION["account_type"] = "user";
 			$_SESSION["user_id"]= $user->id;
 			$_SESSION["user_name"]= $user->ime;
-			$_SESSION["username"]= (string)$user->username;		
+			$_SESSION["username"]= (string)$user->username;
+			$_SESSION["naziv"]= (string)$user->username;				
 
 			header("Refresh:2; url=index.php?rt=user");
 		}
@@ -147,7 +154,8 @@ class StartController
 			$_SESSION["account_type"] = "admin";
 			$_SESSION["user_id"]= $user->id;
 			$_SESSION["user_name"]= $user->ime;
-			$_SESSION["username"]= (string)$user->username;		
+			$_SESSION["username"]= (string)$user->username;	
+			$_SESSION["naziv"]= (string)$user->username;	
 
 			header("Refresh:2; url=index.php?rt=admin");
 		}
@@ -180,7 +188,8 @@ class StartController
 			$_SESSION["account_type"] = "employee";
 			$_SESSION["user_id"]= $user->id;
 			$_SESSION["user_name"]= $user->ime;
-			$_SESSION["username"]= (string)$user->username;		
+			$_SESSION["username"]= (string)$user->username;	
+			$_SESSION["naziv"]= (string)$user->username;	
 
 			header("Refresh:2; url=index.php?rt=employee");
 		}

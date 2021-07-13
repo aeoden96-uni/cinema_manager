@@ -51,7 +51,6 @@ function yesno(thecheckbox, thelabel,checkbox_conditions) {
 	<div class="card">
 	<article class="card-body">
 
-		<a href="index.php?rt=start/signup" class="float-right btn btn-outline-primary">Sign up</a>
 		<h4 class="card-title mb-4 mt-1">Korisnik</h4>
 		<hr>
 		<form action="index.php?rt=start/loginCheckUser" method="post">
@@ -60,17 +59,39 @@ function yesno(thecheckbox, thelabel,checkbox_conditions) {
 			  <label name="korisnik_checkbox_label" style="margin-bottom:10px;" class="form-check-label" id="korisnik_checkbox_label" for="korisnik_checkbox">Već imam račun</label>
 			</div>-->
 			<div class="form-group">
-				<input style="margin-bottom:10px;" name="username" class="form-control" value="57816521120" placeholder="OIB" >
+				<input style="margin-bottom:10px;" name="username" class="form-control" value="mirko@b.com" type="email">
 				
-				<input style="margin-bottom:10px;"  name="password" class="form-control" value="Lozinka63" placeholder="******" type="password">
+				<input style="margin-bottom:10px;"  name="password" class="form-control" value="mirkovasifra" placeholder="******" type="password">
 			
 				<button type="submit" class="btn btn-primary btn-block"> Sign in  </button>
 				
 				
 			</div> <!-- form-group// -->  
-					
-			                                                            
+			<br>                                                          
 		</form>
+		<h4 class="card-title mb-4 mt-1">Register</h4>
+		<hr>
+		<div class="form_container">
+				<form  method="post" action="index.php?rt=start/signupResult">
+				<br>
+				
+				<div class="form-group">
+					<input style="margin-bottom:10px;" name="username"    class="form-control"   type="email"    placeholder="Email" required>
+					
+					<input style="margin-bottom:10px;" name="password" class="form-control"   type="password" placeholder="******" required>
+			
+					<input style="margin-bottom:10px;" name="name"     class="form-control"    type="text"    placeholder="Name" required>
+
+					<button type="submit" class="btn btn-info btn-block"> Sign up  </button>
+					
+					
+				</div> <!-- form-group// -->  
+					
+				
+				
+				<br><br>
+			</form>
+			</div>
 	</article>
 	</div> <!-- card.// -->
 
@@ -87,9 +108,9 @@ function yesno(thecheckbox, thelabel,checkbox_conditions) {
 		<form action="index.php?rt=start/loginCheckEmployee" method="post">
 			
 			<div class="form-group">
-				<input style="margin-bottom:10px;" name="username" class="form-control" value="admin.victoria" placeholder="Admin username" >
+				<input style="margin-bottom:10px;" name="username" class="form-control" value="luka@b.com" placeholder="Admin username" >
 				
-				<input style="margin-bottom:10px;" name="password" class="form-control" value="USO8sxUP" placeholder="******" type="password">
+				<input style="margin-bottom:10px;" name="password" class="form-control" value="lukinasifra" placeholder="******" type="password">
 				
 				<button type="submit" class="btn btn-primary btn-block"> Sign in  </button>
 				                                
@@ -113,9 +134,9 @@ function yesno(thecheckbox, thelabel,checkbox_conditions) {
 		<form action="index.php?rt=start/loginCheckAdmin" method="post">
 			
 			<div class="form-group">
-				<input style="margin-bottom:10px;" name="username" class="form-control" value="admin.jakara" placeholder="Admin username" >
+				<input style="margin-bottom:10px;" name="username" class="form-control" value="luka@b.com" placeholder="Admin username" >
 				
-				<input style="margin-bottom:10px;" name="password" class="form-control" value="QgJegvBFRDX" placeholder="******" type="password">
+				<input style="margin-bottom:10px;" name="password" class="form-control" value="lukinasifra" placeholder="******" type="password">
 				
 				<button type="submit" class="btn btn-primary btn-block"> Sign in  </button>
 				                                   
