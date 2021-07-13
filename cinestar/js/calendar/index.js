@@ -5,17 +5,17 @@ var Cal = function (divId) {
 
   // Days of week, starting on Sunday
   this.DaysOfWeek = [
-    'Pon',
-    'Uto',
-    'Sri',
-    'Čet',
-    'Pet',
-    'Sub',
-    'Ned'
+    'Mon',
+    'Tue',
+    'Wed',
+    'Thu',
+    'Fri',
+    'Sat',
+    'Sun'
   ];
 
   // Months, stating on January
-  this.Months = ['Siječanj', 'Veljača', 'Ožujak', 'Travanj', 'Svibanj', 'Lipanj', 'Srpanj', 'Kolovoz', 'Rujan', 'Listopad', 'Studeni', 'Prosinac'];
+  this.Months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
   // Set the current month, year
   var d = new Date();
