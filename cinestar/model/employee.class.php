@@ -4,10 +4,10 @@ class Employee
 {
     protected $id, $ime, $email;
 
-    function __construct( $id, $ime, $username )
+    function __construct( $id, $ime, $email )
 	{
 		$this->id = $id;
-		$this->ime = $username;
+		$this->ime = $ime;
 		$this->email = $email;
 	}
 
