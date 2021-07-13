@@ -1,10 +1,10 @@
 <?php include __DIR__ . '/../_header.php'; 
 
 if( $danOdDanas == -1){
-    $naslov_predstave='Današnji raspored predstava';
+    $naslov_predstave="Today's projections";
 
 }else{
-    $naslov_predstave='Raspored predstava '. $danOdDanas . 'og';
+    $naslov_predstave='Projections on the '. $danOdDanas . 'th';
 }
 ?>
 
@@ -26,11 +26,11 @@ if( $danOdDanas == -1){
 
                     <?php
                     if(count($movieList)<=0){
-                        echo '<li class="list-group-item">Danas nema zakazanih predstava.</li>';
+                        echo '<li class="list-group-item">There are no projections today.</li>';
                     }   
                     else{
                         foreach ($movieList as $key => $movie) {
-                            echo '<li class="list-group-item">'. $movie-> movie_id.  ' u ' .$movie-> time .'</li>';
+                            echo '<li class="list-group-item">'. $movie-> movie_id.  ' at ' .substr($movie-> time,0,-3) .'</li>';
                         }
                     }      
                     ?>   

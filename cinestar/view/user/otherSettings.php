@@ -4,11 +4,11 @@
 
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="index.php?rt=user">Dashboard</a></li>
-        <li class="breadcrumb-item active">Other</li>
+        <li class="breadcrumb-item"><a href="index.php?rt=user">Home page</a></li>
+        <li class="breadcrumb-item active">Your info</li>
     </ol>
 </nav>
-<h1 class="h2">Other settings</h1>
+<h1 class="h2">Your info</h1>
 <p>Here you can change some of your information.</p>
 
 

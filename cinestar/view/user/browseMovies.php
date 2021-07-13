@@ -1,11 +1,11 @@
 
 <?php include __DIR__ . '/../_header.php'; ?>
-<script src="js/search/search.js"></script>
+
 
 
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="index.php?rt=user">Dashboard</a></li>
+        <li class="breadcrumb-item"><a href="index.php?rt=user">Main page</a></li>
         <li class="breadcrumb-item active">Movies</li>
     </ol>
 </nav>
@@ -14,9 +14,9 @@
 
 
 
-
+<script src="js/search/search.js"></script>
 <div class="card">
-    <h5 class="card-header">Search <input type="text" id="search"><span class="text"></span></h5>
+    <h5 class="card-header">Search <input type="text" id="search" onkeyup="search()" placeholder="Search for movies.."><span class="text"></span></h5>
     <div class="card-body">
         
 
@@ -77,8 +77,8 @@ div.img{
     width:25%;
 }
 img{
-    width:100%;
-    height:100%;
+    width:300px;
+    
 }
 </style>
 

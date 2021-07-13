@@ -5,10 +5,10 @@
 
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item active">Dashboard</li>
+        <li class="breadcrumb-item active">Home page</li>
     </ol>
 </nav>
-<h1 class="h2">Dashboard</h1>
+<h1 class="h2">Home page</h1>
 <p>This is the main dashboard for admin.</p>
 
 <!--HORIZ CONTAINER

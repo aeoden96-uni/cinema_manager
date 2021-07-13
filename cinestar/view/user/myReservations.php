@@ -4,7 +4,7 @@
 
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="index.php?rt=user">Dashboard</a></li>
+        <li class="breadcrumb-item"><a href="index.php?rt=user">Home page</a></li>
         <li class="breadcrumb-item active">My reservations</li>
     </ol>
 </nav>
@@ -20,7 +20,7 @@
                 <thead>
                     <tr>
                     <th scope="col">Movie</th>
-                    <th scope="col">Dvorana</th>
+                    <th scope="col">Hall</th>
                     <th scope="col">Date and Time</th>
                     <th scope="col">Number of Tickets</th>
                     <th scope="col">Open QR code</th>

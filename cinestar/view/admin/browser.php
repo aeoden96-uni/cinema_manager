@@ -7,7 +7,7 @@
 
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="index.php?rt=ucenik">Main Page</a></li>
+        <li class="breadcrumb-item"><a href="index.php?rt=ucenik">Home page</a></li>
         <li class="breadcrumb-item active">Employees</li>
     </ol>
 </nav>
@@ -26,6 +26,7 @@
                     <th scope="col">ID</th>
                     <th scope="col">Name</th>
                     <th scope="col">Email</th>
+                    <th scope="col"></th>
                     </tr>
                 </thead>
                 <tbody>

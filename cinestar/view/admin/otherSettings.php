@@ -4,7 +4,7 @@
 
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="index.php?rt=ucenik">Dashboard</a></li>
+        <li class="breadcrumb-item"><a href="index.php?rt=ucenik">Home page</a></li>
         <li class="breadcrumb-item active">Other</li>
     </ol>
 </nav>
