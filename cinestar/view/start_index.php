@@ -41,7 +41,7 @@ function yesno(thecheckbox, thelabel,checkbox_conditions) {
 
 
 <div class="container">
-	<br>  <h3 class="text-center">Cinestar<sup>2.0</sup></h3>
+	<br>  <h3 class="text-center">Throwback Cinema</h3>
 	<hr>
 
 	<div class="row">
