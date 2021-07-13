@@ -44,7 +44,7 @@
                         $num_of_tics = $reservation['tics'];
                         echo '<td>' . $num_of_tics . '</td>';
                         $qt="'";
-                        echo '<td><button onClick="openCode('. $reservation['projection']-> id . ',' . $qt.$ime.$qt. ');" class="btn btn-info">Open</button></td>';
+                        echo '<td><button onClick="openCode('. $reservation['id'] . ',' . $qt.$ime.$qt. ');" class="btn btn-info">Open</button></td>';
                         echo '<td><button class="btn btn-warning"><a class="cancel" href="index.php?rt=user/cancel/'.$reservation['id']. '">Cancel reservation</a></button></td>';
                         echo '</tr>';
                     }

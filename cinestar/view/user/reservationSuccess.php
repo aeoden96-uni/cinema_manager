@@ -9,7 +9,7 @@
 </nav>
 
 <div id="elem">
-    <h1 class="h2">Reservation confirmation<?php echo $reservation_id;?></h1>
+    <h1 class="h2">Reservation confirmation <?php echo $reservation_id;?></h1>
     <p>You can print this confirmation or show it over the phone to cinema employee.</p>
     <img src="https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=<?php echo "reservationId%3A". $reservation_id . "%20" . "user%3A" . $ime;?>&choe=UTF-8" title="Confirmation" />
 

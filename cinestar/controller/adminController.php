@@ -1,7 +1,6 @@
 <?php
 
-//require_once __DIR__ . '/../model/globalservice.class.php';
-//require_once __DIR__ . '/../model/mongoservice.class.php';
+
 require_once __DIR__ . '/../model/cinemaservice.class.php';
 
 
@@ -25,79 +24,40 @@ class AdminController
 
 
 
-	public function index() {
+	public function index($danOdDanas = -1) {
 		session_start();
         $this->checkPrivilege();
 
-        $ucenikName=$_SESSION["username"];
+        $status = session_status();
+        if($status == PHP_SESSION_NONE){
+            //There is no active session
+            session_start();
+        }
+        $this->checkPrivilege();
+       
         $activeInd=0;
-        
-        $ime=$_SESSION["username"];
-        $naziv=$ime;
 
+        $naziv=$_SESSION["naziv"];
+        $ime=$_SESSION["username"];
+        $movieList=null;
         
+        $cs = new CinemaService();
+
+        $date='';
+        if($danOdDanas == -1)
+            $date= date("Y-m-d");
+        else
+            $date= date("Y-m-").$danOdDanas ;
+        
+        $cinema = $cs -> getCinemaInfo();
+        $movieList = $cs -> getAllProjectionsForDate($date);
         $USERTYPE=$this->USERTYPE;
         require_once __DIR__ . '/../view/'.$USERTYPE.'/index.php';   
 
 	}
 
-    function lockSwitch(){
-        session_start();
-        $this->checkPrivilege();
-        $g= new GlobalService();
-        $g->switchLockBool(!$g->getLockBool());
-        header( 'Location: index.php?rt=admin');
-		exit();
-   
-    }
-
-    function resultsSwitch(){
-        session_start();
-        $this->checkPrivilege();
-        $g= new GlobalService();
-
-        $g->switchResultsBool(!$g->getResultsBool());
-
-        header( 'Location: index.php?rt=admin');
-		exit();
-   
-    }
-
     
-	public function start() {
-		session_start();
-        $this->checkPrivilege();
-        
-        $ucenikName=$_SESSION["username"];
-        $USERTYPE=$this->USERTYPE;
-        $g= new GlobalService();
-        $m= new MongoService();
-
-        $m->startAggreagtion();
-
-        $g->switchAgregBool(true);
-
-        //header( 'Location: index.php?rt=admin');
-		//exit();  
-
-	}
-	public function reset() {
-		session_start();
-        $this->checkPrivilege();
-        
-        $ucenikName=$_SESSION["username"];
-        $USERTYPE=$this->USERTYPE;
-        $g= new GlobalService();
-        $m= new MongoService();
-
-        $m->resetAggreagtion();
-
-        $g->switchAgregBool(false);
-
-        header( 'Location: index.php?rt=admin');
-		exit();
-
-	}
+    
 
     public function browser(){
 
