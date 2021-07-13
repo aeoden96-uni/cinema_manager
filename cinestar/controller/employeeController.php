@@ -63,17 +63,26 @@ class employeeController
     public function myInfo() {
 		session_start();
         $this->checkPrivilege();
-
-        //$m= new MongoService();
         $naziv=$_SESSION["naziv"];
         $ime=$_SESSION["username"];
-        //$list=$m->returnUcenikWithId("60b6d0a2b000b1fc8a909a6f");
-        //$employee=$m->returnemployeeWithUsername($ime);
+        $id = $_SESSION['user_id'];
 
-       
+        $cs = new CinemaService();
 
+        if( isset($_POST['password']))
+            $cs -> changePassByEmployeeId( $id, $_POST['password']);
+        if( isset($_POST['email'] ) ){
+            if( filter_var($_POST['email'], FILTER_VALIDATE_EMAIL) ){
+                $cs -> changeEmailByEmployeeId( $id, $_POST['email']);
+        }
+        else{
+            $_SESSION['error'] = 'Wrong email adress! Try again';
+            header( 'Location: index.php?rt=user/otherSettings');
+            exit();
+        }
+            
+    }
 
-        $ucenikName=$_SESSION["username"];
         $activeInd=1;
         
         $USERTYPE=$this->USERTYPE;
