@@ -188,8 +188,8 @@ class StartController
 			$_SESSION["account_type"] = "employee";
 			$_SESSION["user_id"]= $user->id;
 			$_SESSION["user_name"]= $user->ime;
-			$_SESSION["username"]= (string)$user->username;	
-			$_SESSION["naziv"]= (string)$user->username;	
+			$_SESSION["username"]= (string)$user->ime;	
+			$_SESSION["naziv"]= (string)$user->ime;	
 
 			header("Refresh:2; url=index.php?rt=employee");
 		}

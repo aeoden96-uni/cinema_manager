@@ -2,12 +2,12 @@
 
 class Employee
 {
-    protected $id, $ime, $username;
+    protected $id, $ime, $email;
 
     function __construct( $id, $username, $email )
 	{
 		$this->id = $id;
-		$this->username = $username;
+		$this->ime = $username;
 		$this->email = $email;
 	}
 

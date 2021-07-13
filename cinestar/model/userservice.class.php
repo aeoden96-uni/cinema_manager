@@ -53,7 +53,7 @@ class UserService
         if (isset($row['id']))
         {
             if( password_verify( $password, $row['password_hash'] ) )
-                $employee = new Employee($row['id'], $row['ime'], $row['email'], $password);                
+                $employee = new Employee($row['id'], $row['ime'], $row['email']);                
             else
                 return 'incorrect';
         } else
