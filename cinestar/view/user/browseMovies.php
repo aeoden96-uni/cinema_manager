@@ -1,10 +1,6 @@
 
-<?php include __DIR__ . '/../_header.php'; 
-
-
-
-
-?>
+<?php include __DIR__ . '/../_header.php'; ?>
+<script src="js/search/search.js"></script>
 
 
 <nav aria-label="breadcrumb">
