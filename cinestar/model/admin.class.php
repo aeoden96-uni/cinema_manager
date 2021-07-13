@@ -1,6 +1,6 @@
 <?php
 
-class User
+class Admin
 {
     protected $id, $ime, $username, $password;
 

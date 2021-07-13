@@ -21,16 +21,33 @@ INSERT INTO `film` (`id`, `ime`) VALUES
 CREATE TABLE IF NOT EXISTS `korisnik` (
   `id` int NOT NULL AUTO_INCREMENT,
   `ime` varchar(20) COLLATE utf8_croatian_ci DEFAULT NULL,
-  `password` varchar(20) COLLATE utf8_croatian_ci NOT NULL,
+  `username` varchar(20) COLLATE utf8_croatian_ci DEFAULT NULL,
+  `password_hash` varchar(20) COLLATE utf8_croatian_ci NOT NULL,
   `register_sequence` varchar(30) COLLATE utf8_croatian_ci DEFAULT NULL,
   `has_registered` int NOT NULL DEFAULT '0',
   `popust` float NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
 );
 
-INSERT INTO `korisnik` (`id`, `ime`, `password`, `register_sequence`, `has_registered`, `popust`) VALUES
-(1, 'Mirko', 'm', '1234', 1, 0.25),
+INSERT INTO `korisnik` (`id`, `ime`, `username`, `password_hash`, `register_sequence`, `has_registered`, `popust`) VALUES
+(1, 'Mirko', 'mirko96', 'm', '1234', 1, 0.25),
 (2, 'Nikša', 'n', '1', 0, 0.5);
+
+CREATE TABLE IF NOT EXISTS `employee` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `ime` varchar(20) COLLATE utf8_croatian_ci DEFAULT NULL,
+  `username` varchar(20) COLLATE utf8_croatian_ci DEFAULT NULL,
+  `password_hash` varchar(1000) COLLATE utf8_croatian_ci NOT NULL,
+  PRIMARY KEY (`id`)
+);
+
+CREATE TABLE IF NOT EXISTS `admin` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `ime` varchar(20) COLLATE utf8_croatian_ci DEFAULT NULL,
+  `username` varchar(20) COLLATE utf8_croatian_ci DEFAULT NULL,
+  `password_hash` varchar(1000) COLLATE utf8_croatian_ci NOT NULL,
+  PRIMARY KEY (`id`)
+);
 
 CREATE TABLE IF NOT EXISTS `prikaz` (
   `id` int NOT NULL AUTO_INCREMENT,
