@@ -282,6 +282,35 @@ class employeeController
 
     }
 
+    public function viewProjection( $id )
+    {
+        session_start();
+        $this->checkPrivilege();
+        $naziv=$_SESSION["naziv"];
+        $ime=$_SESSION["username"];
+
+        $USERTYPE=$this->USERTYPE;
+
+        $cs = new CinemaService();
+
+        $reservations = $cs -> getREservationsByProjectionId( $id );
+
+        $proj_id= $cs->getProjectionIdByReservationId($id);
+        $projection = $cs -> getProjectionById( $id );
+        $movie = $cs -> getMovieByProjectionId( $id );
+
+        $hall_id = $cs -> getHallIdByProjectionId( $id );
+
+        if($proj_id == null) {
+            header( 'Location: index.php?rt=$USERTYPE');
+			exit();
+        }
+
+        $size=$cs->getSizeOfHallByProjectionId( $proj_id);
+
+        require_once __DIR__ . '/../view/'.$USERTYPE.'/viewProjection.php'; 
+    }
+
 
     public function vratiRezervMjesta()
     {

@@ -4,6 +4,7 @@ require_once __DIR__ . '/employee.class.php';
 require_once __DIR__ . '/movie.class.php';
 require_once __DIR__ . '/seat.class.php';
 require_once __DIR__ . '/projection.class.php';
+require_once __DIR__ . '/reservation.class.php';
 
 
 
@@ -392,7 +393,7 @@ class CinemaService
 		{
 			$db = DB::getConnection();
 			$st = $db->prepare( 'SELECT sjedalo.red,sjedalo.broj_u_redu ,sjedalo.rezervacija_id
-									FROM sjedalo,rezervacija,prikaz 
+									FROM sjedalo, rezervacija, prikaz 
 									WHERE sjedalo.rezervacija_id=rezervacija.id 
 									AND prikaz.id=rezervacija.prikaz_id 
 									AND prikaz.id=:id;');
@@ -710,7 +711,8 @@ class CinemaService
 		$arr = [];
 
 		while( $row = $st->fetch()){
-			$arr[] = new Reservation( $row['id'], $row['user_id'], $row['prikaz_id'], $row['broj_karata']);
+			$arr[] = ['reservation' => new Reservation( $row['id'], $row['user_id'], $row['prikaz_id'], $row['broj_karata']),
+						'seats' => $this->getReservedSeatsByReservationId($id)];
 		}
 
 		return $arr;

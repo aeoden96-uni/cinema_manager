@@ -46,7 +46,7 @@ $newProjLink="index.php?rt=employee/addProjection/".$movie -> id;
                                     if( $projection-> date === $date){
 
                                         
-                                        echo '<button class="btn btn-warning"><a class="time" onClick="deleteIt('.$projection->id.')" >'. substr($projection-> time, 0, -3) . '</a></button><br class="button">';
+                                        echo '<button class="btn btn-warning"><a class="time" ><a href="index.php?rt=employee/viewProjection/'.$projection->id.'">'. substr($projection-> time, 0, -3) . '</a></button><br class="button">';
                                     }
                                 }
                                 echo '</td>';
