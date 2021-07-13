@@ -134,9 +134,9 @@ function yesno(thecheckbox, thelabel,checkbox_conditions) {
 		<form action="index.php?rt=start/loginCheckAdmin" method="post">
 			
 			<div class="form-group">
-				<input style="margin-bottom:10px;" name="username" class="form-control" value="luka@b.com" placeholder="Admin username" >
+				<input style="margin-bottom:10px;" name="username" class="form-control" value="helena@b.com" placeholder="Admin username" >
 				
-				<input style="margin-bottom:10px;" name="password" class="form-control" value="lukinasifra" placeholder="******" type="password">
+				<input style="margin-bottom:10px;" name="password" class="form-control" value="heleninasifra" placeholder="******" type="password">
 				
 				<button type="submit" class="btn btn-primary btn-block"> Sign in  </button>
 				                                   

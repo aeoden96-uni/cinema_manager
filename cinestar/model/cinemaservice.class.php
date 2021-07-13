@@ -622,7 +622,7 @@ class CinemaService
 		try
 		{
 			$db = DB::getConnection();
-			$st = $db->prepare('INSERT INTO radnik (id, ime, password_hash, email) VALUES(:id, :ime, :password_hash :email )');
+			$st = $db->prepare('INSERT INTO radnik (id, ime, password_hash, email) VALUES(:id, :ime, :password_hash, :email )');
 			$stt = $db -> prepare('SELECT MAX(id) AS id FROM radnik');
 			$stt->execute();
 			$row = $stt->fetch();
