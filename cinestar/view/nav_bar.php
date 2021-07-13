@@ -23,7 +23,6 @@
 			  
 			 <div class="btn-group" role="group" aria-label="Basic example">
 			  <button type="button" class="btn btn-secondary">Hello, <?php echo $ime; ?></button>
-			  <a type="button"  href="index.php?rt=<?php echo $this->USERTYPE;?>" class="btn btn-secondary">Settings</a>
 			  <a type="button" href="index.php?rt=start/logout" class="btn btn-secondary">Sign out</a>
 			</div>
         </div>

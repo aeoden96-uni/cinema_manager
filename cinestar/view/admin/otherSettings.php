@@ -5,11 +5,11 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="index.php?rt=ucenik">Home page</a></li>
-        <li class="breadcrumb-item active">Other</li>
+        <li class="breadcrumb-item active">Info</li>
     </ol>
 </nav>
-<h1 class="h2">Other settings</h1>
-<p>Here you can change some of global variables.</p>
+<h1 class="h2">Cinema info</h1>
+<p>Change info about Throwback Cinema.</p>
 
 
 <div class="col-12 col-xl-4 mb-4 mb-lg-0">
@@ -18,16 +18,30 @@
     <div class="form-group">
         <div class="input-group mb-3">
             <div class="input-group-prepend">
-                <span class="input-group-text" id="basic-addon3">Lock date</span>
+                <span class="input-group-text" id="basic-addon3">Adress</span>
             </div>
-            <input type="text" name="lockDate" class="form-control" id="basic-url" placeholder="<?php echo $lockDateString; ?>" aria-describedby="basic-addon3">
+            <input type="text" name="adress" class="form-control" id="basic-url" placeholder="Adress" aria-describedby="basic-addon3">
         </div>
 
         <div class="input-group mb-3">
             <div class="input-group-prepend">
-                <span class="input-group-text" id="basic-addon3">Results date</span>
+                <span class="input-group-text" id="basic-addon3">Email</span>
             </div>
-            <input type="text" name="resultDate" class="form-control" id="basic-url" placeholder="<?php echo $resultDateString; ?>" aria-describedby="basic-addon3">
+            <input type="text" name="email" class="form-control" id="basic-url" placeholder="Email" aria-describedby="basic-addon3">
+        </div>
+
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon3">Telephone number</span>
+            </div>
+            <input type="text" name="tel" class="form-control" id="basic-url" placeholder="Telephone number" aria-describedby="basic-addon3">
+        </div>
+
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon3">Working hours</span>
+            </div>
+            <input type="text" name="open" class="form-control" id="basic-url" placeholder="Working hours" aria-describedby="basic-addon3">
         </div>
 
        

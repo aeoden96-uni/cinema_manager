@@ -716,19 +716,87 @@ class CinemaService
 		return $arr;
 	}
 
-	/*function getReservedSeatsByReservationId( $id )
+	function getCinemaInfo()
 	{
 		try
 		{
 			$db = DB::getConnection();
-			$st = $db->prepare( 'SELECT * FROM sjedalo WHERE rezervacija_id=:id');
-			$st->execute( array( 'id' => $id) );
+			$st = $db->prepare( 'SELECT * FROM kino WHERE id=:id');
+			$st->execute( array( 'id' => 123) );
 
 		}
 		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
 
+		$row = $st->fetch();
 		$arr = [];
-	}*/
+		$arr['name'] = $row['ime'];
+		$arr['adress'] = $row['adresa'];
+		$arr['email'] = $row['email'];
+		$arr['tel'] = $row['tel'];
+		$arr['open'] = $row['radimo'];
+
+		return $arr;
+	}
+
+	function changePassByUserId( $id, $pass )
+	{
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare( 'UPDATE korisnik SET password_hash=:pass WHERE id=:id');
+			$st->execute( array( 'pass' => password_hash($pass, PASSWORD_DEFAULT ), 'id' => $id) );
+
+		}
+		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
+	}
+
+	function changeNameByUserId( $id, $name )
+	{
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare( 'UPDATE korisnik SET ime=:name WHERE id=:id');
+			$st->execute( array( 'name' => $name, 'id' => $id) );
+
+		}
+		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
+	}
+
+	function changeEmailByUserId( $id, $email )
+	{
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare( 'UPDATE korisnik SET email=:email WHERE id=:id');
+			$st->execute( array( 'email' => $email, 'id' => $id) );
+
+		}
+		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
+	}
+
+	function changePassByEmployeeId( $id, $pass )
+	{
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare( 'UPDATE radnik SET password_hash=:pass WHERE id=:id');
+			$st->execute( array( 'pass' => password_hash($pass, PASSWORD_DEFAULT ), 'id' => $id) );
+
+		}
+		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
+	}
+
+	function changeEmailByEmployeeId( $id, $email )
+	{
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare( 'UPDATE radnik SET email=:email WHERE id=:id');
+			$st->execute( array( 'email' => $email, 'id' => $id) );
+
+		}
+		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
+	}
 
 
 }

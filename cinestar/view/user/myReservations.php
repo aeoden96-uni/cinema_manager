@@ -19,6 +19,7 @@
             <table class="table">
                 <thead>
                     <tr>
+                    <th scope="col">Reservation ID</th>
                     <th scope="col">Movie</th>
                     <th scope="col">Hall</th>
                     <th scope="col">Date and Time</th>
@@ -32,6 +33,7 @@
                    <?php
                     foreach( $reservationList as $reservation){
                         echo '<tr>';
+                        echo '<td>' .$reservation['id'] .'</td>';
                         $str = '<h6>' . $reservation['movie']-> name. ' </h6>';
                         echo '<td>' . $str . '</td>';
                         $hall = $reservation['projection'] -> hall_id;

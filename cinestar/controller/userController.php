@@ -60,6 +60,8 @@ class userController
         
         $movieList = $cs -> getAllProjectionsForDate($date);
 
+        $cinema = $cs -> getCinemaInfo();
+
         $USERTYPE=$this->USERTYPE;
         require_once __DIR__ . '/../view/'.$USERTYPE.'/index.php';    
 
@@ -314,24 +316,29 @@ class userController
     public function otherSettingsCheck() {
 		session_start();
         $this->checkPrivilege();
-        $m= new MongoService();
+        $cs= new CinemaService();
         $ime=$_SESSION["user_name"];
         $naziv=$ime;
         $activeInd=5;
         
         $USERTYPE=$this->USERTYPE;
 
-        $student=$m->returnuserWithId($_SESSION["user_id"]);
-
-
-        if($_POST["username"] != null)
-            $m->changeuserWithId($_SESSION["user_id"],"username",$_POST["username"]);
-        
-        if($_POST["email"] != null)
-            $m->changeuserWithId($_SESSION["user_id"],"email",$_POST["email"]);
-        
-        if($_POST["password"] != null)
-            $m->changeuserWithId($_SESSION["user_id"],"password",$_POST["password"]);
+        if( isset($_POST['password']))
+            $cs -> changePassByUserId( $_SESSION['user_id'], $_POST['password']);
+        if( isset($_POST['username']))
+            $cs -> changeNameByUserId( $_SESSION['user_id'], $_POST['username']);
+        if( isset($_POST['email'] ) ){
+            if( filter_var($_POST['email'], FILTER_VALIDATE_EMAIL) ){
+                $cs -> changeEmailByUserId( $_SESSION['user_id'], $_POST['email']);
+            }
+            else{
+                $_SESSION['error'] = 'Wrong email adress! Try again';
+                header( 'Location: index.php?rt=user/otherSettings');
+                exit();
+            }
+                
+        }
+           
 
 
         header( 'Location: index.php?rt=user/otherSettings');

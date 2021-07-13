@@ -166,28 +166,12 @@ class AdminController
         session_start();
         $this->checkPrivilege();
         
-        $m= new MongoService();
+        $cs = new CinemaService();
         $activeInd=2;
-        $list=$m->returnAllFaks();
-
-        $user=$m->returnAdminWithUsername($_SESSION["username"]);
+        
+        //$user=$m->returnAdminWithUsername($_SESSION["username"]);
         
 
-
-        //GLOBAL
-        $g= new GlobalService();
-    
-        $lockDate= $g->getLockDate();
-        $lockDateString=$lockDate->toDateTime()->format('d.m.Y');
-
-        $resultDate= $g->getResultsDate();
-        $resultDateString=$resultDate->toDateTime()->format('d.m.Y');
-
-        $resultBool= $g->getResultsBool();
-        $lockBool= $g->getLockBool();
-        $agregBool=$g->getAgregBool();
-        ////////
-        
         $ime=$_SESSION["username"];
         $naziv=$ime;
        
