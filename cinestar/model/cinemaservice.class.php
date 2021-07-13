@@ -575,6 +575,8 @@ class CinemaService
 		if( $t1 + $dur1 >= $t2) return false; //valjda su to svi slučajevi
 		else if( $t2 + $dur2 >= $t1 ) return false;
 		else if( $t1 === $t2) return false;
+		else if( $t2 > $t1 && $t2 <= $t1 + $dur1) return false;
+		else if( $t1 > $t2 && $t1 <= $t2 + $dur2) return false;
 		else return true;
 	}
 
@@ -713,7 +715,7 @@ class CinemaService
 		return $arr;
 	}
 
-	function getReservedSeatsByReservationId( $id )
+	/*function getReservedSeatsByReservationId( $id )
 	{
 		try
 		{
@@ -725,7 +727,7 @@ class CinemaService
 		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
 
 		$arr = [];
-	}
+	}*/
 
 
 }

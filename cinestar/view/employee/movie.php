@@ -34,7 +34,7 @@ $newProjLink="index.php?rt=employee/addProjection/".$movie -> id;
                             <tr>
                              <?php 
                              foreach ( $dates as $date){                             
-                                echo '<th>' . $date . '</th>';
+                                echo '<th>' . datum($date) . '</th>';
                              }
                              ?>
                             </tr>
@@ -62,7 +62,7 @@ $newProjLink="index.php?rt=employee/addProjection/".$movie -> id;
                    
                 </tbody>
                 </table>
-                <tr><button class="btn btn-warning"><a href="index.php?rt=employee/addProjection/<?php echo $movie->id;?>">'Add new projection</a></button></tr>
+               
         </div>
         
     </div>
