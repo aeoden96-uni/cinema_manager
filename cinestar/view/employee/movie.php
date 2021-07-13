@@ -39,7 +39,7 @@
                                 echo '<td>';
                                 foreach( $projections as $projection ){
                                     if( $projection-> date === $date){
-                                        echo '<button class="btn btn-warning"><a class="time" href="index.php?rt=user/seatSelection/'.$projection->id.'">'. substr($projection-> time, 0, -3) . '</a></button><br class="button">';
+                                        echo '<button class="btn btn-warning"><a href="index.php?rt=employee/seatSelection/'.$projection->id.'">'. substr($projection-> time, 0, -3) . '</a></button><br class="button">';
                                     }
                                 }
                                 echo '</td>';
@@ -47,12 +47,15 @@
                             
                         ?>
                         </tr>
+                       
                         </table>
+                        
                     </td>
                     </tr>
-                    <button><a href="index.php?rt=employee/addProjection/<?php echo $movie->id;?>">'Add new projection</a></button>
+                   
                 </tbody>
                 </table>
+                <tr><button class="btn btn-warning"><a href="index.php?rt=employee/addProjection/<?php echo $movie->id;?>">'Add new projection</a></button></tr>
         </div>
         
     </div>
@@ -65,8 +68,16 @@
   display: none;
 }
 
-a.time{
+a{
     text-decoration: none;
+    color:black;
+}
+
+a:link {
+   color:inherit;
+}
+
+a:hover{
     color:black;
 }
 

@@ -9,7 +9,7 @@
 
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="index.php?rt=user">Dashboard</a></li>
+        <li class="breadcrumb-item"><a href="index.php?rt=employee">Dashboard</a></li>
         <li class="breadcrumb-item active">Movies</li>
     </ol>
 </nav>
@@ -25,21 +25,42 @@
         <div class="table-responsive">
             <table class="table">
                 <thead>
-                   <!--- <tr>
-                    <th scope="col">Movies</th>
-                    <th scope="col">Faculty name</th>
-
-                    </tr>-->
+                  
                 </thead>
                 <tbody>
                 <?php
-                    foreach( $movieList as $movie){
-                        $img = $movie['movie']-> name . '.jpg';
-                        echo '<tr>';
-                        $str = '<h4><a class="title" href="index.php?rt=user/movie/'. $movie['movie']-> id .'">' . $movie['movie']-> name. '</a></h4> ';
-                        echo '<td>' .$str . '<div class="img"><img src="img/'. $img .'"></div></td>';
-                        echo '</tr>';
-                    }
+                   
+            $i=0;
+            foreach( $movieList as $movie){
+                
+                if($i % 3 == 0){
+                    echo '<div class="row">';
+                }
+                echo '<div style="margin-top: 50px;" class="col">';
+                $img = $movie['movie']-> name . '.jpg';
+               
+                $str = '<h4><a class="title" href="index.php?rt=employee/movie/'. $movie['movie']-> id .'">' . $movie['movie']-> name. '</a></h4> ';
+                echo $str . '<img src="img/'. $img .'">';
+                echo '</tr>';
+
+                echo '</div>';
+                if($i % 3 == 2){
+                    echo ' </div>';
+                    
+                }
+
+                $i +=1;
+            }
+            if($i % 3 == 2){
+                
+                echo '<div style width="30%;"class="col">';
+                    echo ' </div>'; //GOTOV ROW
+            }else if($i % 3 == 1){
+                echo '<div style width="30%;"class="col">';
+                echo ' </div>'; //GOTOV ROW
+                echo '<div style width="30%;"class="col">';
+                    echo ' </div>'; //GOTOV ROW
+            }
                 ?>
                 </script>    
                    
