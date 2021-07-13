@@ -1,7 +1,7 @@
 <?php
 
-//require_once __DIR__ . '/../model/globalservice.class.php';
-//require_once __DIR__ . '/../model/mongoservice.class.php';
+
+require_once __DIR__ . '/../model/cinemaservice.class.php';
 
 
 
@@ -24,98 +24,43 @@ class AdminController
 
 
 
-
-
-
-	public function index() {
+	public function index($danOdDanas = -1) {
 		session_start();
         $this->checkPrivilege();
 
-        $ucenikName=$_SESSION["username"];
+        $status = session_status();
+        if($status == PHP_SESSION_NONE){
+            //There is no active session
+            session_start();
+        }
+        $this->checkPrivilege();
+       
         $activeInd=0;
 
-
-        //$g= new GlobalService();
-    
-        //$lockDate= $g->getLockDate();
-        //$lockDateString=$lockDate->toDateTime()->format('d.m.Y');
-
-        //$resultDate= $g->getResultsDate();
-        //$resultDateString=$resultDate->toDateTime()->format('d.m.Y');
-
-        //$resultBool= $g->getResultsBool();
-        //$lockBool= $g->getLockBool();
-        //$agregBool=$g->getAgregBool();
-
-        
+        $naziv=$_SESSION["naziv"];
         $ime=$_SESSION["username"];
-        $naziv=$ime;
-
+        $movieList=null;
         
+        $cs = new CinemaService();
+
+        $date='';
+        if($danOdDanas == -1)
+            $date= date("Y-m-d");
+        else
+            $date= date("Y-m-").$danOdDanas ;
+        
+        $cinema = $cs -> getCinemaInfo();
+        $movieList = $cs -> getAllProjectionsForDate($date);
         $USERTYPE=$this->USERTYPE;
         require_once __DIR__ . '/../view/'.$USERTYPE.'/index.php';   
 
 	}
 
-    function lockSwitch(){
-        session_start();
-        $this->checkPrivilege();
-        $g= new GlobalService();
-        $g->switchLockBool(!$g->getLockBool());
-        header( 'Location: index.php?rt=admin');
-		exit();
-   
-    }
-
-    function resultsSwitch(){
-        session_start();
-        $this->checkPrivilege();
-        $g= new GlobalService();
-
-        $g->switchResultsBool(!$g->getResultsBool());
-
-        header( 'Location: index.php?rt=admin');
-		exit();
-   
-    }
-
     
-	public function start() {
-		session_start();
-        $this->checkPrivilege();
-        
-        $ucenikName=$_SESSION["username"];
-        $USERTYPE=$this->USERTYPE;
-        $g= new GlobalService();
-        $m= new MongoService();
-
-        $m->startAggreagtion();
-
-        $g->switchAgregBool(true);
-
-        //header( 'Location: index.php?rt=admin');
-		//exit();  
-
-	}
-	public function reset() {
-		session_start();
-        $this->checkPrivilege();
-        
-        $ucenikName=$_SESSION["username"];
-        $USERTYPE=$this->USERTYPE;
-        $g= new GlobalService();
-        $m= new MongoService();
-
-        $m->resetAggreagtion();
-
-        $g->switchAgregBool(false);
-
-        header( 'Location: index.php?rt=admin');
-		exit();
-
-	}
+    
 
     public function browser(){
+
         session_start();
         $this->checkPrivilege();
         
@@ -123,39 +68,70 @@ class AdminController
         $activeInd=1;
         $ime=$_SESSION["username"];
         $naziv=$ime;
-
+        $cs = new CinemaService();
+        $employees = $cs -> getEmployees();
         
         $USERTYPE=$this->USERTYPE;
+
         require_once __DIR__ . '/../view/'.$USERTYPE.'/browser.php';    
+
     }
 
+    public function removeEmpl($id)
+    {
+        session_start();
+        $this->checkPrivilege();
+
+        $ime=$_SESSION["username"];
+        $naziv=$ime;
+        $cs = new CinemaService();
+        $employees = $cs -> removeEmployeeById( $id );
+        if( isset( $_SESSION['error'])){
+            $error = $_SESSION['error'];
+            $_SESSION['error'] = '';
+        }
+        else $error = '';
+        
+        $USERTYPE=$this->USERTYPE;
+        header( 'Location: index.php?rt=browser');
+    }
     
+    public function addEmpl() //dobiva preko posta
+    {
+        session_start();
+        $this->checkPrivilege();
+
+        $ime=$_SESSION["username"];
+        $naziv=$ime;
+        $cs = new CinemaService();
+
+        if( isset( $_POST['name']) && isset( $_POST['email']) && isset( $_POST['pass'])){
+            if( filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)){
+                $cs->addEmployee( $_POST['name'], $_POST['pass'], $_POST['email']);
+            }
+            else{
+                $_SESSION['error'] = 'Wrong input! Try again';
+                header( 'Location: index.php?rt=browser');
+            }
+        }
+        else{
+            $_SESSION['error'] = 'Wrong input! Try again';
+            header( 'Location: index.php?rt=browser');
+        }
+
+
+    }
+
     public function globalSettings(){
         session_start();
         $this->checkPrivilege();
         
-        $m= new MongoService();
+        $cs = new CinemaService();
         $activeInd=2;
-        $list=$m->returnAllFaks();
-
-        $user=$m->returnAdminWithUsername($_SESSION["username"]);
+        
+        //$user=$m->returnAdminWithUsername($_SESSION["username"]);
         
 
-
-        //GLOBAL
-        $g= new GlobalService();
-    
-        $lockDate= $g->getLockDate();
-        $lockDateString=$lockDate->toDateTime()->format('d.m.Y');
-
-        $resultDate= $g->getResultsDate();
-        $resultDateString=$resultDate->toDateTime()->format('d.m.Y');
-
-        $resultBool= $g->getResultsBool();
-        $lockBool= $g->getLockBool();
-        $agregBool=$g->getAgregBool();
-        ////////
-        
         $ime=$_SESSION["username"];
         $naziv=$ime;
        

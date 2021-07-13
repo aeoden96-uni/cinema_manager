@@ -1,55 +1,57 @@
 
-<?php include __DIR__ . '/../_header.php'; 
+<?php include __DIR__ . '/../_header.php'; ?>
 
+<script src="js/search/search.js"></script>
 
-
-
-?>
 
 
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="index.php?rt=user">Dashboard</a></li>
+        <li class="breadcrumb-item"><a href="index.php?rt=employee">Home page</a></li>
         <li class="breadcrumb-item active">Movies</li>
     </ol>
 </nav>
 <h1 class="h2">Movies <span class="text"></span></h1>
-<p>Choose which movie you want to see</p>
 
 
+<h5 class="card-header">Search <input type="text" id="search" onkeyup="search()" placeholder="Search for movies"><span class="text"></span></h5>
+<?php
+$filmovaURedu=3;
+$i=0;
+foreach( $movieList as $movie){
+    
+    if($i % $filmovaURedu == 0){
+        echo '<div class="row">';
+    }
 
 
-<div class="card">
-    <h5 class="card-header">Search <input type="text" id="search"><<span class="text"></span></h5>
-    <div class="card-body">
-        <div class="table-responsive">
-            <table class="table">
-                <thead>
-                   <!--- <tr>
-                    <th scope="col">Movies</th>
-                    <th scope="col">Faculty name</th>
+        echo '<div style="margin-top: 50px;" class="col">';
+            $img = $movie['movie']-> name . '.jpg';
+            $str = '<h4><a class="title" href="index.php?rt=employee/movie/'. $movie['movie']-> id .'">' . $movie['movie']-> name. '</a></h4> ';
+            echo $str . '<img src="img/'. $img .'">';
+        echo '</div>';
 
-                    </tr>-->
-                </thead>
-                <tbody>
-                <?php
-                    foreach( $movieList as $movie){
-                        $img = $movie['movie']-> name . '.jpg';
-                        echo '<tr>';
-                        $str = '<h4><a class="title" href="index.php?rt=user/movie/'. $movie['movie']-> id .'">' . $movie['movie']-> name. '</a></h4> ';
-                        echo '<td>' .$str . '<div class="img"><img src="img/'. $img .'"></div></td>';
-                        echo '</tr>';
-                    }
-                ?>
-                </script>    
-                   
-                </tbody>
-                </table>
-        </div>
+
+    if($i % $filmovaURedu == $filmovaURedu-1){
+        echo ' </div>';
         
-        
-    </div>
-</div>
+    }
+
+    $i +=1;
+}
+
+
+while($i %$filmovaURedu !=0){
+    echo '<div style="margin-top: 50px;" class="col">';
+    echo ' </div>';
+    
+    $i +=1;
+}
+
+
+    
+    
+?>
 
 <style>
 a.title{
@@ -59,13 +61,10 @@ a.title{
 a.title:hover{
     background-color:lightgray;
 }
-div.img{
-    /*height:25%;*/
-    width:25%;
-}
+
 img{
-    width:100%;
-    height:100%;
+    width:300px;
+    
 }
 </style>
 

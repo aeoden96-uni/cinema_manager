@@ -34,7 +34,7 @@ class userController
 	}
 
 
-	public function index() {
+	public function index($danOdDanas =-1) {
 		session_start();
         $this->checkPrivilege();
         //$m= new MongoService();
@@ -49,20 +49,18 @@ class userController
         $student="";
         $new_list="";
 
-        ////////////////GLOBAL SETTINGS
-        //$g= new GlobalService();
-    
-        $lockDate= "";
-        $lockDateString="";
+       
 
-        $resultDate= "";
-        $resultDateString="";
-
-        $resultBool= "";
-        $lockBool= "";
+        $date='';
+        if($danOdDanas == -1)
+            $date= date("Y-m-d");
+        else
+            $date= date("Y-m-").$danOdDanas ;
         
-        ////////////////GLOBAL SETTINGS
+        
+        $movieList = $cs -> getAllProjectionsForDate($date);
 
+        $cinema = $cs -> getCinemaInfo();
 
         $USERTYPE=$this->USERTYPE;
         require_once __DIR__ . '/../view/'.$USERTYPE.'/index.php';    
@@ -77,8 +75,10 @@ class userController
         
         if(!isset($_POST["seats"])) return;
         if(!isset($_POST["prikaz"])) return;
-        $korisnik_id=1;
         
+        
+        
+        $korisnik_id=1;
         $seats=[];
 
         //PRERADITI,PROBLEM S POSTom
@@ -101,8 +101,8 @@ class userController
         $m=$cs -> insertNewReservations($seats, $_POST["prikaz"] ,$korisnik_id);
         
         $message=[];
-        $message[ 'uspjeh' ] = $m['uspjeh'];
-        $message[ 'rezervacija' ] = $m['rezervacija'];
+        $message[ 'uspjeh' ] =$m[ 'uspjeh' ];
+        $message[ 'rezervacija' ] =$m[ 'rezervacija' ];
         
 
 
@@ -186,36 +186,7 @@ class userController
 
 
 
-   /* public function myListPushUp($index){
-        session_start();
-        $this->checkPrivilege();
-        $m= new MongoService();
 
-        $student=$m->returnuserWithId($_SESSION["user_id"]);
-
-        $lista= $student->lista_fakulteta;
-
-
-        $m->pushNewListToStudentWithId($_SESSION["user_id"],$lista,$index,"UP");
-
-        //echo "<script>console.log(".$lista.");</script>";
-        header( 'Location: index.php?rt=user/myList');
-		exit();
-    }
-    public function myListPushDown($index){
-        session_start();
-        $this->checkPrivilege();
-        $m= new MongoService();
-
-        $student=$m->returnuserWithId($_SESSION["user_id"]);
-
-        $lista= $student->lista_fakulteta;
-
-        $m->pushNewListToStudentWithId($_SESSION["user_id"],$lista,$index,"DOWN");
-
-        header( 'Location: index.php?rt=user/myList');
-		exit();
-    }*/
 
 
 
@@ -345,24 +316,29 @@ class userController
     public function otherSettingsCheck() {
 		session_start();
         $this->checkPrivilege();
-        $m= new MongoService();
+        $cs= new CinemaService();
         $ime=$_SESSION["user_name"];
         $naziv=$ime;
         $activeInd=5;
         
         $USERTYPE=$this->USERTYPE;
 
-        $student=$m->returnuserWithId($_SESSION["user_id"]);
-
-
-        if($_POST["username"] != null)
-            $m->changeuserWithId($_SESSION["user_id"],"username",$_POST["username"]);
-        
-        if($_POST["email"] != null)
-            $m->changeuserWithId($_SESSION["user_id"],"email",$_POST["email"]);
-        
-        if($_POST["password"] != null)
-            $m->changeuserWithId($_SESSION["user_id"],"password",$_POST["password"]);
+        if( isset($_POST['password']))
+            $cs -> changePassByUserId( $_SESSION['user_id'], $_POST['password']);
+        if( isset($_POST['username']))
+            $cs -> changeNameByUserId( $_SESSION['user_id'], $_POST['username']);
+        if( isset($_POST['email'] ) ){
+            if( filter_var($_POST['email'], FILTER_VALIDATE_EMAIL) ){
+                $cs -> changeEmailByUserId( $_SESSION['user_id'], $_POST['email']);
+            }
+            else{
+                $_SESSION['error'] = 'Wrong email adress! Try again';
+                header( 'Location: index.php?rt=user/otherSettings');
+                exit();
+            }
+                
+        }
+           
 
 
         header( 'Location: index.php?rt=user/otherSettings');

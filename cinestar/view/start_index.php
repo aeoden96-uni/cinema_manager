@@ -41,18 +41,18 @@ function yesno(thecheckbox, thelabel,checkbox_conditions) {
 
 
 <div class="container">
-	<br>  <h3 class="text-center">Cinestar<sup>2.0</sup></h3>
+	<br>  <h3 class="text-center">Throwback Cinema</h3>
 	<hr>
 
 	<div class="row">
 	<aside class="col-sm-4">
-	<p>Login za korisnike</p>
+	<p>Login as user</p>
 
 	<div class="card">
 	<article class="card-body">
+
 		<a href="index.php?rt=start/signup" class="float-right btn btn-outline-primary">Sign up</a>
 		<h4 class="card-title mb-4 mt-1">Korisnik</h4>
-		
 		<hr>
 		<form action="index.php?rt=start/loginCheckUser" method="post">
 			<!--<div class="form-check form-switch">
@@ -64,7 +64,7 @@ function yesno(thecheckbox, thelabel,checkbox_conditions) {
 				
 				<input style="margin-bottom:10px;"  name="password" class="form-control" value="Lozinka63" placeholder="******" type="password">
 			
-				<button type="submit" class="btn btn-primary btn-block"> Prijava  </button>
+				<button type="submit" class="btn btn-primary btn-block"> Sign in  </button>
 				
 				
 			</div> <!-- form-group// -->  
@@ -76,12 +76,12 @@ function yesno(thecheckbox, thelabel,checkbox_conditions) {
 
 	</aside> <!-- col.// -->
 	<aside class="col-sm-4">
-	<p>Login za radnike</p>
+	<p>Login as employee</p>
 
 	<div class="card">
 	<article class="card-body">
-		<!-- <a href="" class="float-right btn btn-outline-primary">Sign up</a> -->
-		<h4 class="card-title mb-4 mt-1">Radnik</h4>
+		<!--<a href="" class="float-right btn btn-outline-primary">Sign up</a>-->
+		<h4 class="card-title mb-4 mt-1">Employee</h4>
 
 		<hr>
 		<form action="index.php?rt=start/loginCheckEmployee" method="post">
@@ -91,7 +91,7 @@ function yesno(thecheckbox, thelabel,checkbox_conditions) {
 				
 				<input style="margin-bottom:10px;" name="password" class="form-control" value="USO8sxUP" placeholder="******" type="password">
 				
-				<button type="submit" class="btn btn-primary btn-block"> Prijava  </button>
+				<button type="submit" class="btn btn-primary btn-block"> Sign in  </button>
 				                                
 			</div> <!-- form-group// -->  
 					
@@ -102,12 +102,12 @@ function yesno(thecheckbox, thelabel,checkbox_conditions) {
 
 	</aside> <!-- col.// -->
 	<aside class="col-sm-4">
-	<p>Login za admine</p>
+	<p>Login as admin</p>
 
 	<div class="card">
 	<article class="card-body">
 		<!--<a href="" class="float-right btn btn-outline-primary">Sign up</a>-->
-		<h4 class="card-title mb-4 mt-1">Administrator</h4>
+		<h4 class="card-title mb-4 mt-1">Admin</h4>
 
 		<hr>
 		<form action="index.php?rt=start/loginCheckAdmin" method="post">
@@ -117,7 +117,7 @@ function yesno(thecheckbox, thelabel,checkbox_conditions) {
 				
 				<input style="margin-bottom:10px;" name="password" class="form-control" value="QgJegvBFRDX" placeholder="******" type="password">
 				
-				<button type="submit" class="btn btn-primary btn-block"> Prijava  </button>
+				<button type="submit" class="btn btn-primary btn-block"> Sign in  </button>
 				                                   
 			</div> <!-- form-group// -->  
 					

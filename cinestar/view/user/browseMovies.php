@@ -1,15 +1,11 @@
 
-<?php include __DIR__ . '/../_header.php'; 
+<?php include __DIR__ . '/../_header.php'; ?>
 
-
-
-
-?>
 
 
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="index.php?rt=user">Dashboard</a></li>
+        <li class="breadcrumb-item"><a href="index.php?rt=user">Home page</a></li>
         <li class="breadcrumb-item active">Movies</li>
     </ol>
 </nav>
@@ -18,30 +14,51 @@
 
 
 
-
+<script src="js/search/search.js"></script>
 <div class="card">
-    <h5 class="card-header">Search <input type="text" id="search"><span class="text"></span></h5>
+    <h5 class="card-header">Search <input type="text" id="search" onkeyup="search()" placeholder="Search for movies"><span class="text"></span></h5>
     <div class="card-body">
-        <div class="table-responsive">
-            <table class="table">
+        
 
-                <tbody>
-                <?php
-                    foreach( $movieList as $movie){
-                        $img = $movie['movie']-> name . '.jpg';
-                        echo '<tr>';
-                        $str = '<h4><a class="title" href="index.php?rt=user/movie/'. $movie['movie']-> id .'">' . $movie['movie']-> name. '</a></h4> ';
-                        echo '<td>' .$str . '<div class="img"><img src="img/'. $img .'"></div></td>';
-                        echo '</tr>';
-                    }
-                ?>
-                </script>    
-                   
-                </tbody>
-                </table>
-        </div>
-        
-        
+
+               
+        <?php
+
+            $i=0;
+            foreach( $movieList as $movie){
+                
+                if($i % 3 == 0){
+                    echo '<div class="row">';
+                }
+                echo '<div style="margin-top: 50px;" class="col">';
+                $img = $movie['movie']-> name . '.jpg';
+               
+                $str = '<h4><a class="title" href="index.php?rt=user/movie/'. $movie['movie']-> id .'">' . $movie['movie']-> name. '</a></h4> ';
+                echo $str . '<img src="img/'. $img .'">';
+                echo '</tr>';
+
+                echo '</div>';
+                if($i % 3 == 2){
+                    echo ' </div>';
+                    
+                }
+
+                $i +=1;
+            }
+            if($i % 3 == 2){
+                
+                echo '<div style width="30%;"class="col">';
+                    echo ' </div>'; //GOTOV ROW
+            }else if($i % 3 == 1){
+                echo '<div style width="30%;"class="col">';
+                echo ' </div>'; //GOTOV ROW
+                echo '<div style width="30%;"class="col">';
+                    echo ' </div>'; //GOTOV ROW
+            }
+                
+                
+        ?>
+                    
     </div>
 </div>
 
@@ -58,10 +75,11 @@ div.img{
     width:25%;
 }
 img{
-    width:100%;
-    height:100%;
+    width:300px;
+    
 }
 </style>
+
 
 
 

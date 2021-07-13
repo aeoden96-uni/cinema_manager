@@ -1,7 +1,7 @@
 <nav class="navbar navbar-light bg-light p-3">
         <div class="d-flex col-12 col-md-3 col-lg-2 mb-2 mb-lg-0 flex-wrap flex-md-nowrap justify-content-between">
             <a class="navbar-brand" href="#">
-                Dashboard
+                Throwback Cinema
             </a>
             <button class="navbar-toggler d-md-none collapsed mb-3" type="button" data-toggle="collapse" data-target="#sidebar" aria-controls="sidebar" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -23,7 +23,6 @@
 			  
 			 <div class="btn-group" role="group" aria-label="Basic example">
 			  <button type="button" class="btn btn-secondary">Hello, <?php echo $ime; ?></button>
-			  <a type="button"  href="index.php?rt=<?php echo $this->USERTYPE;?>" class="btn btn-secondary">Settings</a>
 			  <a type="button" href="index.php?rt=start/logout" class="btn btn-secondary">Sign out</a>
 			</div>
         </div>

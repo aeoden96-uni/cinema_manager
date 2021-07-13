@@ -2,7 +2,7 @@
 
 
 <!--USED FOR SEAT SELECTION -->
-<script src="view/user/main.js"></script>
+<script src="js/seat_selection/main.js"></script>
 
 
 <nav aria-label="breadcrumb">
@@ -17,7 +17,7 @@
 <div class="row">
     <div class="col-12 col-xl-8 mb-4 mb-lg-0">
         <div style="margin-bottom: 10px;" class="card">
-            <h5 class="card-header"><?php echo $date . ' u ' . substr($projection -> time, 0, -3) . 'h';?></h5> 
+            <h5 class="card-header"><?php echo $date . ' at ' . substr($projection -> time, 0, -3) . 'h';?></h5> 
             <div class="card-body">
                 <canvas 
                     id="myBoard" 

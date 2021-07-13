@@ -4,7 +4,7 @@ class Reservation
 {
     protected $id, $user_id, $projection_id, $num_of_tics;
 
-    function __construct( $id, $user_id, $projection_id, $num_of_tics);
+    function __construct( $id, $user_id, $projection_id, $num_of_tics)
 	{
 		$this->id = $id;
         $this->user_id = $user_id;

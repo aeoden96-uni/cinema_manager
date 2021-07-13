@@ -1,12 +1,11 @@
 <?php
 
-//require_once __DIR__ . '/../model/globalservice.class.php';
-
-//require_once __DIR__ . '/../model/mongoservice.class.php';
-
 require_once __DIR__ . '/../model/cinemaservice.class.php';
 
-
+function datum ($date)
+{
+    return date_format(date_create($date), 'd.m.');
+}
 
 class employeeController
 {
@@ -26,14 +25,31 @@ class employeeController
 	}
 
 
-	public function index() {
-		session_start();
+	public function index($danOdDanas = -1) {
+		$status = session_status();
+        if($status == PHP_SESSION_NONE){
+            //There is no active session
+            session_start();
+        }
         $this->checkPrivilege();
        
         $activeInd=0;
 
         $naziv=$_SESSION["naziv"];
         $ime=$_SESSION["username"];
+        $movieList=null;
+        
+        $cs = new CinemaService();
+
+        $date='';
+        if($danOdDanas == -1)
+            $date= date("Y-m-d");
+        else
+            $date= date("Y-m-").$danOdDanas ;
+        
+        
+        $movieList = $cs -> getAllProjectionsForDate($date);
+        
         
 
 
@@ -62,55 +78,18 @@ class employeeController
         
         $USERTYPE=$this->USERTYPE;
 
-       
         require_once __DIR__ . '/../view/'.$USERTYPE.'/myInfo.php'; 
 
 	}
 
-
-
-    /*public function results() {
-		session_start();
-        $this->checkPrivilege();
-        $naziv=$_SESSION["naziv"];
-        $ime=$_SESSION["username"];
-        ////////////////GLOBAL SETTINGS
-        $g= new GlobalService();
-        $m= new MongoService();
-        $lockDate= $g->getLockDate();
-        $lockDateString=$lockDate->toDateTime()->format('d.m.Y');
-
-        $resultDate= $g->getResultsDate();
-        $resultDateString=$resultDate->toDateTime()->format('d.m.Y');
-
-        $resultBool= $g->getResultsBool();
-        $lockBool= $g->getLockBool();
-        
-        ////////////////GLOBAL SETTINGS
-        
-
-        if($resultBool){
-            $list=$m->getEnrolledStudentsForOIB($_SESSION["employee_oib"]);
-        }
-
-        
-
-        
-
-        $ucenikName=$_SESSION["username"];
-        $activeInd=4;
-        
-        $USERTYPE=$this->USERTYPE;
-        require_once __DIR__ . '/../view/'.$USERTYPE.'/results.php';    
-
-	}*/
 
     public function movie( $id )
     {
         session_start();
         $this->checkPrivilege();
 
-        $ime=$_SESSION["user_name"];
+        $ime=$_SESSION["username"];
+        $naziv=$_SESSION["naziv"];
 
         $naziv=$ime;
 
@@ -151,7 +130,9 @@ class employeeController
         $ime=$_SESSION["username"];
         $activeInd=2;
         $USERTYPE=$this->USERTYPE;
-        $error = $_SESSION['error'];
+        if( isset( $_SESSION['error']))
+            $error = $_SESSION['error'];
+        else $error = '';
         $_SESSION['error'] = '';
         require_once __DIR__ . '/../view/'.$USERTYPE.'/addMovie.php'; 
 
@@ -166,14 +147,28 @@ class employeeController
         $ime=$_SESSION["username"];
         $USERTYPE=$this->USERTYPE;
         $cs = new CinemaService();
-        if( isset($_POST['name']) && isset($_POST['desc']) && isset($_POST['year']) && isset($_POST['dur']) && isset($_POST['img']) ){
-            //provjera je li dobar oblik
-            $cs -> addNewMovie( $_POST['name'], $_POST['desc'], $_POST['year'], $_POST['dur']);
-            header('Location: index.php?rt=employee/browseMovies');
+        if( isset($_POST['name']) && isset($_POST['desc']) && isset($_POST['year']) && isset($_POST['dur']) ){
+            if( !isset($_FILES['img'])){
+                $_SESSION['error'] = 'Wrong file! Try again';
+                header('Location: index.php?rt=employee/addMovie');
+                exit();
+            }
+            if( preg_match("/^([1-2][0-9][0-9][0-9])$/", $_POST['year']) && preg_match("/^(([0-1][0-9])|([2][0-3])):[0-5][0-9]$/" , $_POST['dur'])){
+
+                $cs -> addNewMovie( $_POST['name'], $_POST['desc'], $_POST['year'], $_POST['dur']);
+                header('Location: index.php?rt=employee/browseMovies');
+                exit();
+            }
+            else{ 
+                $_SESSION['error'] = 'Wrong input! Try again';
+                header('Location: index.php?rt=employee/addMovie');
+                exit();
+            }
         }
         else{ 
             $_SESSION['error'] = 'Wrong input! Try again';
             header('Location: index.php?rt=employee/addMovie');
+            exit();
         }
         
     }
@@ -188,6 +183,10 @@ class employeeController
         $USERTYPE=$this->USERTYPE;
 
         $cs = new CinemaService();
+        if( isset( $_SESSION['error']))
+        $error = $_SESSION['error'];
+        else $error = '';
+        $_SESSION['error'] = '';
 
         $movie = $cs->getMovieById( $movie_id);
 
@@ -206,15 +205,142 @@ class employeeController
         $cs = new CinemaService();
 
         if( isset($_POST['hall']) && isset($_POST['date']) && isset($_POST['time']) ){
-            //provjera je li dobar oblik
-            $cs -> addNewProjection( $movie_id, (int)$_POST['hall'], $_POST['date'], $_POST['time'] );
-            header('Location: index.php?rt=employee/movie/' . $movie_id);
+            if( preg_match("/^(([0-1][0-9])|([2][0-3])):([0-5][0-9])$/" , $_POST['time'])){
+                $hall = $_POST['hall'];
+                $date = date('Y-m-d', strtotime($_POST['date']));
+                $time = $_POST['time'];
+                if( $cs -> checkIfTheNewProjectionIsOk($movie_id, $hall, $date, $time) ){
+                    $cs -> addNewProjection( $movie_id, $hall, $date, $time );
+                    header('Location: index.php?rt=employee/movie/' . $movie_id);
+                }
+                else{
+                    $_SESSION['error'] = 'There already is another projection at this time!';
+                    header('Location: index.php?rt=employee/addProjection/' . $movie_id);
+                    exit();
+                }
+            }
+            else{ 
+                $_SESSION['error'] = 'Wrong input preg! Try again';
+                header('Location: index.php?rt=employee/addProjection/' . $movie_id);
+                exit();
+            }
+            
         }
         else{ 
-            $_SESSION['error'] = 'Wrong input! Try again';
+            $_SESSION['error'] = 'Wrong input post! Try again';
             header('Location: index.php?rt=employee/addProjection/' . $movie_id);
+            exit();
         }
 
+        
+    }
+
+    public function removeProjection ($id )
+    {
+        session_start();
+        $this->checkPrivilege();
+        $naziv=$_SESSION["naziv"];
+        $ime=$_SESSION["username"];
+
+        $USERTYPE=$this->USERTYPE;
+
+        $cs = new CinemaService();
+
+        $cs->removeProjectionById( $id );
+
+        $movie_id = $cs ->getMovieIdByProjectionId( $id );
+
+        header('Location: index.php?rt=employee/movie/' . $movie_id);
+
+    }
+
+    public function viewProjection( $id )
+    {
+        session_start();
+        $this->checkPrivilege();
+        $naziv=$_SESSION["naziv"];
+        $ime=$_SESSION["username"];
+
+        $USERTYPE=$this->USERTYPE;
+
+        $cs = new CinemaService();
+
+        $reservations = $cs -> getREservationsByProjectionId( $id );
+
+        $proj_id= $cs->getProjectionIdByReservationId($id);
+        $projection = $cs -> getProjectionById( $id );
+        $movie = $cs -> getMovieByProjectionId( $id );
+
+        $hall_id = $cs -> getHallIdByProjectionId( $id );
+
+        if($proj_id == null) {
+            header( 'Location: index.php?rt=$USERTYPE');
+			exit();
+        }
+
+        $size=$cs->getSizeOfHallByProjectionId( $proj_id);
+
+        require_once __DIR__ . '/../view/'.$USERTYPE.'/viewProjection.php'; 
+    }
+
+
+    public function vratiRezervMjesta()
+    {
+        $cs = new CinemaService();
+        $reservation_id = $_POST['id'];
+        $reservedSeats= $cs->getReservedSeatsByReservationId(  $reservation_id);
+
+        header( 'Content-type:application/json;charset=utf-8' );
+        echo json_encode($reservedSeats);
+        flush();
+    }
+    public function deleteProjection($proj_id)
+    {
+        echo "delete projection " .$proj_id." and all reservations with it...";
+    }
+    public function sell()
+    {
+        $cs = new CinemaService();
+
+        //AKCIJA ==sell -> prodaj
+        //AKCIJA == delete -> obrisi rez
+        $action = $_POST['action'];
+        $seats = $_POST['seats'];
+        $rez_id = $_POST['rez'];
+
+        
+
+        header( 'Content-type:application/json;charset=utf-8' );
+        echo json_encode($rez_id);
+        flush();
+    }
+
+    public function seatSelection()
+    {
+       
+        session_start();
+        $this->checkPrivilege();
+        $naziv=$_SESSION["naziv"];
+        $ime=$_SESSION["username"];
+
+        $USERTYPE=$this->USERTYPE;
+
+        $cs = new CinemaService();
+
+        $reservation_id = $_POST['id'];
+
+        $seats;
+
+        $proj_id= $cs->getProjectionIdByReservationId( $reservation_id);
+
+        if($proj_id == null) {
+            header( 'Location: index.php?rt=$USERTYPE');
+			exit();
+        }
+
+        $size=$cs->getSizeOfHallByProjectionId( $proj_id);
+    
+        require_once __DIR__ . '/../view/'.$USERTYPE.'/seatSelection.php'; 
         
     }
 }

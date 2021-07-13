@@ -45,12 +45,16 @@ switch(count($parts)){
 		$action = $parts[1];
 
 		if( !method_exists( $con, $action ) ){
-			$action = 'index';
+			$ind='index';
+			$con->$ind((string)$action);
+			break;
+		}
+		else{
 			$con->$action();
+			break;
 		}
 
-		$con->$action();
-		break;
+		
 	case 3:
 		$action = $parts[1];
 		$number = $parts[2];
