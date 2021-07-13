@@ -18,9 +18,9 @@
     <div class="form-group">
         <div class="input-group mb-3">
             <div class="input-group-prepend">
-                <span class="input-group-text" id="basic-addon3">Username</span>
+                <span class="input-group-text" id="basic-addon3">Name</span>
             </div>
-            <input type="text" name="username" class="form-control" id="basic-url" placeholder="" aria-describedby="basic-addon3">
+            <input type="text" name="name" class="form-control" id="basic-url" placeholder="" aria-describedby="basic-addon3">
         </div>
 
         <div class="input-group mb-3">

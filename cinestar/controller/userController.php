@@ -325,8 +325,8 @@ class userController
 
         if( isset($_POST['password']))
             $cs -> changePassByUserId( $_SESSION['user_id'], $_POST['password']);
-        if( isset($_POST['username']))
-            $cs -> changeNameByUserId( $_SESSION['user_id'], $_POST['username']);
+        if( isset($_POST['name']))
+            $cs -> changeNameByUserId( $_SESSION['user_id'], $_POST['name']);
         if( isset($_POST['email'] ) ){
             if( filter_var($_POST['email'], FILTER_VALIDATE_EMAIL) ){
                 $cs -> changeEmailByUserId( $_SESSION['user_id'], $_POST['email']);
