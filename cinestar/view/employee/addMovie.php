@@ -35,10 +35,7 @@
                 <input type="text" class="form-control"  name="dur" placeholder="hh:mm">
             </div>
             <br>
-            <div class="form-group">
-                <label for="exampleFormControlFile1">Image</label>
-                <input type="file" class="form-control-file"  name="img" >
-            </div>
+            After you add the movie, add the movie poster.
             <br>
             <button type="submit" class="btn btn-primary">Add</button>
             </form>

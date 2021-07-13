@@ -154,34 +154,6 @@ class employeeController
                 exit();
             }
             if( preg_match("/^([1-2][0-9][0-9][0-9])$/", $_POST['year']) && preg_match("/^(([0-1][0-9])|([2][0-3])):[0-5][0-9]$/" , $_POST['dur'])){
-                $target_dir = "/home/helena/Documents/";
-                $target_file = $target_dir . basename($_FILES["img"]["name"]);
-                $uploadOk = 1;
-                $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
-                // Check if image file is a actual image or fake image
-                //if(isset($_POST["submit"])) {
-                $check = getimagesize($_FILES["img"]["tmp_name"]);
-                if($check !== false) {
-                echo "File is an image - " . $check["mime"] . ".";
-                $uploadOk = 1;
-                } else {
-                 $uploadOk = 0;
-                }
-
-                if ($uploadOk == 0) {
-                    $_SESSION['error'] = 'Sorry, your file was not uploaded.';
-                    header('Location: index.php?rt=employee/addMovie');
-                    exit();
-                  // if everything is ok, try to upload file
-                  } else {
-                    if (move_uploaded_file($_FILES["img"]["tmp_name"], $target_file)) {
-                      echo "The file ". htmlspecialchars( basename( $_FILES["img"]["name"])). " has been uploaded.";
-                    } else {
-                      $_SESSION['error'] = "Sorry, there was an error uploading your file.";
-                      header('Location: index.php?rt=employee/addMovie');
-                      exit();
-                    }
-                  }
 
                 $cs -> addNewMovie( $_POST['name'], $_POST['desc'], $_POST['year'], $_POST['dur']);
                 header('Location: index.php?rt=employee/browseMovies');
