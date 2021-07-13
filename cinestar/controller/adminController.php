@@ -176,14 +176,14 @@ class AdminController
                 $_SESSION['error'] = 'Wrong input! Try again';
             }
         }
-        if( isset($_POST['tel'])){
+        if( isset($_POST['tel']) && $_POST['tel'] !==''){
             if( preg_match('/^[0-9]*$/', $_POST['tel']) && $_POST['tel'] !== '')
                 $cs-> changeCinemaTelephone( $_POST['tel']);
             else{
                 $_SESSION['error'] = 'Wrong input! Try again';
             }
         }
-        if( isset($_POST['open'])){
+        if( isset($_POST['open']) && $_POST['open'] !==''){
             if( preg_match('/^(([0-1][0-9])|([2][0-3])):[0-5][0-9]-(([0-1][0-9])|([2][0-3])):[0-5][0-9]$/', $_POST['open']))
                 $cs-> changeCinemaOpen( $_POST['open']);
             else{

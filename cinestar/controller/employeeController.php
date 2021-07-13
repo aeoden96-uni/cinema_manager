@@ -69,7 +69,7 @@ class employeeController
 
         $cs = new CinemaService();
 
-        if( isset($_POST['password']))
+        if( isset($_POST['password']) && $_POST['password'] !== '')
             $cs -> changePassByEmployeeId( $id, $_POST['password']);
         if( isset($_POST['email'] ) ){
             if( filter_var($_POST['email'], FILTER_VALIDATE_EMAIL) ){

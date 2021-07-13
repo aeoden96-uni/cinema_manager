@@ -323,9 +323,9 @@ class userController
         
         $USERTYPE=$this->USERTYPE;
 
-        if( isset($_POST['password']))
+        if( isset($_POST['password']) && $_POST['password'] !== '')
             $cs -> changePassByUserId( $_SESSION['user_id'], $_POST['password']);
-        if( isset($_POST['name']))
+        if( isset($_POST['name']) && $_POST['name'] !=='')
             $cs -> changeNameByUserId( $_SESSION['user_id'], $_POST['name']);
         if( isset($_POST['email'] ) ){
             if( filter_var($_POST['email'], FILTER_VALIDATE_EMAIL) ){
