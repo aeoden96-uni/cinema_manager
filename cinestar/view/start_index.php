@@ -50,9 +50,9 @@ function yesno(thecheckbox, thelabel,checkbox_conditions) {
 
 	<div class="card">
 	<article class="card-body">
-		<!--<a href="" class="float-right btn btn-outline-primary">Sign up</a>-->
+		<a href="index.php?rt=start/signup" class="float-right btn btn-outline-primary">Sign up</a>
 		<h4 class="card-title mb-4 mt-1">Korisnik</h4>
-
+		
 		<hr>
 		<form action="index.php?rt=start/loginCheckUser" method="post">
 			<!--<div class="form-check form-switch">
@@ -80,7 +80,7 @@ function yesno(thecheckbox, thelabel,checkbox_conditions) {
 
 	<div class="card">
 	<article class="card-body">
-		<!--<a href="" class="float-right btn btn-outline-primary">Sign up</a>-->
+		<!-- <a href="" class="float-right btn btn-outline-primary">Sign up</a> -->
 		<h4 class="card-title mb-4 mt-1">Radnik</h4>
 
 		<hr>
@@ -133,20 +133,6 @@ function yesno(thecheckbox, thelabel,checkbox_conditions) {
 <!--container end.//-->
 
 <br><br><br>
-
-
-<!--<article class="bg-secondary mb-3">  
-	<div class="card-body text-center">
-		<h4 class="text-white">HTML UI KIT <br> Ready to use Bootstrap 4 components and templates </h4>
-		<p class="h5 text-white"> for Ecommerce, marketplace, booking websites 
-		and product landing pages</p>   <br>
-		<p><a class="btn btn-warning" target="_blank" href="http://bootstrap-ecommerce.com/"> Bootstrap-ecommerce.com  
-		<i class="fa fa-window-restore "></i></a></p>
-	</div>
-	<br><br><br>
-</article>-->
-
-
 
 </body>
 </html>
