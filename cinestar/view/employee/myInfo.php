@@ -13,7 +13,7 @@
 
 
 <div class="col-12 col-xl-4 mb-4 mb-lg-0">
-<form action="index.php?rt=employee/otherSettingsCheck" method="post">
+<form action="index.php?rt=employee/myInfo" method="post">
 			
     <div class="form-group">
 

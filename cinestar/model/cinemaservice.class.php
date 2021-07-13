@@ -800,6 +800,54 @@ class CinemaService
 		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
 	}
 
+	function changeCinemaAdress( $adress )
+	{
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare( 'UPDATE kino SET adresa=:adress WHERE id=:id');
+			$st->execute( array( 'adress' => $adress, 'id' => 123) );
+
+		}
+		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
+	}
+
+	function changeCinemaEmail( $email )
+	{
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare( 'UPDATE kino SET email=:email WHERE id=:id');
+			$st->execute( array( 'email' => $email, 'id' => 123) );
+
+		}
+		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
+	}
+
+	function changeCinemaTelephone( $tel )
+	{
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare( 'UPDATE kino SET tel=:tel WHERE id=:id');
+			$st->execute( array( 'tel' => $tel, 'id' => 123) );
+
+		}
+		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
+	}
+
+	function changeCinemaOpen( $open )
+	{
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare( 'UPDATE kino SET radimo=:open WHERE id=:id');
+			$st->execute( array( 'open' => $open, 'id' => 123) );
+
+		}
+		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
+	}
+
 
 }
 
