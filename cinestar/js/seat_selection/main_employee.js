@@ -530,7 +530,7 @@ function main() {
 	for (var i = 0; i < tablica.length; i++) {
 		tablica[i] = new Array(size_y).fill(0);
 	}
-
+	console.log(canvas.getAttribute('prikaz_id'));
 	oznaciKupljena(parseInt(canvas.getAttribute('prikaz_id'))); //id
 
 	setTimeout(function () {

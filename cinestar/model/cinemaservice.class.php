@@ -687,10 +687,39 @@ class CinemaService
 
 	function removeSeatsByReservationId ($id )
 	{
+
+
 		try
 		{
 			$db = DB::getConnection();
 			$st = $db->prepare( 'DELETE FROM sjedalo WHERE rezervacija_id=:id');
+			$st->execute( array( 'id' => $id) );
+
+		}
+		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
+	}
+
+	function removeReservationByReservationId ($id )
+	{
+
+
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare( 'DELETE FROM rezervacija WHERE id=:id');
+			$st->execute( array( 'id' => $id) );
+
+		}
+		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
+	}
+
+
+	function sellSeatsByReservationId ($id )
+	{
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare( 'UPDATE rezervacija SET kupljeno = 1  WHERE id=:id');
 			$st->execute( array( 'id' => $id) );
 
 		}
