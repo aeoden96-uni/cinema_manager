@@ -188,6 +188,18 @@ class StartController
 		require_once __DIR__ . '/../view/start_login.php';
 	}
 
+	public function logout() {
+		session_start();
+        session_unset();
+		session_destroy();
+
+		header("Refresh:1; url=index.php?rt=start");
+
+		require_once __DIR__ . '/../view/start_logout.php';
+		require_once __DIR__ . '/../view/_footer.php';
+		
+	}
+
 }; 
 
 ?>
