@@ -55,11 +55,10 @@ if( $danOdDanas == -1){
     <div class="col-12 col-xl-4">
         <div class="card"  id="myCalendar" for="<?php echo $USERTYPE; ?>">
             <h5 class="card-header">Kalendar predstava</h5>
-            <div class="calendar-wrapper">
-                    <button id="btnPrev" type="button">Prošli</button>
-                    <button id="btnNext" type="button">Idući</button>
+            
+                   
                     <div id="divCal"></div>
-            </div>
+           
             <script src="js/calendar/index.js"></script>
             <link rel="stylesheet" type="text/css" href="css/calendar/style.css"/>
         </div>
