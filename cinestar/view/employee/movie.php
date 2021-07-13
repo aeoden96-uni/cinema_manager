@@ -1,4 +1,8 @@
-<?php include __DIR__ . '/../_header.php'; ?>
+<?php include __DIR__ . '/../_header.php';
+
+$newProjLink="index.php?rt=employee/addProjection/".$movie -> id;
+
+?>
 
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
@@ -6,10 +10,10 @@
         <li class="breadcrumb-item active"><?php echo $movie -> name; ?></li>
     </ol>
 </nav>
-<h1 class="h2"><?php echo $movie -> name; ?></h1>
+
 
 <div class="card">
-    <h5 class="card-header"><?php echo $movie -> name; ?></h5>
+    <h5 class="card-header"><?php echo $movie -> name; ?> &nbsp;<button onclick="location.href='<?php echo $newProjLink;?>'"  class="btn btn-info">Add projection</button></h5>
     <div class="card-body">
         <div class="table-responsive">
             <table class="table">
@@ -25,11 +29,12 @@
                         <b>Year:</b> <?php echo $movie -> year; ?> <br><br>
                         <b>Duration:</b> <?php echo substr($movie -> duration, 0, -3); ?> <br><br>
                         <h4><b>Projections:</b></h4>
+                        
                         <table class="projections">
                             <tr>
                              <?php 
                              foreach ( $dates as $date){                             
-                                 echo '<th>' . datum($date) . '</th>';
+                                echo '<th>' . $date . '</th>';
                              }
                              ?>
                             </tr>
@@ -39,7 +44,7 @@
                                 echo '<td>';
                                 foreach( $projections as $projection ){
                                     if( $projection-> date === $date){
-                                        echo '<button class="btn btn-warning"><a class="time" href="index.php?rt=user/seatSelection/'.$projection->id.'">'. substr($projection-> time, 0, -3) . '</a></button><br class="button">';
+                                        echo '<button class="btn btn-warning"><a class="time" href="index.php?rt=employee/seatSelection/'.$projection->id.'">'. substr($projection-> time, 0, -3) . '</a></button><br class="button">';
                                     }
                                 }
                                 echo '</td>';
@@ -50,7 +55,6 @@
                         </table>
                     </td>
                     </tr>
-                    <button><a href="index.php?rt=employee/addProjection/<?php echo $movie->id;?>">'Add new projection</a></button>
                 </tbody>
                 </table>
         </div>

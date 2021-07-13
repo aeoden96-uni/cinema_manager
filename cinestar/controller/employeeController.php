@@ -207,6 +207,59 @@ class employeeController
 
         
     }
+    public function vratiRezervMjesta()
+    {
+        $cs = new CinemaService();
+        $reservation_id = $_POST['id'];
+        $reservedSeats= $cs->getReservedSeatsByReservationId(  $reservation_id);
+
+        header( 'Content-type:application/json;charset=utf-8' );
+        echo json_encode($reservedSeats);
+        flush();
+    }
+
+    public function sell()
+    {
+        $cs = new CinemaService();
+        $action = $_POST['action'];
+        $seats = $_POST['seats'];
+        $rez_id = $_POST['rez'];
+
+        
+
+        header( 'Content-type:application/json;charset=utf-8' );
+        echo json_encode($rez_id);
+        flush();
+    }
+
+    public function seatSelection()
+    {
+       
+        session_start();
+        $this->checkPrivilege();
+        $naziv=$_SESSION["naziv"];
+        $ime=$_SESSION["username"];
+
+        $USERTYPE=$this->USERTYPE;
+
+        $cs = new CinemaService();
+
+        $reservation_id = $_POST['id'];
+
+        $seats;
+
+        $proj_id= $cs->getProjectionIdByReservationId( $reservation_id);
+
+        if($proj_id == null) {
+            header( 'Location: index.php?rt=$USERTYPE');
+			exit();
+        }
+
+        $size=$cs->getSizeOfHallByProjectionId( $proj_id);
+    
+        require_once __DIR__ . '/../view/'.$USERTYPE.'/seatSelection.php'; 
+        
+    }
 }
 
 

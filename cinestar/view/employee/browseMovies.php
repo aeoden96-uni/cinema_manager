@@ -14,42 +14,46 @@
     </ol>
 </nav>
 <h1 class="h2">Movies <span class="text"></span></h1>
-<p>Choose which movie you want to see</p>
 
 
 
+<?php
+$filmovaURedu=5;
+$i=0;
+foreach( $movieList as $movie){
+    
+    if($i % $filmovaURedu == 0){
+        echo '<div class="row">';
+    }
 
-<div class="card">
-    <h5 class="card-header">Search <input type="text" id="search"><span class="text"></span></h5>
-    <div class="card-body">
-        <div class="table-responsive">
-            <table class="table">
-                <thead>
-                   <!--- <tr>
-                    <th scope="col">Movies</th>
-                    <th scope="col">Faculty name</th>
 
-                    </tr>-->
-                </thead>
-                <tbody>
-                <?php
-                    foreach( $movieList as $movie){
-                        $img = $movie['movie']-> name . '.jpg';
-                        echo '<tr>';
-                        $str = '<h4><a class="title" href="index.php?rt=user/movie/'. $movie['movie']-> id .'">' . $movie['movie']-> name. '</a></h4> ';
-                        echo '<td>' .$str . '<div class="img"><img src="img/'. $img .'"></div></td>';
-                        echo '</tr>';
-                    }
-                ?>
-                </script>    
-                   
-                </tbody>
-                </table>
-        </div>
+        echo '<div style="margin-top: 50px;" class="col">';
+            $img = $movie['movie']-> name . '.jpg';
+            $str = '<h4><a class="title" href="index.php?rt=employee/movie/'. $movie['movie']-> id .'">' . $movie['movie']-> name. '</a></h4> ';
+            echo $str . '<img src="img/'. $img .'">';
+        echo '</div>';
+
+
+    if($i % $filmovaURedu == $filmovaURedu-1){
+        echo ' </div>';
         
-        
-    </div>
-</div>
+    }
+
+    $i +=1;
+}
+
+
+while($i %$filmovaURedu !=0){
+    echo '<div style="margin-top: 50px;" class="col">';
+    echo ' </div>';
+    
+    $i +=1;
+}
+
+
+    
+    
+?>
 
 <style>
 a.title{

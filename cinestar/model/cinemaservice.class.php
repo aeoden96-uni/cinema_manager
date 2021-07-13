@@ -329,6 +329,63 @@ class CinemaService
 		return $size;
 	}
 
+	function getProjectionIdByReservationId ( $id ){
+		
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare( 'SELECT prikaz_id
+									FROM rezervacija
+									WHERE id =:id');
+			$st->execute( array( 'id' => $id) );
+
+			
+			$row = $st->fetch();
+			if ($row != null)
+				return $row['prikaz_id'];
+			else return null;				
+		}
+		catch( PDOException $e ) {
+			
+			return  $e->getMessage() ;
+		
+		}
+
+	}
+
+
+
+	function getReservedSeatsByReservationId ( $reserv_id )
+	{
+		
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare( 'SELECT sjedalo.red,sjedalo.broj_u_redu ,sjedalo.rezervacija_id
+									FROM sjedalo,rezervacija,prikaz 
+									WHERE sjedalo.rezervacija_id=rezervacija.id 
+									AND prikaz.id=rezervacija.prikaz_id 
+									AND rezervacija.id=:id;');
+			$st->execute( array( 'id' => $reserv_id) );
+			
+		}
+		catch( PDOException $e ) { 
+			
+			return $e->getMessage() ;
+		
+		}
+		$arr = [];
+		while( $row = $st->fetch()){
+			
+			$arr[] = new Seat((int)$row['red'],(int)$row["broj_u_redu"], (int)$row["rezervacija_id"]);
+			
+		
+		}
+		return $arr;
+
+	}
+
+
 	function getReservedSeatsByProjectionId ( $id )
 	{
 		try
@@ -342,7 +399,11 @@ class CinemaService
 			$st->execute( array( 'id' => $id) );
 			
 		}
-		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
+		catch( PDOException $e ) { 
+			
+			return $e->getMessage() ;
+		
+		}
 		$arr = [];
 		while( $row = $st->fetch()){
 			
