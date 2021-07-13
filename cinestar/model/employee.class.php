@@ -2,14 +2,13 @@
 
 class Employee
 {
-    protected $id, $ime, $username, $password;
+    protected $id, $ime, $username;
 
-    function __construct( $id, $ime, $username, $password )
+    function __construct( $id, $username, $email )
 	{
 		$this->id = $id;
-		$this->ime = $ime;
 		$this->username = $username;
-		$this->password = $password;
+		$this->email = $email;
 	}
 
 	function __get( $prop ) { return $this->$prop; }

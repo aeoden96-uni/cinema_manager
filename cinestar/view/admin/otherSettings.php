@@ -11,7 +11,7 @@
 <h1 class="h2">Cinema info</h1>
 <p>Change info about Throwback Cinema.</p>
 
-
+<?php if( $error !== '') echo $error . '<br>'; ?>
 <div class="col-12 col-xl-4 mb-4 mb-lg-0">
 <form action="index.php?rt=admin/otherSettingsCheck" method="post">
 			

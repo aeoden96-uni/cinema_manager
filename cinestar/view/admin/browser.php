@@ -34,7 +34,7 @@
                     foreach( $employees as $employee ){
                         echo '<tr>';
                         echo '<td>' . $employee->id .'</td>';
-                        echo '<td>' . $employee->name .'</td>';
+                        echo '<td>' . $employee->username .'</td>';
                         echo '<td>' . $employee->email .'</td>';
                         echo '<td><button class="btn btn-warning"><a href="index.php?rt=admin/removeEmpl/' .$employee->id.'"> Remove</a> </button></td>';
                         echo '</tr>';
@@ -79,6 +79,10 @@
 a{
     text-decoration: none;
     color:black;
+}
+
+a:link{
+    color:inherit;
 }
 </style>
 

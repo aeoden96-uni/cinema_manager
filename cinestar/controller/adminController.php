@@ -70,6 +70,11 @@ class AdminController
         $naziv=$ime;
         $cs = new CinemaService();
         $employees = $cs -> getEmployees();
+        if( isset( $_SESSION['error'])){
+            $error = $_SESSION['error'];
+            $_SESSION['error'] = '';
+        }
+        else $error = '';
         
         $USERTYPE=$this->USERTYPE;
 
@@ -93,7 +98,7 @@ class AdminController
         else $error = '';
         
         $USERTYPE=$this->USERTYPE;
-        header( 'Location: index.php?rt=browser');
+        header( 'Location: index.php?rt=admin/browser');
     }
     
     public function addEmpl() //dobiva preko posta
@@ -108,15 +113,19 @@ class AdminController
         if( isset( $_POST['name']) && isset( $_POST['email']) && isset( $_POST['pass'])){
             if( filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)){
                 $cs->addEmployee( $_POST['name'], $_POST['pass'], $_POST['email']);
+                header( 'Location: index.php?rt=admin/browser');
+                exit();
             }
             else{
                 $_SESSION['error'] = 'Wrong input! Try again';
-                header( 'Location: index.php?rt=browser');
+                header( 'Location: index.php?rt=admin/browser');
+                exit();
             }
         }
         else{
             $_SESSION['error'] = 'Wrong input! Try again';
-            header( 'Location: index.php?rt=browser');
+            header( 'Location: index.php?rt=admin/browser');
+            exit();
         }
 
 
@@ -134,6 +143,12 @@ class AdminController
 
         $ime=$_SESSION["username"];
         $naziv=$ime;
+
+        if( isset( $_SESSION['error'])){
+            $error = $_SESSION['error'];
+            $_SESSION['error'] = '';
+        }
+        else $error = '';
        
         
         $USERTYPE=$this->USERTYPE;
@@ -143,30 +158,41 @@ class AdminController
     public function otherSettingsCheck(){
         session_start();
         $this->checkPrivilege();
-        $g= new GlobalService();
+        $cs = new CinemaService();
         $ime=$_SESSION["username"];
         $naziv=$ime;
         $activeInd=5;
         
         $USERTYPE=$this->USERTYPE;
 
-        //$student=$m->returnUcenikWithId($_SESSION["user_id"]);
+        if( isset($_POST['adress'])){
+            if( $_POST['adress']!== '')
+                $cs-> changeCinemaAdress( $_POST['adress']);
+        }
+        if( isset($_POST['email'])){
+            if( filter_var($_POST['email'], FILTER_VALIDATE_EMAIL))
+                $cs-> changeCinemaEmail( $_POST['email']);
+            else{
+                $_SESSION['error'] = 'Wrong input! Try again';
+            }
+        }
+        if( isset($_POST['tel'])){
+            if( preg_match('/^[0-9]*$/', $_POST['tel']) && $_POST['tel'] !== '')
+                $cs-> changeCinemaTelephone( $_POST['tel']);
+            else{
+                $_SESSION['error'] = 'Wrong input! Try again';
+            }
+        }
+        if( isset($_POST['open'])){
+            if( preg_match('/^(([0-1][0-9])|([2][0-3])):[0-5][0-9]-(([0-1][0-9])|([2][0-3])):[0-5][0-9]$/', $_POST['open']))
+                $cs-> changeCinemaOpen( $_POST['open']);
+            else{
+                $_SESSION['error'] = 'Wrong input! Try again';
+            }
+        }
 
+        header( 'Location: index.php?rt=admin/globalSettings');
 
-        if($_POST["lockDate"] != null) 
-            $m->changeLockDate(strtotime( $_POST["lockDate"]));
-        
-        if($_POST["resultDate"] != null) 
-            $m->changeResultDate(strtotime( $_POST["resultDate"]));
-        
-        
-        //$newformat = date('d/m/Y',$time);
-            
-       
-
-
-        //header( 'Location: index.php?rt=admin/otherSettings');
-       // exit(); 
     }
 
 }

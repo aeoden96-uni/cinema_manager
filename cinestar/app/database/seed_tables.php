@@ -3,8 +3,9 @@
 // Popunjavamo tablice u bazi "probnim" podacima.
 require_once __DIR__ . '/db.class.php';
 
-seed_table_korisnik();
-seed_table_radnik();
+/*seed_table_korisnik();
+seed_table_radnik();*/
+seed_table_admin();
 
 exit( 0 );
 
@@ -45,6 +46,24 @@ function seed_table_radnik()
 		$st->execute( array( 'username' => 'danijel', 'password' => password_hash( 'danijelovasifra', PASSWORD_DEFAULT ) ) );
 		$st->execute( array( 'username' => 'luka', 'password' => password_hash( 'lukinasifra', PASSWORD_DEFAULT ) ) );
 		$st->execute( array( 'username' => 'marta', 'password' => password_hash( 'martinasifra', PASSWORD_DEFAULT ) ) );
+	}
+	catch( PDOException $e ) { exit( "PDO error [insert korisnik]: " . $e->getMessage() ); }
+
+	echo "Ubacio u tablicu radnik.<br />";
+}
+
+function seed_table_admin()
+{
+	$db = DB::getConnection();
+
+	// Ubaci neke korisnike unutra
+	try
+	{
+		$st = $db->prepare( 'INSERT INTO admin(ime, password_hash, email) VALUES (:username, :password, \'a@b.com\')' );
+
+		$st->execute( array( 'username' => 'helena', 'password' => password_hash( 'heleninasifra', PASSWORD_DEFAULT ) ) );
+		$st->execute( array( 'username' => 'mateo', 'password' => password_hash( 'mateovasifra', PASSWORD_DEFAULT ) ) );
+		$st->execute( array( 'username' => 'matija', 'password' => password_hash( 'matijinasifra', PASSWORD_DEFAULT ) ) );
 	}
 	catch( PDOException $e ) { exit( "PDO error [insert korisnik]: " . $e->getMessage() ); }
 
