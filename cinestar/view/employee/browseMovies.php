@@ -14,7 +14,7 @@
 <h1 class="h2">Movies <span class="text"></span></h1>
 
 
-<h5 class="card-header">Search <input type="text" id="search" onkeyup="search()" placeholder="Search for names.."><span class="text"></span></h5>
+<h5 class="card-header">Search <input type="text" id="search" onkeyup="search()" placeholder="Search for movies"><span class="text"></span></h5>
 <?php
 $filmovaURedu=3;
 $i=0;

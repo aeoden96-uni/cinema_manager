@@ -15,7 +15,7 @@
     <h5 class="card-header">Add new movie</h5>
     <div class="card-body">
          <?php if( $error !== '') echo $error . '<br>';?>
-        <form action="index.php?rt=employee/newMovie" method="POST">
+        <form action="index.php?rt=employee/newMovie" method="POST"  enctype="multipart/form-data">
             <div class="form-group">
                 <label for="exampleInputEmail1">Name</label>
                 <input type="text" class="form-control"name="name" placeholder="Name">
@@ -23,7 +23,7 @@
             </div>
             <div class="form-group">
                 <label for="exampleInputPassword1">Description</label>
-                <textarea  type="textarea" class="form-control" placeholder="Description" rows="3"></textarea>
+                <textarea  type="textarea" class="form-control" placeholder="Description" rows="3" name="desc"></textarea>
                 <small class="form-text text-muted">Keep it short.</small>
             </div>
             <div class="form-group">

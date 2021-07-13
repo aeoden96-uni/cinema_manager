@@ -420,7 +420,7 @@ class CinemaService
 		try
 		{
 			$db = DB::getConnection();
-			$st = $db->prepare('INSERT INTO film (id, ime, opis, godina, trajanje) VALUES(:id, :ime, :opis :godina, :trajanje)');
+			$st = $db->prepare('INSERT INTO film (id, ime, opis, godina, trajanje) VALUES(:id, :ime, :opis, :godina, :trajanje)');
 
 			$stt = $db->prepare('SELECT id FROM film');
 			$stt->execute();
@@ -540,7 +540,7 @@ class CinemaService
 	}
 
 
-	function checkIfTheNewProjectionIsOk( $hall_id, $date, $time, $duration ) //provjeri preklapa li se nova projekcija sa starima
+	function checkIfTheNewProjectionIsOk( $movie_id, $hall_id, $date, $time ) //provjeri preklapa li se nova projekcija sa starima
 	{
 		try
 		{
@@ -550,6 +550,7 @@ class CinemaService
 
 		}
 		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
+		$duration = $this->getDurationByMovieId( $movie_id );
 
 		while( $row = $st->fetch() ){
 			$duration2 = $this-> getDurationByMovieId( $row['film_id']);
@@ -568,7 +569,7 @@ class CinemaService
 		$durArr2 = explode(':', $duration2);
 
 		$t1 = mktime((int)$timeArr1[0], (int)$timeArr1[1], (int)$timeArr1[2]);
-		$t2 = mktime((int)$timeArr1[0], (int)$timeArr1[1], (int)$timeArr1[2]);
+		$t2 = mktime((int)$timeArr2[0], (int)$timeArr2[1], (int)$timeArr2[2]);
 		$dur1 = mktime((int)$durArr1[0], (int)$durArr1[1], (int)$durArr1[2]);
 		$dur2 = mktime((int)$durArr2[0], (int)$durArr2[1], (int)$durArr2[2]);
 
