@@ -44,7 +44,9 @@ $newProjLink="index.php?rt=employee/addProjection/".$movie -> id;
                                 echo '<td>';
                                 foreach( $projections as $projection ){
                                     if( $projection-> date === $date){
-                                        echo '<button class="btn btn-warning"><a href="index.php?rt=employee/seatSelection/'.$projection->id.'">'. substr($projection-> time, 0, -3) . '</a></button><br class="button">';
+
+                                        
+                                        echo '<button class="btn btn-warning"><a class="time" onClick="deleteIt('.$projection->id.')" >'. substr($projection-> time, 0, -3) . '</a></button><br class="button">';
                                     }
                                 }
                                 echo '</td>';
@@ -66,6 +68,15 @@ $newProjLink="index.php?rt=employee/addProjection/".$movie -> id;
     </div>
 </div>
 
+
+<script>
+
+function deleteIt(id){
+    if(confirm("Are you sure you want to delete projection: " + id+ "?")){
+        window.location.href = "index.php?rt=employee/deleteProjection/"+ id;
+    }
+}
+</script>
 
 
 <style>

@@ -253,10 +253,16 @@ class employeeController
         echo json_encode($reservedSeats);
         flush();
     }
-
+    public function deleteProjection($proj_id)
+    {
+        echo "delete projection " .$proj_id." and all reservations with it...";
+    }
     public function sell()
     {
         $cs = new CinemaService();
+
+        //AKCIJA ==sell -> prodaj
+        //AKCIJA == delete -> obrisi rez
         $action = $_POST['action'];
         $seats = $_POST['seats'];
         $rez_id = $_POST['rez'];
