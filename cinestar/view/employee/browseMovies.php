@@ -14,6 +14,7 @@
     </ol>
 </nav>
 <h1 class="h2">Movies <span class="text"></span></h1>
+<<<<<<< HEAD
 <p>Choose which movie you want to see</p>
 
 
@@ -68,9 +69,48 @@
                 </table>
         </div>
         
+=======
+
+
+
+<?php
+$filmovaURedu=5;
+$i=0;
+foreach( $movieList as $movie){
+    
+    if($i % $filmovaURedu == 0){
+        echo '<div class="row">';
+    }
+
+
+        echo '<div style="margin-top: 50px;" class="col">';
+            $img = $movie['movie']-> name . '.jpg';
+            $str = '<h4><a class="title" href="index.php?rt=employee/movie/'. $movie['movie']-> id .'">' . $movie['movie']-> name. '</a></h4> ';
+            echo $str . '<img src="img/'. $img .'">';
+        echo '</div>';
+
+
+    if($i % $filmovaURedu == $filmovaURedu-1){
+        echo ' </div>';
+>>>>>>> 43985a626a9a824586ff708b02c6b35fb6944455
         
-    </div>
-</div>
+    }
+
+    $i +=1;
+}
+
+
+while($i %$filmovaURedu !=0){
+    echo '<div style="margin-top: 50px;" class="col">';
+    echo ' </div>';
+    
+    $i +=1;
+}
+
+
+    
+    
+?>
 
 <style>
 a.title{

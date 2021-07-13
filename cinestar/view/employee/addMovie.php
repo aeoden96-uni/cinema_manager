@@ -12,7 +12,7 @@
 <div class="row">
 <div class="col">
 <div class="card">
-    <h5 class="card-header">New movie form</h5>
+    <h5 class="card-header">Add new movie</h5>
     <div class="card-body">
          <?php if( $error !== '') echo $error . '<br>';?>
         <form action="index.php?rt=employee/newMovie" method="POST">
@@ -32,7 +32,7 @@
             </div>
             <div class="form-group">
                 <label for="exampleInputPassword1">Duration</label>
-                <input type="text" class="form-control"  name="dur" placeholder="Duration">
+                <input type="text" class="form-control"  name="dur" placeholder="hh:mm">
             </div>
             <br>
             <div class="form-group">
@@ -42,22 +42,10 @@
             <br>
             <button type="submit" class="btn btn-primary">Add</button>
             </form>
-
-        <!--<div class="table-responsive">
-        <? /*php if( $error !== '') echo $error . '<br>'; */?>
-        <form action="index.php?rt=employee/newMovie" method="POST">
-        <b>Name:</b> <input type="text" name="name"> <br> <br> <br>
-        <b>Year: </b> <input type="text" name="year"><br> <br>
-        <b>Duration: </b> <input type="text" name="dur"></br> <br>
-        <b>Image:</b><input type="file" name="img"><br> <br>
-        <button type="submit">Add</button>
-        </form>
-        </div>
         
     </div>
 </div>
-<div class="col" style="width:50%;">
-</div> 
+</div>  
 </div>
-  
-</div>
+
+<?php include __DIR__ . '/../_footer.php'; ?>

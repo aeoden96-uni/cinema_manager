@@ -329,6 +329,63 @@ class CinemaService
 		return $size;
 	}
 
+	function getProjectionIdByReservationId ( $id ){
+		
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare( 'SELECT prikaz_id
+									FROM rezervacija
+									WHERE id =:id');
+			$st->execute( array( 'id' => $id) );
+
+			
+			$row = $st->fetch();
+			if ($row != null)
+				return $row['prikaz_id'];
+			else return null;				
+		}
+		catch( PDOException $e ) {
+			
+			return  $e->getMessage() ;
+		
+		}
+
+	}
+
+
+
+	function getReservedSeatsByReservationId ( $reserv_id )
+	{
+		
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare( 'SELECT sjedalo.red,sjedalo.broj_u_redu ,sjedalo.rezervacija_id
+									FROM sjedalo,rezervacija,prikaz 
+									WHERE sjedalo.rezervacija_id=rezervacija.id 
+									AND prikaz.id=rezervacija.prikaz_id 
+									AND rezervacija.id=:id;');
+			$st->execute( array( 'id' => $reserv_id) );
+			
+		}
+		catch( PDOException $e ) { 
+			
+			return $e->getMessage() ;
+		
+		}
+		$arr = [];
+		while( $row = $st->fetch()){
+			
+			$arr[] = new Seat((int)$row['red'],(int)$row["broj_u_redu"], (int)$row["rezervacija_id"]);
+			
+		
+		}
+		return $arr;
+
+	}
+
+
 	function getReservedSeatsByProjectionId ( $id )
 	{
 		try
@@ -342,7 +399,11 @@ class CinemaService
 			$st->execute( array( 'id' => $id) );
 			
 		}
-		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
+		catch( PDOException $e ) { 
+			
+			return $e->getMessage() ;
+		
+		}
 		$arr = [];
 		while( $row = $st->fetch()){
 			
@@ -392,7 +453,7 @@ class CinemaService
 	}
 
 	function insertNewReservations($seats, $prikaz_id ,$korisnik_id){ //dovrsiti
-
+		$zaVratiti=[];
 		//PROVJERI JESU LI SJEDALA ZAUZETA -- nije gotovo
 		foreach ($seats as $key => $seat) {
 			try
@@ -401,14 +462,15 @@ class CinemaService
 				$st = $db->prepare('SELECT sjedalo.red ,sjedalo.broj_u_redu
 									FROM  sjedalo,prikaz,rezervacija 
 									WHERE sjedalo.red = :red 
-									AND sjedalo.broj_u_redu=:stupac 
+									AND sjedalo.broj_u_redu=:stupac
+									AND sjedalo.rezervacija_id=rezervacija.id 
 									AND prikaz.id=rezervacija.prikaz_id 
 									AND prikaz.id=:prikaz');
 	
 				$st->execute( array( 'red' => $seat->red, 'stupac' => $seat->broj_u_redu, 'prikaz' => $prikaz_id) );
 
 				if ($st->rowCount() > 0) {
-					$zaVratiti=[];
+					
 					$zaVratiti['uspjeh']= False;
 					$row = $st->fetch();
 					$zaVratiti['rezervacija']= "vec su zauzeta mjesta " . strval($row["red"]) ."," .strval($row["broj_u_redu"]);
@@ -417,7 +479,16 @@ class CinemaService
 
 
 			}
-			catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
+			catch( PDOException $e ) {
+				
+				
+				
+				$zaVratiti['uspjeh']= False;
+				$row = $st->fetch();
+				$zaVratiti['rezervacija']=$e->getMessage();
+				
+			
+			}
 		}
 		//AKO TA NISU ZAUZETA NASTAVI
 		$zaVratiti=[];
@@ -428,17 +499,27 @@ class CinemaService
 			$st->execute();
 			$row = $st -> fetch();
 			$new_id = (int) $row['id'] +1 ;
+
+
+
+			/*
+
+			PREPARED STATEMENTS NEMOGU IC UNUTAR TRANSAKCIJE
+
+			*/
 			$db->beginTransaction();
+
+			$st = $db->query('INSERT INTO rezervacija (id, user_id, prikaz_id, broj_karata) 
+							VALUES('. $new_id.', '. $korisnik_id.', '. $prikaz_id.', '. $br_karata.')');
 			
-			$st = $db->prepare('INSERT INTO rezervacija (id, user_id, prikaz_id, broj_karata) VALUES(:id, :user_id, :prikaz_id, :broj_karata');
-			$st->excute( array( 'id' => $new_id, 'user_id' =>$korisnik_id, 'prikaz_id' =>$prikaz_id, 'broj_karata' => $br_karata ) );
 			
+
 			foreach($seats as $seat){
 				
 				$x=$seat->red;
 				$y=$seat->broj_u_redu;
-				$st = $db->prepare( ' INSERT INTO sjedalo (red, broj_u_redu, rezervacija_id) VALUES(:red, :broj_u_redu, :rezervacija_id');
-				$st->execute( array( 'red' => $y, 'broj_u_redu' => $x, 'rezervacija_id' => $new_id) );
+				$st = $db->query( ' INSERT INTO sjedalo (red, broj_u_redu, rezervacija_id) VALUES ('. $x.', '. $y.', '. $new_id.')');
+				
 			}
 
 			$db->commit();

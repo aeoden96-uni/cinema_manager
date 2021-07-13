@@ -242,26 +242,59 @@ class employeeController
 
     }
 
-    public function seatSelection( $id )
+
+    public function vratiRezervMjesta()
     {
+        $cs = new CinemaService();
+        $reservation_id = $_POST['id'];
+        $reservedSeats= $cs->getReservedSeatsByReservationId(  $reservation_id);
+
+        header( 'Content-type:application/json;charset=utf-8' );
+        echo json_encode($reservedSeats);
+        flush();
+    }
+
+    public function sell()
+    {
+        $cs = new CinemaService();
+        $action = $_POST['action'];
+        $seats = $_POST['seats'];
+        $rez_id = $_POST['rez'];
+
+        
+
+        header( 'Content-type:application/json;charset=utf-8' );
+        echo json_encode($rez_id);
+        flush();
+    }
+
+    public function seatSelection()
+    {
+       
         session_start();
         $this->checkPrivilege();
         $naziv=$_SESSION["naziv"];
         $ime=$_SESSION["username"];
 
-        $cs = new CinemaService();
-        $size = $cs -> getSizeOfHallByProjectionId( $id );
-        $br_redova = $size[0];
-        $velicina_reda = $size[1];
-        $movie = $cs -> getMovieByProjectionId( $id );
-        $projection = $cs -> getProjectionById( $id);
-        $date = datum( $projection->date);
-        $reservations = $cs -> getReservationsByProjectionId( $id );
-        $seats = $cs -> getReservedSeatsByProjectionId( $id );
-
         $USERTYPE=$this->USERTYPE;
-        require_once __DIR__ . '/../view/'.$USERTYPE.'/seatSelection.php';  
 
+        $cs = new CinemaService();
+
+        $reservation_id = $_POST['id'];
+
+        $seats;
+
+        $proj_id= $cs->getProjectionIdByReservationId( $reservation_id);
+
+        if($proj_id == null) {
+            header( 'Location: index.php?rt=$USERTYPE');
+			exit();
+        }
+
+        $size=$cs->getSizeOfHallByProjectionId( $proj_id);
+    
+        require_once __DIR__ . '/../view/'.$USERTYPE.'/seatSelection.php'; 
+        
     }
 }
 

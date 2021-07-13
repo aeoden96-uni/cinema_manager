@@ -36,6 +36,21 @@ if( $danOdDanas == -1){
                 </ul>
             </div>
         </div>
+        </br>
+        <div class="card">
+            <h5 class="card-header">Potvrda rezervacije</h5>
+            <div class="card-body">
+                    <form action="index.php?rt=employee/seatSelection" method="POST">
+                   
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" name="id" placeholder="reservation id" >
+                            <div class="input-group-append">
+                                <button class="btn btn-info" type="submit">View reservation</button>
+                            </div>
+                        </div> 
+                    </form>
+            </div>
+        </div>
     </div>
     <div class="col-12 col-xl-4">
         <div class="card"  id="myCalendar" for="<?php echo $USERTYPE; ?>">

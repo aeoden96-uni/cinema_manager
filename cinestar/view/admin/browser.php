@@ -50,20 +50,31 @@
 <div class="card">
     <h5 class="card-header">Add new employee</h5>
     <div class="card-body">
-<div class="table-responsive">
+<div class="form-group">
 <form action = "index.php?rt=admin/addEmpl" method="POST">
-Name: <input type="text" name="name"> <br> <br>
-Email: <input type="text" name="email"> <br> <br>
-Password <input type="password" name="pass"> <br><br>
-<button type="submit">Add</button>
-</form>
+    <div class="form-group">
+        <label for="exampleInputEmail1">Name</label>
+        <input type="text" class="form-control"name="name" placeholder="Name">
+    </div>
+    <div class="form-group">
+        <label for="exampleInputEmail1">Email</label>
+        <input type="email" class="form-control"name="email" placeholder="Email">
+    </div>
+    <div class="form-group">
+        <label for="exampleInputEmail1">Password</label>
+        <input type="password" class="form-control"name="pass" placeholder="Password">
+    </div>
+    <br>
+     <button type="submit" class="btn btn-primary">Add</button>
+    </form>
 </div>
+
 </div>
 </div>
 
 <style>
 
-    
+
 a{
     text-decoration: none;
     color:black;

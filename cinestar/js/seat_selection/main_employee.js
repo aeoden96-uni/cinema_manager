@@ -229,10 +229,11 @@ function removeAllMarked() {
 }
 
 var disableButton = false;
+
 function updateButtonOdaberi() {
 	var button = document.getElementById('odaberi');
 
-	if (numOfSeatsSelected > 0 && !disableButton) {
+	if (/*numOfSeatsSelected > 0*/ true) {
 
 		//console.log(numOfSeatsSelected);
 		button.disabled = false;
@@ -244,42 +245,93 @@ function updateButtonOdaberi() {
 
 }
 
-function odaberiMjesta() { //on click event
+function sellSeats() { //on click event
 	disableButton = true;
 	updateButtonOdaberi();
 	showHide('spiner', false);
-	console.log("Posalji:");
-	console.log(seatsSelected);
+
 	console.log("Rezultat:");
 	$.ajax(
 		{
-			url: "index.php?rt=user/seatSelectionConfirm",
+			url: "index.php?rt=employee/sell",
 			data:
 			{
+				action: "sell",
 				seats: seatsSelected,
-				prikaz: parseInt(canvas.getAttribute('prikaz_id'))
+				rez: parseInt(canvas.getAttribute('rezerv_id'))
 			},
 			type: "POST",
 			dataType: "json",
 			success: function (json) {
-				console.log(json.uspjeh);
-				console.log(json.rezervacija);
+				console.log(json);
+
 				if (json.uspjeh) {
-					removeAllMarked();
+
 					setTimeout(function () {
 
-						window.location.href = "index.php?rt=user/reservationSuccess/" + json.rezervacija;
+						window.location.href = "index.php?rt=employee/";
 
 					}, 2000);
 				}
 				else {
 
-					removeAllMarked();
+
 
 					setTimeout(function () {
 						showHide('spiner', true);
-						oznaciKupljena(parseInt(canvas.getAttribute('prikaz_id'))); //id
-						alert("Molimo pokušajte ponovno, netko je već rezervirao ta mjesta.")
+
+						alert("Molimo pokušajte ponovno.")
+						disableButton = false;
+					}, 2000);
+				}
+
+
+			},
+			error: function (xhr, status, errorThrown) {
+				//console.log(status); console.log(errorThrown);
+			},
+			complete: function (xhr, status) {
+				//console.log(status);
+
+			}
+		});
+
+
+}
+
+function removeSeats() { //on click event
+	disableButton = true;
+	updateButtonOdaberi();
+	showHide('spiner', false);
+
+	console.log("Rezultat:");
+	$.ajax(
+		{
+			url: "index.php?rt=employee/sell",
+			data:
+			{
+				action: "delete",
+				seats: seatsSelected,
+				rez: parseInt(canvas.getAttribute('rezerv_id'))
+			},
+			type: "POST",
+			dataType: "json",
+			success: function (json) {
+				console.log(json);
+
+				if (json.uspjeh) {
+
+					setTimeout(function () {
+
+						window.location.href = "index.php?rt=employee/";
+
+					}, 2000);
+				}
+				else {
+
+					setTimeout(function () {
+						showHide('spiner', true);
+						alert("Molimo pokušajte ponovno.")
 						disableButton = false;
 					}, 2000);
 				}
@@ -317,6 +369,9 @@ function drawMarked() { //crta SVE elemente tablice
 			}
 			else if (tablica[i][j] == 2) {
 				draw_seat2(i, j, 5, "gray");
+			}
+			else if (tablica[i][j] == 3) {
+				draw_seat2(i, j, 5, "blue");
 			}
 
 		}
@@ -412,6 +467,49 @@ function oznaciKupljena(prikaz_id) {
 
 }
 
+function oznaciRezervirana(rez_id) {
+
+	console.log("Oznacavam kupljena za proj_id: " + rez_id);
+	$.ajax(
+		{
+			url: "index.php?rt=employee/vratiRezervMjesta/" + rez_id,
+			data:
+			{
+				id: rez_id
+			},
+			type: "POST",
+			dataType: "json",
+			success: function (json) {
+
+				console.log("Dobio ");
+				console.log(json);
+
+				json.forEach(element => {
+
+					tablica[element.red - 1][element.broj_u_redu - 1] = 3;
+
+					var list = document.getElementById('myList');
+					item = "Reserved seat " + (element.red) + "," + (element.broj_u_redu);
+					addItemToHTMLList(list, item);
+
+					seatsSelected.push({ i: (element.red), j: (element.broj_u_redu) });
+
+				});
+
+
+			},
+			error: function (xhr, status, errorThrown) {
+				console.log(errorThrown);
+			},
+			complete: function (xhr, status) {
+				//console.log(xhr);
+
+			}
+		});
+
+
+}
+
 function main() {
 
 
@@ -434,6 +532,10 @@ function main() {
 	}
 
 	oznaciKupljena(parseInt(canvas.getAttribute('prikaz_id'))); //id
+
+	setTimeout(function () {
+		oznaciRezervirana(parseInt(canvas.getAttribute('rezerv_id'))); //ova su zapravo potenc kupljena --employee
+	}, 200);
 
 
 	//getInitData();
