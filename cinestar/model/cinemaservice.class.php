@@ -667,7 +667,17 @@ class CinemaService
 		}
 		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
 
-		while( $row = $st->fetch())
+		while( $row = $st->fetch()){
+			$this->removeSeatsByReservationId($row['id']);
+		}
+		try
+		{
+			$db = DB::getConnection();
+			$st = $db->prepare( 'DELETE FROM rezervacija WHERE prikaz_id=:id');
+			$st->execute( array( 'id' => $id) );
+
+		}
+		catch( PDOException $e ) { exit( 'PDO error ' . $e->getMessage() ); }
 
 	}
 
