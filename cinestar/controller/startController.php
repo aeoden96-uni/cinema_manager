@@ -178,7 +178,7 @@ class StartController
 			header("Refresh:2; url=index.php?rt=start");
 		}
 		elseif($user == 'incorrect'){
-			echo $user->ime;
+			echo $_POST["username"];
 			$succesVar="unsuccessful. :(";
 			session_destroy();
 			header("Refresh:2; url=index.php?rt=start");
